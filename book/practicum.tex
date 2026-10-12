@@ -1,0 +1,4240 @@
+\documentclass[12pt,a4paper,openany]{book}
+
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amssymb,amsmath}
+\usepackage{indentfirst} % отступ первых абзацев в разделе
+
+% для поддержки русского языка
+\usepackage{cmap} % для кодировки шрифтов в pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+\pagestyle{plain}
+\usepackage{geometry}
+\geometry{a4paper,
+    left=20mm,
+    top=20mm,
+    right=20mm,
+    bottom=20mm
+}
+
+% для содержимого, перенесённого из ноутбуков
+\usepackage{longtable,booktabs,array,calc}
+\usepackage{fvextra}
+\usepackage{lastpage}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\setlength{\emergencystretch}{3em}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\addto\captionsrussian{\renewcommand{\chaptername}{Занятие}}
+\setcounter{tocdepth}{1}
+\newcommand{\todo}[1]{\fbox{\small #1}}
+
+\DeclareUnicodeCharacter{00B0}{\ensuremath{^\circ}}
+\DeclareUnicodeCharacter{00B1}{\ensuremath{\pm}}
+\DeclareUnicodeCharacter{00B2}{\ensuremath{^2}}
+\DeclareUnicodeCharacter{00B7}{\ensuremath{\cdot}}
+\DeclareUnicodeCharacter{00D7}{\ensuremath{\times}}
+\DeclareUnicodeCharacter{0394}{\ensuremath{\Delta}}
+\DeclareUnicodeCharacter{03B1}{\ensuremath{\alpha}}
+\DeclareUnicodeCharacter{03B2}{\ensuremath{\beta}}
+\DeclareUnicodeCharacter{03C0}{\ensuremath{\pi}}
+\DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}
+\DeclareUnicodeCharacter{21D2}{\ensuremath{\Rightarrow}}
+\DeclareUnicodeCharacter{2248}{\ensuremath{\approx}}
+
+\begin{document}
+
+\fontsize{14}{18}\selectfont
+
+\thispagestyle{empty}
+
+\begin{center}
+    МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ
+
+    \medskip
+
+    Национальный исследовательский Нижегородский государственный университет им. Н.И. Лобачевского
+
+    \vfill
+
+    \textbf{А.В. Коржиманов}
+
+    \vspace{28pt}
+
+    \textbf{ЦИФРОВАЯ ОБРАБОТКА СИГНАЛОВ\\ ПРАКТИКУМ}
+
+    \vspace{28pt}
+
+    Учебно-методическое пособие
+
+    \vspace{42pt}
+
+    Рекомендовано \todo{[орган, рекомендующий издание]} для студентов ННГУ, обучающихся по направлению подготовки \todo{[код и название направления]}
+
+    \vfill
+
+    Нижний Новгород
+
+    2026
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+УДК \todo{[указать]}\par
+ББК \todo{[указать]}\par
+\hspace{10mm}К-66
+
+\vfill
+
+\begin{center}
+    Рецензенты:\\
+    \todo{[учёная степень, звание]} \textbf{\todo{[И.О. Фамилия]}}\\
+    \todo{[учёная степень, звание]} \textbf{\todo{[И.О. Фамилия]}}
+\end{center}
+
+\vspace{28pt}
+
+К-66 Коржиманов А.В. ЦИФРОВАЯ ОБРАБОТКА СИГНАЛОВ. ПРАКТИКУМ: Учебно-методическое пособие. – Нижний Новгород: Нижегородский госуниверситет, 2026. – \pageref*{LastPage}~с.
+
+\vspace{28pt}
+
+Пособие содержит задания восьми практических занятий по цифровой обработке сигналов: дискретизация и спектральный анализ, модуляция, свёртка и корреляция, Z-преобразование, случайные сигналы и спектральная плотность мощности, анализ и синтез цифровых фильтров, нелинейная и адаптивная фильтрация, частотно-временной анализ и вейвлет-преобразования. Каждое занятие открывается краткими сведениями, необходимыми для выполнения заданий: формулами, описанием функций библиотек языка Python и перечнем типичных ошибок. Задания выполняются в среде Jupyter или Google Colab и сопровождаются контрольными вопросами.
+
+Для студентов радиофизического факультета ННГУ, изучающих курс «Цифровая обработка сигналов».
+
+\vspace{28pt}
+
+\begin{center}
+    Ответственный за выпуск:\\
+    \todo{[должность]} \textbf{\todo{[И.О. Фамилия]}}
+\end{center}
+
+\vfill
+
+\begin{flushright}
+УДК \todo{[указать]}
+
+ББК \todo{[указать]}
+
+© Национальный исследовательский\\
+Нижегородский государственный\\
+университет им. Н.И. Лобачевского, 2026
+\end{flushright}
+
+
+\tableofcontents
+
+\newpage
+
+\chapter*{Введение}
+\addcontentsline{toc}{chapter}{\protect\numberline{}Введение}
+
+Практикум составлен на основе практических занятий, сопровождающих курс лекций «Цифровая обработка сигналов», который автор читает студентам радиофизического факультета Нижегородского государственного университета имени Н.И. Лобачевского. Восемь занятий практикума следуют за восемью лекциями курса: от дискретизации сигналов и дискретного преобразования Фурье через свёртку, корреляционный и спектральный анализ к анализу и синтезу цифровых фильтров, адаптивной фильтрации, частотно-временному анализу и вейвлет-преобразованиям.
+
+Цель практикума --- научить применять методы цифровой обработки сигналов на практике: генерировать и анализировать сигналы, проектировать фильтры, оценивать спектры, сравнивать между собой различные методы и делать обоснованные выводы о том, какой из них лучше подходит для конкретной задачи. Большинство заданий построено как численный эксперимент: требуется не только получить результат, но и исследовать его зависимость от параметров и объяснить наблюдаемое поведение.
+
+Задания выполняются на языке Python с использованием библиотек NumPy, SciPy и Matplotlib, а в последнем занятии --- библиотеки PyWavelets. Для каждого занятия подготовлен ноутбук Jupyter, который можно открыть в сервисе Google Colab, не устанавливая ничего на свой компьютер. Ноутбуки, пояснительные заметки и необходимые аудиофайлы размещены в открытом репозитории \url{https://github.com/korzhimanov/dsp-seminars}: задания находятся в каталоге \texttt{seminars}, заметки --- в каталоге \texttt{notes}, данные --- в каталоге \texttt{data}. Порядок работы с репозиторием и Google Colab описан в кратких сведениях к первому занятию.
+
+Каждая глава соответствует одному занятию и состоит из двух частей. Раздел <<Краткие сведения>> содержит формулы, описание используемых функций библиотек и перечень типичных ошибок; он не заменяет лекций, а служит справочником при выполнении заданий. Далее следуют сами задания, сгруппированные по темам. Фрагменты программного кода, приведённые в условиях, входят в условие задачи: это вспомогательные функции и заготовки, в которых строки с комментарием <<Ваш код здесь>> отмечают места, требующие доработки.
+
+Результатом выполнения каждого задания являются программный код, графики и ответы на контрольные вопросы, записанные непосредственно в ноутбуке. Все графики должны иметь подписи осей с единицами измерения, заголовки и легенды. Ответы на вопросы следует давать в виде кратких, но полных выводов, опирающихся на полученные результаты и теорию, изложенную в лекциях.
+
+Автор надеется, что практикум поможет читателям почувствовать, как теоретические понятия цифровой обработки сигналов превращаются в работающие алгоритмы, и научиться выбирать подходящий инструмент для решения реальных задач.
+
+\chapter{Основы цифровой обработки сигналов: дискретизация, спектральный анализ, алиасинг}
+
+\section*{Краткие сведения}
+\addcontentsline{toc}{section}{Краткие сведения}
+
+\subsection*{1. Работа с GitHub и Google Colab}
+\addcontentsline{toc}{subsection}{1. Работа с GitHub и Google Colab}
+
+\subsubsection*{Форк учебного репозитория}
+\addcontentsline{toc}{subsubsection}{Форк учебного репозитория}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Зайдите на страницу репозитория курса (например, \texttt{https:\allowbreak{}/\allowbreak{}/\allowbreak{}github.\allowbreak{}com/\allowbreak{}korzhimanov/\allowbreak{}dsp-seminars}).
+\item
+  Нажмите кнопку \textbf{Fork} (справа вверху) -- создастся ваша копия репозитория.
+\end{enumerate}
+
+\subsubsection*{Создание своей ветки для редактирования}
+\addcontentsline{toc}{subsubsection}{Создание своей ветки для редактирования}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Зайдите на страницу скопированного к себе репозитория.
+\item
+  Нажмите кнопку \textbf{Branches} (над списком файлов) и затем \textbf{New branch} (слева вверху), назовите ветку своей фамилией.
+\end{enumerate}
+
+\subsubsection*{Открытие ноутбука в Colab}
+\addcontentsline{toc}{subsubsection}{Открытие ноутбука в Colab}
+
+\begin{itemize}
+\tightlist
+\item
+  Перейдите в свой форк, смените ветку на вашу, откройте нужный \texttt{.\allowbreak{}ipynb} файл.
+\item
+  В адресной строке замените \texttt{github.\allowbreak{}com} на \texttt{colab.\allowbreak{}research.\allowbreak{}google.\allowbreak{}com/\allowbreak{}github/\allowbreak{}} -- откроется ноутбук в Colab.
+\item
+  Подключите свой GitHub к Colab (если ещё нет)
+\item
+  Либо используйте прямой значок ``Open in Colab'' (если есть).
+\item
+  Либо зайдите в Colab, нажмите ``Открыть ноутбук'' в меню (\texttt{Ctrl+O}), найдите нужный репоизторий, смените ветку на вашу и откройте нужный файл
+\end{itemize}
+
+\subsubsection*{Сохранение результатов и создание Pull Request (PR)}
+\addcontentsline{toc}{subsubsection}{Сохранение результатов и создание Pull Request (PR)}
+
+После выполнения задания нужно сохранить изменения в своём форке и отправить PR в основной репозиторий.
+
+В Colab сохраните (\texttt{Ctrl+S}) ноутбук и заполните описание коммита.
+
+Зайдите на GitHub и создайте Pull Request из вашего форка в основной репозиторий (вкладка ``Pull requests'', кнопка ``New pull request'').
+
+\subsection*{2. Основные функции NumPy для создания векторов}
+\addcontentsline{toc}{subsection}{2. Основные функции NumPy для создания векторов}
+
+\begin{itemize}
+\item
+  \textbf{\texttt{np.\allowbreak{}linspace(\allowbreak{}start,\allowbreak{}\ stop,\allowbreak{}\ num)}} -- равномерно распределённые точки между start и stop (включая stop).
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+t = np.linspace(0, 1, 1000, endpoint=False)  # 1000 точек от 0 до 1
+\end{Verbatim}
+\item
+  \textbf{\texttt{np.\allowbreak{}arange(\allowbreak{}start,\allowbreak{}\ stop,\allowbreak{}\ step)}} -- точки с фиксированным шагом (stop не включается).
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+t = np.arange(0, 1, 0.001)   # шаг 0.001 с
+\end{Verbatim}
+\end{itemize}
+
+\subsection*{3. Генерация сигналов}
+\addcontentsline{toc}{subsection}{3. Генерация сигналов}
+
+\subsubsection*{Синусоида}
+\addcontentsline{toc}{subsubsection}{Синусоида}
+
+\[
+x(t) = A \sin(\omega t + \phi) = A \sin(2\pi f t + \phi)
+\]
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+f = 5          # частота, Гц
+A = 1          # амплитуда
+phi = 0        # начальная фаза (рад)
+x = A * np.sin(2 * np.pi * f * t + phi)
+\end{Verbatim}
+
+\subsubsection*{Меандр (прямоугольный сигнал)}
+\addcontentsline{toc}{subsubsection}{Меандр (прямоугольный сигнал)}
+
+Функция \texttt{signal.\allowbreak{}square} из scipy.signal:
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+f_meandr = 2
+meandr = signal.square(2 * np.pi * f_meandr * t)
+# Можно задать скважность параметром duty (по умолчанию 0.5 – 50%)
+\end{Verbatim}
+
+\subsection*{4. Построение графиков (matplotlib)}
+\addcontentsline{toc}{subsection}{4. Построение графиков (matplotlib)}
+
+\subsubsection*{Основные команды}
+\addcontentsline{toc}{subsubsection}{Основные команды}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\texttt{plt.\allowbreak{}plot(\allowbreak{}x,\allowbreak{}\ y)}} -- линейный график.
+\item
+  \textbf{\texttt{plt.\allowbreak{}stem(\allowbreak{}x,\allowbreak{}\ y)}} -- дискретные отсчёты (``палочки'').
+\item
+  \textbf{\texttt{plt.\allowbreak{}xlabel(\allowbreak{}),\allowbreak{}\ plt.\allowbreak{}ylabel(\allowbreak{}),\allowbreak{}\ plt.\allowbreak{}title(\allowbreak{})}} -- подписи.
+\item
+  \textbf{\texttt{plt.\allowbreak{}grid(\allowbreak{}True)}} -- сетка.
+\item
+  \textbf{\texttt{plt.\allowbreak{}legend(\allowbreak{})}} -- легенда (если указана метка в plot).
+\item
+  \textbf{\texttt{plt.\allowbreak{}xlim(\allowbreak{}),\allowbreak{}\ plt.\allowbreak{}ylim(\allowbreak{})}} -- пределы осей.
+\item
+  \textbf{\texttt{plt.\allowbreak{}show(\allowbreak{})}} -- отображение.
+  Пример:
+\end{itemize}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+plt.plot(t, x, label='сигнал')
+plt.stem(t[::20], x[::20], linefmt='r-', markerfmt='ro', basefmt=' ')  # каждый 20-й отсчёт
+plt.xlabel('Время (с)')
+plt.ylabel('Амплитуда')
+plt.title('Синусоида 5 Гц')
+plt.legend()
+plt.grid(True)
+plt.show()
+\end{Verbatim}
+
+\subsection*{5. Спектральный анализ с помощью БПФ (numpy.fft)}
+\addcontentsline{toc}{subsection}{5. Спектральный анализ с помощью БПФ (numpy.fft)}
+
+\subsubsection*{Вычисление спектра}
+\addcontentsline{toc}{subsubsection}{Вычисление спектра}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+N = len(x)                     # количество отсчётов
+X = np.fft.fft(x)              # комплексный спектр
+freq = np.fft.fftfreq(N, d=1/fs)  # частоты (в Гц) для всех отсчётов
+\end{Verbatim}
+
+\subsubsection*{Амплитудный спектр (для положительных частот)}
+\addcontentsline{toc}{subsubsection}{Амплитудный спектр (для положительных частот)}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+half = N // 2
+freq_pos = freq[:half]
+amplitude = np.abs(X[:half]) / half   # нормировка
+\end{Verbatim}
+
+\subsubsection*{Фазовый спектр}
+\addcontentsline{toc}{subsubsection}{Фазовый спектр}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+phase = np.angle(X[:half])      # фаза в радианах
+\end{Verbatim}
+
+\subsubsection*{Спектр через scipy (альтернатива)}
+\addcontentsline{toc}{subsubsection}{Спектр через scipy (альтернатива)}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+from scipy.fftpack import fft, fftfreq   # аналогично numpy
+\end{Verbatim}
+
+\subsection*{6. Интерактивные виджеты (ipywidgets)}
+\addcontentsline{toc}{subsection}{6. Интерактивные виджеты (ipywidgets)}
+
+Базовый приём -- декоратор \texttt{@interact} или функция \texttt{interact}.
+
+\subsubsection*{Пример интерактивного графика для демонстрации алиасинга}
+\addcontentsline{toc}{subsubsection}{Пример интерактивного графика для демонстрации алиасинга}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+import ipywidgets as widgets
+
+# Функция, которая строит график по значениям амплитуды и частоты
+def plot_sine(amplitude, frequency):
+    x = np.linspace(0, 2 * np.pi, 200)
+    y = amplitude * np.sin(frequency * x)
+    
+    plt.figure(figsize=(8, 4))
+    plt.plot(x, y, linewidth=2)
+    plt.title(f'Синусоида: амплитуда = {amplitude:.2f}, частота = {frequency:.2f}')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.grid(True)
+    plt.ylim(-2, 2)   # фиксируем пределы по Y
+    plt.show()
+
+# Создаём два FloatSlider явно
+amp_slider = widgets.FloatSlider(value=1.0, min=0.1, max=2.0, step=0.1, description='Амплитуда:')
+freq_slider = widgets.FloatSlider(value=1.0, min=0.5, max=5.0, step=0.1, description='Частота:')
+
+# Используем interact, передавая слайдеры как аргументы функции
+widgets.interact(plot_sine, amplitude=amp_slider, frequency=freq_slider)
+\end{Verbatim}
+
+\subsubsection*{Другие полезные виджеты}
+\addcontentsline{toc}{subsubsection}{Другие полезные виджеты}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{IntSlider}, \texttt{Dropdown}, \texttt{Checkbox} и т.д.
+\end{itemize}
+
+\subsection*{7. Полезные советы}
+\addcontentsline{toc}{subsection}{7. Полезные советы}
+
+\begin{itemize}
+\tightlist
+\item
+  Для нормировки амплитудного спектра делите модуль БПФ на половину длины (\texttt{N/\allowbreak{}/\allowbreak{}2}), если берёте только положительные частоты.
+\item
+  Используйте \texttt{.\allowbreak{}copy(\allowbreak{})} если нужно сохранить исходные данные перед изменением.
+\item
+  В Colab можно сохранять результаты на свой Google Drive через \texttt{drive.\allowbreak{}mount(\allowbreak{}\textquotesingle{}\allowbreak{}/\allowbreak{}content/\allowbreak{}drive\textquotesingle{}\allowbreak{})}.
+\end{itemize}
+
+\textbf{Необходимое ПО:}
+
+\begin{itemize}
+\tightlist
+\item
+  Python 3 с установленными пакетами \texttt{numpy}, \texttt{matplotlib}, \texttt{scipy}, \texttt{ipywidgets} (для интерактивных графиков).\\
+\item
+  Jupyter Notebook / Google Colab.
+\end{itemize}
+
+\textbf{Формат сдачи:}
+
+\begin{itemize}
+\tightlist
+\item
+  Один Jupyter Notebook с выполненными заданиями, содержащий код, графики и текстовые ответы на вопросы.\\
+\item
+  Имя файла: \texttt{1\_\allowbreak{}Фамилия.\allowbreak{}ipynb}.
+\end{itemize}
+
+\section*{Часть 1. Знакомство с инструментарием}
+\addcontentsline{toc}{section}{Часть 1. Знакомство с инструментарием}
+
+\subsection*{Задание 1.1. Импорт библиотек и создание временной оси}
+\addcontentsline{toc}{subsection}{Задание 1.1. Импорт библиотек и создание временной оси}
+
+Выполните в первой ячейке:
+Создайте временную ось для сигнала длительностью 1 секунду с частотой дискретизации 1000 Гц (т.е. 1000 отсчётов в секунду). Выведите длину массива времени и шаг дискретизации, проверьте, что они совпадают с ожидаемыми значениями.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs = 1000          # частота дискретизации, Гц
+T = 1              # длительность сигнала, с
+t = []  # временная ось
+
+print(f"Длина массива времени: {0} отсчётов")
+print(f"Шаг дискретизации (период): {0} с")
+\end{Verbatim}
+
+\textbf{Вопрос:} Чему равен период дискретизации \(T_s\)? Как связаны частота дискретизации \(f_s\) и период \(T_s\)?
+
+\subsection*{Задание 1.2. Генерация простых сигналов}
+\addcontentsline{toc}{subsection}{Задание 1.2. Генерация простых сигналов}
+
+Сгенерируйте и визуализируйте:
+
+\begin{itemize}
+\tightlist
+\item
+  Синусоидальный сигнал частотой 5 Гц, амплитудой 1.
+\item
+  Сумму двух синусоид с частотами 5 и 12 Гц и одинаковыми амплитудами.
+\item
+  Прямоугольный меандр частотой 2 Гц (используйте \texttt{signal.\allowbreak{}square}).
+\end{itemize}
+
+Для каждого сигнала постройте график временной зависимости (первые 0.5 секунды).
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Синусоида 5 Гц
+f1 = 5
+sin5 = []
+
+# Сумма синусоид 5 и 12 Гц
+f2 = 12
+sum_sin = []
+
+# Меандр 2 Гц
+meander = []
+
+# Визуализация
+plt.figure(figsize=(14, 4))
+
+plt.subplot(1, 3, 1)
+plt.plot([], [])  # первые 0.5 с
+plt.title('Синусоида 5 Гц')
+plt.xlabel('Время (с)')
+plt.ylabel('Амплитуда')
+plt.grid(True)
+
+plt.subplot(1, 3, 2)
+plt.plot([], [])
+plt.title('Сумма 5 Гц + 12 Гц')
+plt.xlabel('Время (с)')
+plt.grid(True)
+
+plt.subplot(1, 3, 3)
+plt.plot([], [])
+plt.title('Меандр 2 Гц')
+plt.xlabel('Время (с)')
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Изменится ли вид суммы синусоид, если одну из них сдвинуть по фазе на 90° (\(\pi/2\)), на 180° (\(\pi\)), на 360° (\(2\pi\))? (Проверьте на практике, изменив фазу второго сигнала). Объясните результат.
+
+\section*{Часть 2. Спектральный анализ с помощью БПФ}
+\addcontentsline{toc}{section}{Часть 2. Спектральный анализ с помощью БПФ}
+
+\subsection*{Задание 2.1. Спектр синусоиды}
+\addcontentsline{toc}{subsection}{Задание 2.1. Спектр синусоиды}
+
+Для синусоиды частотой 5 Гц вычислите БПФ (\texttt{np.\allowbreak{}fft.\allowbreak{}fft}). Постройте амплитудный спектр (модуль БПФ) для положительных частот. Не забудьте правильно нормировать амплитуды (поделить на количество отсчётов и учесть, что мы берём половину спектра). Частотную ось получите с помощью \texttt{np.\allowbreak{}fft.\allowbreak{}fftfreq}.
+
+Подпишите оси: частота (Гц), амплитуда.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# БПФ синусоиды 5 Гц
+X = []
+freq = []
+
+# Берём только положительные частоты
+half = len(t)//2
+X_mag = []  # не забываем про нормировку амплитуды
+freq_pos = [] # только положительные частоты
+
+plt.figure()
+plt.stem([0,], [0,], basefmt=" ")
+plt.title('Амплитудный спектр синусоиды 5 Гц')
+plt.xlabel('Частота (Гц)')
+plt.ylabel('Амплитуда')
+plt.xlim(0, 20)
+plt.grid(True)
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Почему в спектре присутствует только один пик? Какая должна быть его амплитуда теоретически? Совпадает ли с полученной?
+
+\subsection*{Задание 2.2. Спектр суммы синусоид}
+\addcontentsline{toc}{subsection}{Задание 2.2. Спектр суммы синусоид}
+
+Для суммы синусоид (5 и 12 Гц) постройте амплитудный спектр. Убедитесь, что видны два пика на ожидаемых частотах. Измерьте их амплитуды.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+X_sum = []
+X_sum_mag = []
+
+plt.figure()
+plt.stem([0,], [0,], basefmt=" ")
+plt.title('Спектр суммы 5 Гц и 12 Гц')
+plt.xlabel('Частота (Гц)')
+plt.ylabel('Амплитуда')
+plt.xlim(0, 20)
+plt.grid(True)
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Изменится ли амплитудный спектр, если фазы сигналов изменить? Проверьте, задав для одного из них случайную фазу.
+
+\subsection*{Задание 2.3. Спектр меандра}
+\addcontentsline{toc}{subsection}{Задание 2.3. Спектр меандра}
+
+Постройте амплитудный спектр меандра частотой 2 Гц. Сравните с теоретическим представлением: меандр состоит из нечётных гармоник с убывающими амплитудами \((1, 1/3, 1/5,\dots)\cdot 4/\pi\).
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+X_meander = []
+X_meander_mag = []
+
+plt.figure()
+plt.stem([0,], [0,], basefmt=" ")
+plt.title('Спектр меандра 2 Гц')
+plt.xlabel('Частота (Гц)')
+plt.ylabel('Амплитуда')
+plt.xlim(0, 30)
+plt.grid(True)
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Почему в спектре меандра присутствуют только нечётные гармоники? Покажите, что амплитуды гармоник совпадают с теоретическим значением.
+
+\section*{Часть 3. Дискретизация и алиасинг}
+\addcontentsline{toc}{section}{Часть 3. Дискретизация и алиасинг}
+
+\subsection*{Задание 3.1. Корректная и некорректная дискретизация}
+\addcontentsline{toc}{subsection}{Задание 3.1. Корректная и некорректная дискретизация}
+
+Создайте «аналоговый» сигнал --- синусоиду частотой 8 Гц, но с очень высокой частотой дискретизации (например, 1000 Гц), чтобы он выглядел гладким.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# «Аналоговый» сигнал с высокой частотой дискретизации
+fs_analog = 1000
+t_analog = []
+f_signal = 8
+analog_signal = []
+
+plt.figure(figsize=(12,5))
+plt.plot([], [], 'b-', alpha=0.3, label='Исходный сигнал (8 Гц)')
+plt.xlabel('Время (с)')
+plt.ylabel('Амплитуда')
+plt.title('Исходный сигнал (8 Гц)')
+plt.legend()
+plt.grid(True)
+plt.xlim(0, 0.5)
+plt.show()
+\end{Verbatim}
+
+Теперь выполните его дискретизацию с двумя разными частотами:
+
+\begin{itemize}
+\tightlist
+\item
+  \(f_{s1} = 50\) Гц (заведомо больше удвоенной частоты сигнала, 2·8=16 Гц);
+\item
+  \(f_{s2} = 12\) Гц (меньше 16 Гц).
+\end{itemize}
+
+Для этого создайте новые временные оси с шагом \(1/f_{s1}\) и \(1/f_{s2}\) и вычислите значения синусоиды в этих точках.
+
+На одном графике изобразите:
+
+\begin{itemize}
+\tightlist
+\item
+  исходный гладкий сигнал (тонкая линия);
+\item
+  отсчёты при корректной дискретизации (маркеры);
+\item
+  отсчёты при алиасинге (маркеры другого цвета).
+\end{itemize}
+
+Также постройте сигнал, который «воспринимается» после дискретизации с малой частотой.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Частоты дискретизации для эксперимента
+fs1 = 50
+fs2 = 12
+
+# Отсчёты при корректной дискретизации
+t1 = []
+samples1 = []
+
+# Отсчёты при некорректной дискретизации (алиасинг)
+t2 = []
+samples2 = []
+
+plt.figure(figsize=(12,5))
+plt.plot([], [], 'b-', alpha=0.3, label='Исходный сигнал (8 Гц)')
+plt.stem([0,], [0,], linefmt='g-', markerfmt='go', basefmt=' ', label=f'Отсчёты fs={fs1} Гц')
+plt.stem([0,], [0,], linefmt='r-', markerfmt='ro', basefmt=' ', label=f'Отсчёты fs={fs2} Гц')
+plt.plot([], [], 'm--', label='Восстановленный сигнал (по fs2)')
+plt.xlabel('Время (с)')
+plt.ylabel('Амплитуда')
+plt.title('Сравнение корректной и некорректной дискретизации')
+plt.legend()
+plt.grid(True)
+plt.xlim(0, 0.5)
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Какая частота «кажется» присутствующей в сигнале при \(f_{s2}=12\) Гц? Совпадает ли она с предсказанной теоретически? (Подсказка: формула алиасинга \(f_{alias} = |f - k f_s|\), выберите \(k\) так, чтобы \(f_{alias}\) лежала в интервале \([0, f_s/2]\).)
+
+\subsection*{Задание 3.2. Интерактивная демонстрация алиасинга}
+\addcontentsline{toc}{subsection}{Задание 3.2. Интерактивная демонстрация алиасинга}
+
+Используя \texttt{ipywidgets.\allowbreak{}interact}, создайте интерактивный график, где можно менять частоту сигнала и частоту дискретизации ползунками, и сразу видеть исходный сигнал, отсчёты и восстановленный сигнал. Пример такого кода был на лекции.
+
+Добейтесь, чтобы при нарушении условия Найквиста явно проявлялся алиасинг (восстановленный сигнал имел более низкую частоту, чем исходный).
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+def plot_aliasing(f_signal, f_sampling):
+
+    plt.figure(figsize=(12,4))
+    plt.plot()
+    plt.xlabel('Время (с)')
+    plt.ylabel('Амплитуда')
+    plt.title(f'Частота сигнала = {f_signal} Гц, fs = {f_sampling} Гц')
+    plt.legend()
+    plt.grid(True)
+    plt.xlim(0, 0.5)
+    plt.show()
+
+widgets.interact(plot_aliasing,
+         f_signal=widgets.FloatSlider(min=, max=, step=, value=),
+         f_sampling=widgets.FloatSlider(min=, max=, step=, value=));
+\end{Verbatim}
+
+\textbf{Вопрос:} При каких соотношениях частоты сигнала и частоты дискретизации алиасинг наиболее заметен? Что происходит, когда частота сигнала в точности равна половине частоты дискретизации?
+
+
+\chapter{Амплитудная и фазовая модуляция}
+
+\section*{Краткие сведения}
+\addcontentsline{toc}{section}{Краткие сведения}
+
+\subsection*{1. Амплитудная модуляция (АМ)}
+\addcontentsline{toc}{subsection}{1. Амплитудная модуляция (АМ)}
+
+\textbf{Формула АМ-сигнала:}
+\[
+s_{AM}(t) = A_c \bigl[1 + a_m\cdot m(t)\bigr] \cos(2\pi f_c t)
+\]
+где:
+
+\begin{itemize}
+\tightlist
+\item
+  \(A_c\) -- амплитуда несущей,
+\item
+  \(f_c\) -- частота несущей,
+\item
+  \(m(t)\) -- модулирующий сигнал (сообщение), \textbf{нормированный} так, чтобы \(\max |m(t)| = 1\),
+\item
+  \(a_m\) -- глубина (амплитуда) модуляции.
+\end{itemize}
+
+\textbf{Пример генерации в Python:}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+fs = 10000          # частота дискретизации
+t = np.linspace(0, 0.1, int(fs*0.1), endpoint=False)
+fc = 1000           # несущая
+fm = 100            # частота сообщения
+a_m = 0.8           # амплитуда модуляции
+m_t = np.sin(2*np.pi*fm*t)   # сообщение
+s_am = (1 + a_m*m_t) * np.cos(2*np.pi*fc*t)
+\end{Verbatim}
+
+\subsection*{2. Фазовая модуляция (ФМ)}
+\addcontentsline{toc}{subsection}{2. Фазовая модуляция (ФМ)}
+
+\textbf{Формула ФМ-сигнала:}
+\[
+s_{PM}(t) = A_c \cos\bigl(2\pi f_c t + \beta\, m(t)\bigr)
+\]
+где \(\beta\) -- \textbf{индекс фазовой модуляции} (максимальное отклонение фазы в радианах).
+
+\textbf{Пример генерации:}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+beta = 5
+s_pm = np.cos(2*np.pi*fc*t + beta * m_t)
+\end{Verbatim}
+
+\subsection*{3. Преобразование Гильберта и демодуляция}
+\addcontentsline{toc}{subsection}{3. Преобразование Гильберта и демодуляция}
+
+\subsubsection*{Аналитический сигнал}
+\addcontentsline{toc}{subsubsection}{Аналитический сигнал}
+
+Для демодуляции АМ и ФМ сигналов будем использовать так называемый аналитический сигнал, у которого действительная часть -- исходный сигнал, а мнимая -- его преобразование Гильберта:
+\[
+\mathcal{H}[x](t) = \frac{1}{\pi} \,\text{p.v.} \int_{-\infty}^{\infty} \frac{x(\tau)}{t - \tau} \, d\tau
+\]
+
+где p.v. --- главное значение интеграла по Коши.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+from scipy.signal import hilbert
+z = hilbert(s)               # аналитический сигнал
+\end{Verbatim}
+
+Аналитический сигнал позволяет извлечь огибающую и мгновенную фазу исходного сигнала:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Огибающая} (envelope) -- модуль аналитического сигнала: \texttt{envelope\ =\allowbreak{}\ np.\allowbreak{}abs(\allowbreak{}z)}
+\item
+  \textbf{Мгновенная фаза} -- аргумент: \texttt{phase\ =\allowbreak{}\ np.\allowbreak{}angle(\allowbreak{}z)} (значения от \(-\pi\) до \(\pi\))
+\end{itemize}
+
+\subsubsection*{Демодуляция АМ}
+\addcontentsline{toc}{subsubsection}{Демодуляция АМ}
+
+Для АМ огибающая равна \(A_c[1 + m(t)]\). Чтобы восстановить \(m(t)\):
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+envelope = np.abs(hilbert(s_am))
+m_recovered = envelope / Ac - 1   # если Ac=1, то просто envelope - 1
+\end{Verbatim}
+
+\subsubsection*{Демодуляция ФМ}
+\addcontentsline{toc}{subsubsection}{Демодуляция ФМ}
+
+Мгновенная фаза содержит линейный тренд \(2\pi f_c t\) плюс полезное отклонение \(\beta m(t)\). Нужно:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Получить мгновенную фазу и устранить скачки (unwrap).
+\item
+  Вычесть линейную составляющую.
+\item
+  Разделить на \(\beta\).
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+z = hilbert(s_pm)
+phase = np.unwrap(np.angle(z))               # развёрнутая фаза
+phase_no_carrier = phase - 2*np.pi*fc*t       # убираем тренд несущей
+m_recovered = phase_no_carrier / beta
+\end{Verbatim}
+
+\textbf{Важно:} без \texttt{np.\allowbreak{}unwrap} скачки фазы на \(\pm\pi\) приведут к ложным выбросам.
+
+\subsection*{\texorpdfstring{4. Функция \texttt{np.\allowbreak{}unwrap} -- корректировка фазы}{4. Функция np.unwrap -- корректировка фазы}}
+\addcontentsline{toc}{subsection}{4. Функция \texttt{np.\allowbreak{}unwrap} -- корректировка фазы}
+
+При вычислении фазы через \texttt{np.\allowbreak{}angle} результат лежит в пределах \([-\pi, \pi]\). Если истинная фаза пересекает эти границы, возникают скачки на \(2\pi\). \texttt{np.\allowbreak{}unwrap} добавляет или вычитает \(2\pi\) в местах скачков, восстанавливая непрерывную фазу.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+phase_wrapped = np.angle(z)
+phase_unwrapped = np.unwrap(phase_wrapped)
+\end{Verbatim}
+
+\subsection*{\texorpdfstring{5. Функция \texttt{np.\allowbreak{}std} для сравнения сигналов}{5. Функция np.std для сравнения сигналов}}
+\addcontentsline{toc}{subsection}{5. Функция \texttt{np.\allowbreak{}std} для сравнения сигналов}
+
+Для количественной оценки ошибки между исходным сообщением \(m(t)\) и восстановленным \(\hat{m}(t)\) используют среднеквадратичное отклонение (СКО, Root Mean Square Error, RMSE):
+\[
+\text{СКО} = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (x_i - y_i)^2}
+\]
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+error = np.std(m_original - m_recovered)
+print(f'СКО = {error:.4f}')
+\end{Verbatim}
+
+Чем меньше значение СКО, тем точнее восстановление.
+
+\subsection*{6. Работа с WAV-файлами}
+\addcontentsline{toc}{subsection}{6. Работа с WAV-файлами}
+
+\textbf{Чтение файла:}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+from scipy.io import wavfile
+rate, data = wavfile.read('filename.wav')
+\end{Verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{rate} -- частота дискретизации (Гц)
+\item
+  \texttt{data} -- массив целых чисел. Форма:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    моно: \texttt{(\allowbreak{}N,\allowbreak{})}
+  \item
+    стерео: \texttt{(\allowbreak{}N,\allowbreak{}\ 2)} (левый и правый каналы)
+    Для монофонической обработки возьмите один канал: \texttt{data\ =\allowbreak{}\ data{[}:\allowbreak{},\allowbreak{}\ 0{]}} (если стерео).
+  \end{itemize}
+\end{itemize}
+
+\textbf{Прослушивание в Jupyter/Colab:}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+from IPython.display import Audio
+Audio(data_float, rate=rate)
+\end{Verbatim}
+
+\subsection*{7. Амплитудный шум (генерация)}
+\addcontentsline{toc}{subsection}{7. Амплитудный шум (генерация)}
+
+Для моделирования амплитудных помех удобно использовать \textbf{мультипликативный шум}: случайные флуктуации амплитуды несущей.
+
+\[
+y(t) = x(t) \cdot (1 + n(t))
+\]
+где \(n(t)\) --- шумовой (случайный) процесс, причём \(\langle n(t)\rangle = 0\).
+
+\textbf{Генерация шума с помощью \texttt{np.\allowbreak{}random.\allowbreak{}randn}:}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+noise = np.random.randn(N)          # возвращает N случайных величины в интервале (0, 1), распределённых по Гауссу
+noise_scaled = amplitude_noise * noise   # задаём уровень
+s_noisy = s * (1 + noise_scaled)    # мультипликативный шум
+\end{Verbatim}
+
+Здесь \texttt{amplitude\_\allowbreak{}noise} -- относительный уровень шума (например, 0.2 означает ±20\% флуктуации).
+
+\subsection*{8. Полезные советы}
+\addcontentsline{toc}{subsection}{8. Полезные советы}
+
+\begin{itemize}
+\tightlist
+\item
+  Всегда проверяйте, что модулирующий сигнал находится в диапазоне {[}-1, 1{]}.
+\item
+  При использовании \texttt{hilbert} надо помнить о краевых эффектах -- лучше брать сигнал достаточной длины и отбрасывать края при оценке точности.
+\item
+  Для построения спектров можно использовать \texttt{np.\allowbreak{}fft.\allowbreak{}rfft} (односторонний спектр)
+\item
+  При сравнении сигналов и их спектров не забывайте про нормировку.
+\end{itemize}
+
+\section*{Часть 1. Генерация и визуализация модулированных сигналов}
+\addcontentsline{toc}{section}{Часть 1. Генерация и визуализация модулированных сигналов}
+
+\subsubsection*{Импорт библиотек и параметры}
+\addcontentsline{toc}{subsubsection}{Импорт библиотек и параметры}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import signal
+from scipy.io import wavfile
+from scipy.signal import hilbert
+import ipywidgets as widgets
+from IPython.display import Audio, display
+
+%matplotlib inline
+plt.rcParams['figure.figsize'] = (12, 5)
+
+# Параметры дискретизации для демонстрации
+fs = 10000                     # частота дискретизации (Гц)
+T = 0.1                        # длительность сигнала (с)
+t = np.linspace(0, T, int(fs*T), endpoint=False)
+
+# Несущая
+fc = 1000                      # частота несущей (Гц)
+Ac = 1.0                       # амплитуда несущей
+\end{Verbatim}
+
+\subsubsection*{Модулирующий сигнал}
+\addcontentsline{toc}{subsubsection}{Модулирующий сигнал}
+
+В качестве модулирующего сигнала используйте сумму двух синусоид с частотами 100 Гц и 150 Гц, нормализованную к диапазону {[}-1, 1{]}. Постройте его график.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fm1 = 100
+fm2 = 150
+m_t = [] # модулирующий сигнал - сумма двух синусоид со значениями в интервале [-1,1]
+
+plt.figure()
+plt.plot(t, m_t)
+plt.title('Модулирующий сигнал (100 Гц + 200 Гц)')
+plt.xlabel('Время (с)')
+plt.ylabel('Амплитуда')
+plt.grid(True)
+plt.show()
+\end{Verbatim}
+
+\subsubsection*{Амплитудная модуляция (АМ)}
+\addcontentsline{toc}{subsubsection}{Амплитудная модуляция (АМ)}
+
+Формула АМ:
+\[s_{AM}(t) = A_c [1 + a_{AM}\cdot m(t)] \cos(2\pi f_c t)
+\]
+Параметр \(a_{AM}\) регулирует \emph{глубину модуляции}, он не может быть больше 1 (при \(a_{AM}>1\) и исходном сигнале \(m(t)\), нормализованном на единицу, амплитуда результирующего сигнала в некоторые промежутки времени становится отрицательной).
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+a_am = 0.2
+s_am = []
+\end{Verbatim}
+
+\subsubsection*{Фазовая модуляция (ФМ)}
+\addcontentsline{toc}{subsubsection}{Фазовая модуляция (ФМ)}
+
+Формула ФМ:
+\[
+s_{PM}(t) = A_c \cos(2\pi f_c t + \beta \cdot m(t)),
+\]
+
+где \(\beta\) -- индекс фазовой модуляции.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+beta_pm = 5
+s_pm = []
+\end{Verbatim}
+
+\subsection*{Задание 1.1}
+\addcontentsline{toc}{subsection}{Задание 1.1}
+
+Постройте на одном графике модулирующий сигнал и оба модулированных сигнала (АМ, ФМ). Оси и графики должны быть подписаны.
+
+\section*{Часть 2. Спектральный анализ модулированных сигналов}
+\addcontentsline{toc}{section}{Часть 2. Спектральный анализ модулированных сигналов}
+
+\subsection*{Задание 2.1. Функция построения амплитудного спектра}
+\addcontentsline{toc}{subsection}{Задание 2.1. Функция построения амплитудного спектра}
+
+Реализуйте функцию построения амплитудного спектра \texttt{plot\_\allowbreak{}spectrum(\allowbreak{}s,\allowbreak{}fs,\allowbreak{}title)}
+Значения аргументов:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{s} - массив, содержащий значения сигнала
+\item
+  \texttt{fs} - частота отсчётов сигнала
+\item
+  \texttt{title} - заголовок графика, выводимый сверху
+\end{itemize}
+
+На графике по горизонтальной оси должна быть отложена частота в герцах, а по вертикальной - амплитуда гармоники. График должен строиться только для положительных значений частоты. Оси должны быть подписаны.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+def plot_spectrum(s, fs, title):
+  # ваш код здесь
+\end{Verbatim}
+
+\subsubsection*{Спектр АМ}
+\addcontentsline{toc}{subsubsection}{Спектр АМ}
+
+Постройте спектр амплитудно-модулированного сигнала
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+plot_spectrum(s_am, fs, 'АМ спектр (a_am = {a_am} по глубине)')
+\end{Verbatim}
+
+\subsection*{Задание 2.2. Спектр ФМ при разных индексах модуляции}
+\addcontentsline{toc}{subsection}{Задание 2.2. Спектр ФМ при разных индексах модуляции}
+
+Постройте спектр фазово-модулированного сигнала
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+plot_spectrum(s_pm, fs, f'ФМ спектр (β = {beta_pm})')
+\end{Verbatim}
+
+Постройте на одном графике спектры для разных индексов модуляции (например, β = 0.1, 0.3, 1, 2, 5, 10). Оси и графики должны быть подписаны.
+
+\subsection*{Задание 2.3. Интерактивное исследование спектра ФМ}
+\addcontentsline{toc}{subsection}{Задание 2.3. Интерактивное исследование спектра ФМ}
+
+Создайте интерактивный график для исследования зависимости спектра ФМ-сигнала от индекса модуляции.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+def pm_spectrum(beta=5):
+  # ваш код здесь
+
+widgets.interact(pm_spectrum, beta=widgets.FloatSlider(min=0.1, max=20, step=0.1, value=5));
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Почему спектр АМ содержит только пять ярко выраженных компоненты (несущая и по две боковых с каждой стороны от неё)?
+\item
+  Опишите, как выглядит спектр ФМ при малых β?
+\item
+  Что происходит с амплитудой несущей и боковыми полосами ФМ при увеличении β?
+\end{itemize}
+
+\section*{Часть 3. Демодуляция сигналов}
+\addcontentsline{toc}{section}{Часть 3. Демодуляция сигналов}
+
+\subsection*{Задание 3.1. Демодуляция АМ с помощью преобразования Гильберта}
+\addcontentsline{toc}{subsection}{Задание 3.1. Демодуляция АМ с помощью преобразования Гильберта}
+
+Преобразование Гильберта позволяет получить аналитический сигнал, огибающая которого содержит исходное сообщение.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Аналитический сигнал для АМ
+analytic_am = hilbert(s_am)
+envelope = np.abs(analytic_am) # огибающая = 1 + m(t)
+
+# Убираем постоянную составляющую
+demod_am = envelope - 1
+
+# Нормализуем сигнал
+demod_am = demod_am/a_am
+
+# Сравнение с исходным
+plt.figure()
+plt.plot(t, m_t, label='Исходное сообщение')
+plt.plot(t, demod_am, '--', label='Демодулированное (АМ)')
+plt.xlabel('Время (с)')
+plt.ylabel('Амплитуда')
+plt.title('Демодуляция АМ сигнала')
+plt.legend()
+plt.grid(True)
+plt.show()
+\end{Verbatim}
+
+Вычислите среднеквадратичную ошибку между исходным и восстановленным сообщением с помощью функции \texttt{np.\allowbreak{}std}.
+
+\subsubsection*{Демодуляция ФМ сигнала}
+\addcontentsline{toc}{subsubsection}{Демодуляция ФМ сигнала}
+
+Для ФМ информация заключена в отклонении фазы от линейного тренда. Используем аналитический сигнал и выделим мгновенную фазу.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Аналитический сигнал для ФМ
+analytic_pm = hilbert(s_pm)
+inst_phase = np.unwrap(np.angle(analytic_pm))   # развернутая фаза
+
+# Убираем линейную составляющую (фаза несущей)
+phase_no_carrier = inst_phase - 2 * np.pi * fc * t
+
+# Убираем постоянную составляющую (может появиться в общем случае при наличии шумов, искажений и т. п.)
+demod_pm = phase_no_carrier - np.mean(phase_no_carrier)
+
+# Нормализуем сигнал
+demod_pm = demod_pm / beta_pm
+
+# Сравнение с исходным
+plt.figure()
+plt.plot(t, m_t, label='Исходное сообщение')
+plt.plot(t, demod_pm, '--', label='Демодулированное (ФМ)')
+plt.xlabel('Время (с)')
+plt.ylabel('Амплитуда')
+plt.title('Демодуляция ФМ сигнала')
+plt.legend()
+plt.grid(True)
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Почему важно использовать \texttt{np.\allowbreak{}unwrap} для фазы?
+
+\section*{Часть 4. Устойчивость к шумам}
+\addcontentsline{toc}{section}{Часть 4. Устойчивость к шумам}
+
+В этой части мы работаем с реальным аудиофайлом. Для примера WAV-файл расположен в том же репозитории, что и ноутбук по адресу \texttt{data/\allowbreak{}sample-3s.\allowbreak{}wav}, но его надо загрузить в Google Colab.
+
+\subsubsection*{Загрузка аудио}
+\addcontentsline{toc}{subsubsection}{Загрузка аудио}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Загружаем файл и сохраняем под именем audio.wav
+!wget -O audio.wav "https://github.com/korzhimanov/dsp-seminars/raw/refs/heads/main/data/sample-3s.wav"
+\end{Verbatim}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs_audio, melody_stereo = wavfile.read('audio.wav') # читаем wav-файл в массив numpy, в файл записан стереосигнал, поэтому melody_stereo будет содержать две дорожки (левую и правую)
+
+melody = melody_stereo[:,0] # переходим к моносигналу, беря только одну из двух дорожек
+melody = melody / np.max(np.abs(melody)) # нормализуем сигнал, чтобы корректно работала амплитудная модуляция
+
+t_audio = np.linspace(0, melody.shape[0]/fs_audio, melody.shape[0], endpoint=False) # для визуализации создаём также массив временных отсчётов
+
+print(f"Частота дискретизации: {fs_audio} Гц")
+print(f"Длина временного ряда: {len(melody)}")
+print(f"Тип данных: {melody.dtype}")
+
+print("Исходное аудио:")
+display(Audio(melody, rate=fs_audio))
+\end{Verbatim}
+
+\subsection*{Задание 4.1. Осциллограмма и спектр сигнала}
+\addcontentsline{toc}{subsection}{Задание 4.1. Осциллограмма и спектр сигнала}
+
+Постройте графики самого сигнала и его спектра. Подпишите оси.
+\textbf{Вопрос:} До каких частот наблюдаются заметные пики в сигнале? Подумайте, какую частоту несущей можно выбрать при частоте дискретизации 44,1 кГц, чтобы эти пики не потерять. Как на это влияет выбор индекса модуляции ФМ-сигнала?
+
+\subsection*{Задание 4.2. Подготовка к модуляции (интерполяция)}
+\addcontentsline{toc}{subsection}{Задание 4.2. Подготовка к модуляции (интерполяция)}
+
+Выберите частоту несущей в соответствии с ответом на предыдущий вопрос (если восстановленный сигнал будет сильно зашумлён, попробуйте другие значения).
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fc_high = 5000 # несущая 5 кГц
+Ac = 1
+\end{Verbatim}
+
+\subsubsection*{Модуляция аудиосигнала}
+\addcontentsline{toc}{subsubsection}{Модуляция аудиосигнала}
+
+Сгенерируйте модулированные сигналы. Индекс модуляции для ФМ-сигнала выберите так, чтобы несильно портить модулируемый сигнал.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# АМ
+a_am = 0.2
+s_am_audio = Ac * (1 + a_am * melody) * np.cos(2 * np.pi * fc_high * t_audio)
+
+# ФМ
+beta_pm_audio = 2
+s_pm_audio = Ac * np.cos(2 * np.pi * fc_high * t_audio + beta_pm_audio * melody)
+\end{Verbatim}
+
+\subsubsection*{Добавление шумов}
+\addcontentsline{toc}{subsubsection}{Добавление шумов}
+
+\textbf{Амплитудный шум:} мультипликативный гауссов шум.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+noise_amp = 0.1 * np.random.randn(len(t_audio))
+s_am_noisy = s_am_audio * (1 + noise_amp)
+s_pm_noisy = s_pm_audio * (1 + noise_amp)
+\end{Verbatim}
+
+\subsection*{Задание 4.3. Демодуляция сигналов}
+\addcontentsline{toc}{subsection}{Задание 4.3. Демодуляция сигналов}
+
+\textbf{Демодуляция АМ:}
+
+Используйте преобразование Гильберта, чтобы демодулировать АМ-сигнал без шума, убедитесь, что качество звука изменилось незначительно.
+Демодулируйте зашумлёный АМ-сигнал.
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Изменилось ли качество звука?
+\item
+  Зафиксируйте \(a_{AM}=0{,}2\). Попробуйте поменять амплитуду шума. При каких значениях амплитуды вы слышите заметную разницу с оригиналом?
+\item
+  Зафиксируйте амплитуду шума равную 0,01. Попробуйте поменять \(a_{AM}\), при каких амплитудах модуляции начинаются заметные искажения? Сделайте вывод о соотношении \(a_{AM}\) и допустимых уровнях шума.
+  \textbf{Демодуляция ФМ:}
+\end{itemize}
+
+Используйте метод аналитического сигнала для демодуляции ФМ-сигнала. Убедитесь, что качество звука изменилось незначительно.
+Демодулируйте зашумлёный ФМ-сигнал.
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Изменилось ли качество звука?
+\item
+  Зафиксируйте \(\beta=2\). Попробуйте поменять амплитуду шума. При каких значениях амплитуды вы слышите заметную разницу с оригиналом?
+\item
+  Зафиксируйте амплитуду шума равную 0,1. Попробуйте поменять \(\beta\). Как субъективная величина искажений зависит от \(\beta\)?
+\end{itemize}
+
+\subsection*{Задание 4.4. Сравнение спектров}
+\addcontentsline{toc}{subsection}{Задание 4.4. Сравнение спектров}
+
+Выберите значение амплитуды шума и величин \(a_{AM}\) и \(\beta\) так, чтобы искажения были заметны, но не велики. Постройте спектры исходного сигнала и сигналов, восстановлённых из зашумлённых АМ и ФМ-сигналов.
+\textbf{Вопрос:}
+
+\begin{itemize}
+\tightlist
+\item
+  Заметны ли визуально искажения спектров для случаев АМ и ФМ?
+  Постройте спектры АМ и ФМ сигналов. Зафиксируйте \(\beta=2\), подберите \(a_{AM}\) так, чтобы амплитуды гармоник в обоих случаях были сравнимы по величине.
+  \textbf{Вопрос:}
+\item
+  При какой амплитуде шума в этом случае вы слышите заметные искажения АМ сигнала? А ФМ сигнала? Сделайте вывод.
+\end{itemize}
+
+
+\chapter{Свёртка, корреляция и Z-преобразование}
+
+\section*{Краткие сведения}
+\addcontentsline{toc}{section}{Краткие сведения}
+
+\subsection*{1. Функции Python для свёртки и корреляции}
+\addcontentsline{toc}{subsection}{1. Функции Python для свёртки и корреляции}
+
+\subsubsection*{\texorpdfstring{\texttt{np.\allowbreak{}convolve(\allowbreak{}x,\allowbreak{}\ h,\allowbreak{}\ mode)}}{np.convolve(x, h, mode)}}
+\addcontentsline{toc}{subsubsection}{\texttt{np.\allowbreak{}convolve(\allowbreak{}x,\allowbreak{}\ h,\allowbreak{}\ mode)}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}full\textquotesingle{}\allowbreak{}} -- полная линейная свёртка (длина \(N_x+N_h-1\)).
+\item
+  \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}same\textquotesingle{}\allowbreak{}} -- центральная часть той же длины, что и \(x\).
+\item
+  \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}valid\textquotesingle{}\allowbreak{}} -- только те точки, где ядро полностью перекрывается с сигналом.
+\end{itemize}
+
+\subsubsection*{\texorpdfstring{\texttt{np.\allowbreak{}correlate(\allowbreak{}x,\allowbreak{}\ y,\allowbreak{}\ mode)}}{np.correlate(x, y, mode)}}
+\addcontentsline{toc}{subsubsection}{\texttt{np.\allowbreak{}correlate(\allowbreak{}x,\allowbreak{}\ y,\allowbreak{}\ mode)}}
+
+Аналогичные режимы. При \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}full\textquotesingle{}\allowbreak{}} результат имеет длину \(N_x+N_y-1\). Индекс 0 соответствует полному перекрытию сигналов.
+
+Для получения сдвига, при котором достигается максимум корреляции, используется формула:
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+corr = np.correlate(x, y, mode='full')
+delay = np.argmax(corr) - (len(x) - 1)
+\end{Verbatim}
+
+\subsection*{2. Гауссовы окна и их свёртка}
+\addcontentsline{toc}{subsection}{2. Гауссовы окна и их свёртка}
+
+Гауссово окно можно сгенерировать с помощью \texttt{scipy.\allowbreak{}signal.\allowbreak{}windows.\allowbreak{}gaussian(\allowbreak{}M,\allowbreak{}\ std)}.
+
+\textbf{Аналитическое свойство:} свёртка двух гауссовых функций с дисперсиями \(\sigma_1^2\) и \(\sigma_2^2\) даёт гауссову функцию с дисперсией \(\sigma_1^2+\sigma_2^2\):
+\[
+(f_{\sigma_1} * f_{\sigma_2})(t) = f_{\sqrt{\sigma_1^2+\sigma_2^2}}(t).
+\]
+Это свойство используется в задании 1 для сравнения численного результата с теоретическим.
+
+\subsection*{3. Фильтрация с помощью свёртки}
+\addcontentsline{toc}{subsection}{3. Фильтрация с помощью свёртки}
+
+\textbf{Прямоугольное окно (усреднение):}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+h_rect = signal.windows.boxcar(L)/L
+\end{Verbatim}
+
+Простое скользящее среднее.
+
+\textbf{Гауссовское окно:}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+h_gauss = signal.windows.gaussian(L, std)
+h_gauss = h_gauss / np.sum(h_gauss)  # нормализация
+\end{Verbatim}
+
+\subsection*{4. Поиск временной задержки с помощью кросс-корреляции}
+\addcontentsline{toc}{subsection}{4. Поиск временной задержки с помощью кросс-корреляции}
+
+\textbf{Идея:} если \(y[n] = x[n-d] + \text{шум}\), то кросс-корреляция \(R_{xy}[m]\) имеет максимум при \(m = d\).
+
+\textbf{Алгоритм:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Вычислить \texttt{corr\ =\allowbreak{}\ np.\allowbreak{}correlate(\allowbreak{}x,\allowbreak{}\ y,\allowbreak{}\ mode=\allowbreak{}\textquotesingle{}\allowbreak{}full\textquotesingle{}\allowbreak{})}.
+\item
+  Найти индекс максимума: \texttt{idx\ =\allowbreak{}\ np.\allowbreak{}argmax(\allowbreak{}corr)}.
+\item
+  Задержка = \texttt{idx\ -\ (\allowbreak{}len(\allowbreak{}x)-1)}.
+\end{enumerate}
+
+\subsection*{5. Обнаружение шаблона в зашумлённом сигнале}
+\addcontentsline{toc}{subsection}{5. Обнаружение шаблона в зашумлённом сигнале}
+
+\textbf{Задача:} найти в длинном сигнале позицию, где содержится известный короткий шаблон.
+
+\textbf{Метод:}
+
+\begin{itemize}
+\tightlist
+\item
+  Вычислить кросс-корреляцию между длинным сигналом и шаблоном (удобно использовать \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}valid\textquotesingle{}\allowbreak{}}, чтобы избежать краевых эффектов).
+\item
+  Пик корреляции указывает на позицию совпадения.
+\end{itemize}
+
+\textbf{Согласованный фильтр.} Для обнаружения известного сигнала \(s[n]\) в белом шуме с дисперсией \(\sigma^2\) оптимален фильтр с импульсной характеристикой \(h[n] = s[n_0 - n]\) -- это и есть корреляция с шаблоном. Максимальное отношение сигнал/шум на выходе равно \(E_s/\sigma^2\), где \(E_s = \sum s^2[n]\). Если разделить результат корреляции на \(\sigma\sqrt{E_s}\), шум на выходе будет иметь единичную дисперсию, а пик -- высоту \(A\sqrt{E_s}/\sigma\).
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+corr = np.correlate(long_signal, template, mode='valid') / np.sqrt(np.sum(template**2))
+\end{Verbatim}
+
+\subsection*{6. Работа с аудио в Python}
+\addcontentsline{toc}{subsection}{6. Работа с аудио в Python}
+
+\textbf{Чтение WAV-файла:}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+from scipy.io import wavfile
+rate, data = wavfile.read('file.wav')
+\end{Verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{rate} -- частота дискретизации (Гц).
+\item
+  \texttt{data} -- массив целых чисел. Для стерео форма \texttt{(\allowbreak{}N,\allowbreak{}\ 2)}.
+\end{itemize}
+
+\textbf{Нормализация в диапазон {[}-1, 1{]} (для 16-битного аудио):}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+data = data / 32767.0
+\end{Verbatim}
+
+\textbf{Прослушивание в Jupyter/Colab:}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+from IPython.display import Audio
+Audio(data, rate=rate)
+\end{Verbatim}
+
+\textbf{Поиск фрагмента:}
+
+\begin{itemize}
+\tightlist
+\item
+  Вычислить кросс-корреляцию между полным сигналом и фрагментом.
+\item
+  Найти индекс максимума.
+\item
+  Вырезать соответствующий участок и убедиться в совпадении (визуально и на слух).
+\end{itemize}
+
+\subsection*{7. Нормированная корреляция}
+\addcontentsline{toc}{subsection}{7. Нормированная корреляция}
+
+Коэффициент корреляции не зависит от амплитуд сигналов и лежит в диапазоне \([-1, 1]\):
+\[
+\rho_{xy}[m] = \frac{R_{xy}[m]}{\sqrt{R_{xx}[0]\,R_{yy}[0]}}.
+\]
+При поиске короткого фрагмента \(s\) длины \(L\) в длинной записи \(x\) нормируют на энергию \textbf{текущего участка} записи:
+\[
+\rho[m] = \frac{\sum_{n=0}^{L-1} s[n]\,x[n+m]}{\sqrt{E_s \cdot E_x[m]}}, \qquad E_x[m] = \sum_{n=0}^{L-1} x^2[n+m].
+\]
+Энергию всех участков удобно вычислить одной свёрткой:
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+L = len(s)
+corr = signal.correlate(x, s, mode='valid', method='fft')   # быстро даже для длинных записей
+c = np.cumsum(np.concatenate([[0], x**2]))
+E_x = c[L:] - c[:-L]                                        # энергия каждого участка длины L
+rho = corr / np.sqrt(np.sum(s**2) * E_x + 1e-12)
+\end{Verbatim}
+
+Для длинных аудиозаписей \texttt{np.\allowbreak{}correlate} работает очень медленно (число операций пропорционально произведению длин); \texttt{signal.\allowbreak{}correlate(\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{},\allowbreak{}\ method=\allowbreak{}\textquotesingle{}\allowbreak{}fft\textquotesingle{}\allowbreak{})} использует БПФ.
+Без нормировки громкие участки записи дают большие значения корреляции даже без совпадения формы.
+
+\subsection*{8. Z-преобразование в Python}
+\addcontentsline{toc}{subsection}{8. Z-преобразование в Python}
+
+Разностному уравнению \(y[n] = \sum_k b_k x[n-k] - \sum_k a_k y[n-k]\) соответствует
+\[
+H(z) = \frac{b_0 + b_1 z^{-1} + \dots}{1 + a_1 z^{-1} + \dots}.
+\]
+В \texttt{scipy.\allowbreak{}signal} коэффициенты задаются массивами \texttt{b\ =\allowbreak{}\ {[}b0,\allowbreak{}\ b1,\allowbreak{}\ .\allowbreak{}.\allowbreak{}.\allowbreak{}{]}} и \texttt{a\ =\allowbreak{}\ {[}1,\allowbreak{}\ a1,\allowbreak{}\ .\allowbreak{}.\allowbreak{}.\allowbreak{}{]}}. \textbf{Знак:} уравнению \(y[n] = x[n] + 0.8\,y[n-1]\) соответствует \texttt{a\ =\allowbreak{}\ {[}1,\allowbreak{}\ -0.\allowbreak{}8{]}}.
+
+\begin{itemize}
+\tightlist
+\item
+  Полюса и нули: \texttt{z,\allowbreak{}\ p,\allowbreak{}\ k\ =\allowbreak{}\ signal.\allowbreak{}tf2zpk(\allowbreak{}b,\allowbreak{}\ a)}. Если длины \texttt{b} и \texttt{a} различаются, дополните более короткий массив нулями справа, иначе нули (или полюса) в точке \(z = 0\) потеряются.
+\item
+  Устойчивость: \texttt{np.\allowbreak{}all(\allowbreak{}np.\allowbreak{}abs(\allowbreak{}p)\ \textless{}\ 1)}.
+\item
+  Импульсная характеристика: \texttt{signal.\allowbreak{}lfilter(\allowbreak{}b,\allowbreak{}\ a,\allowbreak{}\ impulse)}.
+\item
+  АЧХ: \texttt{w,\allowbreak{}\ H\ =\allowbreak{}\ signal.\allowbreak{}freqz(\allowbreak{}b,\allowbreak{}\ a,\allowbreak{}\ fs=\allowbreak{}fs)} -- значения \(H(z)\) на единичной окружности \(z = e^{j2\pi f/f_s}\).
+\item
+  Полюс \(p = r e^{j\theta}\) даёт пик АЧХ на частоте \(f = \theta f_s / (2\pi)\); чем ближе \(r\) к 1, тем пик уже, а импульсная характеристика затухает медленнее (как \(r^n\)). Нуль на единичной окружности даёт полное подавление соответствующей частоты.
+\item
+  Свёртка последовательностей соответствует произведению многочленов: \texttt{np.\allowbreak{}convolve(\allowbreak{}b1,\allowbreak{}\ b2)} = \texttt{np.\allowbreak{}polymul(\allowbreak{}b1,\allowbreak{}\ b2)}.
+\end{itemize}
+
+\subsection*{9. Рекомендации по выполнению заданий}
+\addcontentsline{toc}{subsection}{9. Рекомендации по выполнению заданий}
+
+\begin{itemize}
+\tightlist
+\item
+  Для воспроизводимости результатов используйте \texttt{np.\allowbreak{}random.\allowbreak{}seed(\allowbreak{}42)} при генерации случайных чисел.
+\item
+  Все графики должны быть подписаны (оси, заголовки, легенды).
+\item
+  При анализе влияния шума на точность выполняйте несколько прогонов с разным \texttt{np.\allowbreak{}random.\allowbreak{}seed(\allowbreak{})} и усредняйте результаты.
+\item
+  Для визуализации корреляции полезно показывать и сам сигнал, и корреляционную функцию.
+\end{itemize}
+
+\subsection*{10. Типичные ошибки и их избегание}
+\addcontentsline{toc}{subsection}{10. Типичные ошибки и их избегание}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Путаница режимов \texttt{np.\allowbreak{}convolve}:} всегда проверяйте длину результата.
+\item
+  \textbf{Краевые эффекты:} при \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}full\textquotesingle{}\allowbreak{}} корреляция даёт значения для всех возможных сдвигов, включая те, где перекрытие сигналов мало. Для поиска задержки это нормально, но при интерпретации нужно учитывать.
+\item
+  \textbf{Неправильное вычисление сдвига:} используйте \texttt{delay\ =\allowbreak{}\ argmax(\allowbreak{}corr)\ -\ (\allowbreak{}len(\allowbreak{}x)-1)}.
+\item
+  \textbf{Ненормализованное аудио:} перед прослушиванием убедитесь, что значения находятся в диапазоне {[}-1, 1{]}.
+\item
+  \textbf{Сравнение с аналитикой:} при свёртке гауссовых функций не забывайте нормировать окна (сумма коэффициентов = 1), чтобы амплитуды соответствовали теоретическим.
+\item
+  \textbf{Знак коэффициентов \texttt{a}:} в \texttt{scipy.\allowbreak{}signal} уравнение записывается как \(\sum a_k y[n-k] = \sum b_k x[n-k]\), поэтому коэффициенты обратной связи входят в \texttt{a} с противоположным знаком.
+\end{enumerate}
+
+\section*{Задания}
+\addcontentsline{toc}{section}{Задания}
+
+\subsection*{Задание 1. Свёртка гауссовых функций: сравнение численного и аналитического результатов}
+\addcontentsline{toc}{subsection}{Задание 1. Свёртка гауссовых функций: сравнение численного и аналитического результатов}
+
+\subsubsection*{Теоретическое введение}
+\addcontentsline{toc}{subsubsection}{Теоретическое введение}
+
+Свёртка двух гауссовых функций даёт гауссову функцию с дисперсией, равной сумме дисперсий. Если
+\[
+f(t) = \frac{1}{\sqrt{2\pi\sigma_1^2}} e^{-t^2/(2\sigma_1^2)}, \quad g(t) = \frac{1}{\sqrt{2\pi\sigma_2^2}} e^{-t^2/(2\sigma_2^2)},
+\]
+то
+\[
+(f * g)(t) = \frac{1}{\sqrt{2\pi(\sigma_1^2+\sigma_2^2)}} e^{-t^2/(2(\sigma_1^2+\sigma_2^2))}.
+\]
+
+\subsubsection*{Задание}
+\addcontentsline{toc}{subsubsection}{Задание}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Сгенерируйте дискретные гауссовы импульсы (например, с помощью \texttt{scipy.\allowbreak{}signal.\allowbreak{}windows.\allowbreak{}gaussian}) с заданными стандартными отклонениями \texttt{sigma1=\allowbreak{}3}, \texttt{sigma2=\allowbreak{}5}. Используйте длину окна, достаточную для захвата всей значимой части (например, 10*sigma).
+\item
+  Вычислите свёртку численно с помощью \texttt{np.\allowbreak{}convolve}.
+\item
+  Постройте графики:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Исходные функции.
+  \item
+    Результат свёртки (численный).
+  \item
+    Теоретическую гауссову функцию с дисперсией \texttt{sigma1\^{}2\ +\ sigma2\^{}2}.
+  \end{itemize}
+\item
+  Оцените среднеквадратичную ошибку между численным и теоретическим результатами.
+  \textbf{Вопросы:}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Что произойдёт с формой свёртки при увеличении σ?
+\end{itemize}
+
+\subsection*{Задание 2. Фильтрация с помощью свёртки: сравнение прямоугольного и гауссовского окон}
+\addcontentsline{toc}{subsection}{Задание 2. Фильтрация с помощью свёртки: сравнение прямоугольного и гауссовского окон}
+
+\subsubsection*{Цель}
+\addcontentsline{toc}{subsubsection}{Цель}
+
+Изучить, как выбор ядра и его длина влияют на подавление высокочастотной составляющей и сохранение низкочастотной.
+
+\subsubsection*{Задание}
+\addcontentsline{toc}{subsubsection}{Задание}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Создайте сигнал длительностью 2 секунды, частота дискретизации 1000 Гц, состоящий из суммы двух синусоид:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    низкая частота \(f_1 = 5\) Гц, амплитуда 1,
+  \item
+    высокая частота \(f_2 = 80\) Гц, амплитуда 0.5.
+  \end{itemize}
+\item
+  Сгенерируйте прямоугольное окно длины \texttt{L} (например, \texttt{L\ =\allowbreak{}\ 21}, используйте \texttt{scipy.\allowbreak{}signal.\allowbreak{}windows.\allowbreak{}boxcar(\allowbreak{}L)}), нормализованное так, чтобы сумма коэффициентов была 1.
+\item
+  Сгенерируйте гауссовское окно той же длины (используйте \texttt{signal.\allowbreak{}windows.\allowbreak{}gaussian(\allowbreak{}L,\allowbreak{}\ std=\allowbreak{}L/\allowbreak{}5)}), также нормализованное.
+\item
+  Примените свёртку с этими окнами (используйте \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}same\textquotesingle{}\allowbreak{}}).
+\item
+  Постройте графики:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Исходный сигнал (первые 0.5 с).
+  \item
+    Отфильтрованные сигналы для обоих окон.
+  \end{itemize}
+\item
+  Вычислите и сравните амплитуды полезной составляющей (5 Гц) и подавленной (80 Гц) после фильтрации. Для этого:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Возьмите БПФ сигналов,
+  \item
+    Измерьте амплитуды на соответствующих частотах.
+  \end{itemize}
+\item
+  Исследуйте влияние длины окна: повторите для длин \texttt{L\ =\allowbreak{}\ 11,\allowbreak{}\ 21,\allowbreak{}\ 41,\allowbreak{}\ 81}.
+  \textbf{Вопросы:}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Какое окно (прямоугольное или гауссовское) даёт лучшее подавление высокой частоты при одинаковой длине?
+\item
+  При какой длине прямоугольного и гауссовского окон амплитуда высокочастотного амплитуда падает в 10 раз?
+\item
+  Как увеличение длины окна влияет на подавление сохранение амплитуды низкой частоты? При какой длине окон она уменьшается более чем на 10\%?
+\end{itemize}
+
+\subsection*{Задание 3. Поиск временной задержки с помощью кросс-корреляции}
+\addcontentsline{toc}{subsection}{Задание 3. Поиск временной задержки с помощью кросс-корреляции}
+
+\subsubsection*{Цель}
+\addcontentsline{toc}{subsubsection}{Цель}
+
+Определить временной сдвиг между двумя сигналами в присутствии шума и оценить влияние уровня шума на точность.
+
+\subsubsection*{Задание}
+\addcontentsline{toc}{subsubsection}{Задание}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Сгенерируйте сигнал длительностью 1 секунду (fs=1000 Гц), представляющий собой сумму 100 синусоид со случайными частотами (в диапазоне 10--100 Гц), амплитудами (в диапазоне 0.5--1.5 Гц) и фазами (в диапазоне 0--2\(\pi\)). Воспользуйтесь функцией \texttt{numpy.\allowbreak{}random.\allowbreak{}uniform}. Нормализуйте полученный сигнал в интервале \([-1;1]\). Назовём его \texttt{x}.
+\item
+  Создайте второй сигнал \texttt{y}, который является сдвинутой во времени копией \texttt{x} на \texttt{delay} отсчётов (выберите задержку, например, 100 отсчётов) и добавьте к нему случайный сигнал (шум) с уровнем \texttt{noise\_\allowbreak{}level} (например, 0.1) с помощью функции \texttt{numpy.\allowbreak{}random.\allowbreak{}randn}.
+\item
+  Вычислите кросс-корреляцию \texttt{corr\ =\allowbreak{}\ np.\allowbreak{}correlate(\allowbreak{}x,\allowbreak{}\ y,\allowbreak{}\ mode=\allowbreak{}\textquotesingle{}\allowbreak{}full\textquotesingle{}\allowbreak{})} и найдите индекс максимума. Оцените задержку как \texttt{delay\_\allowbreak{}est\ =\allowbreak{}\ argmax(\allowbreak{}corr)\ -\ (\allowbreak{}len(\allowbreak{}x)-1)} (поскольку \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}full\textquotesingle{}\allowbreak{}} даёт диапазон от -N+1 до N-1).
+\item
+  Повторите эксперимент для различных уровней шума в диапазоне от \texttt{0} до \texttt{2}.
+\item
+  Для двух уровней шума (0.3 и 2) постройте график кросс-корреляции и отметьте положение истинной и найденной задержки.
+  \textbf{Вопросы:}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Как зависит точность оценки задержки от уровня шума? При каком уровне шума вычисленная задержка отличается от истинной более чем на 10\%? При каком уровне шума вычисленная задержка становится практически неотличима от \texttt{0}?
+\item
+  Почему при высоком уровне шума могут появляться ложные пики?
+\end{itemize}
+
+\subsection*{Задание 4. Обнаружение шаблона в зашумлённом сигнале}
+\addcontentsline{toc}{subsection}{Задание 4. Обнаружение шаблона в зашумлённом сигнале}
+
+\subsubsection*{Цель}
+\addcontentsline{toc}{subsubsection}{Цель}
+
+Найти местоположение сигнала, имеющего форму гауссова импульса, модулированного синусоидой, в смеси с шумом. Исследовать влияние отношения сигнал/шум на точность обнаружения.
+
+\subsubsection*{Задание}
+\addcontentsline{toc}{subsubsection}{Задание}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Создайте шаблон \texttt{template} -- произведение гауссовой огибающей (σ=100 отсчётов) на синусоиду частотой 20 Гц (при fs=1000 Гц). Длина шаблона примерно 6σ.
+\item
+  Создайте длинный сигнал \texttt{long\_\allowbreak{}signal} длиной 2000 отсчётов, состоящий из:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    случайного сигнала (шума), созданного с помощью \texttt{numpy.\allowbreak{}random.\allowbreak{}randn(\allowbreak{})} с единичной амплитудой,
+  \item
+    вставленного в случайную позицию шаблона, умноженного на амплитуду \texttt{A} (например, 2).
+  \end{itemize}
+\item
+  Используйте кросс-корреляцию \texttt{np.\allowbreak{}correlate(\allowbreak{}long\_\allowbreak{}signal,\allowbreak{}\ template,\allowbreak{}\ mode=\allowbreak{}\textquotesingle{}\allowbreak{}valid\textquotesingle{}\allowbreak{})} для поиска позиции шаблона. Найдите индекс максимума корреляции.
+\item
+  Повторите эксперимент для разных отношений сигнал/шум (SNR), варьируя амплитуду шаблона от 0.2 до 5.
+\item
+  Для одного значения SNR (например, 1) визуализируйте: исходный длинный сигнал, шаблон, результат кросс-корреляции с отмеченным пиком.
+\item
+  Корреляция с шаблоном -- это \textbf{согласованный фильтр}. Разделите результат корреляции на \(\sqrt{E_s}\), где \(E_s = \sum s^2[n]\) -- энергия шаблона: тогда шум на выходе имеет единичную дисперсию. Сравните высоту пика с теоретическим значением \(A\sqrt{E_s}\).
+\item
+  Замените шаблон гауссовым импульсом \textbf{без} модуляции с той же энергией и повторите п. 4. Изменилась ли надёжность обнаружения?
+  \textbf{Вопросы:}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  При каком SNR результаты измерения резко ухудшаются?
+\item
+  Совпадает ли высота пика нормированной корреляции с теоретической \(A\sqrt{E_s}\)? Почему надёжность обнаружения определяется энергией шаблона, а не его формой?
+\end{itemize}
+
+\subsection*{Задание 5. Поиск фрагмента в реальном аудиосигнале}
+\addcontentsline{toc}{subsection}{Задание 5. Поиск фрагмента в реальном аудиосигнале}
+
+\subsubsection*{Цель}
+\addcontentsline{toc}{subsubsection}{Цель}
+
+Применить кросс-корреляцию для нахождения заданного фрагмента в аудиофайле. Фрагмент и основной файл предоставлены (студентам нужно будет загрузить их).
+
+\subsubsection*{Задание}
+\addcontentsline{toc}{subsubsection}{Задание}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Загрузите аудиофайл \texttt{full\_\allowbreak{}audio.\allowbreak{}wav} и фрагмент \texttt{fragment.\allowbreak{}wav}. Используйте \texttt{scipy.\allowbreak{}io.\allowbreak{}wavfile.\allowbreak{}read}.
+\item
+  Вычислите кросс-корреляцию между полным сигналом и фрагментом.
+\item
+  Найдите позицию максимального значения корреляции и определите временное смещение (в отсчётах и в секундах).
+\item
+  Постройте график кросс-корреляции и отметьте найденный пик.
+\item
+  Вырежьте из полного сигнала участок, соответствующий найденной позиции, и прослушайте его (используйте \texttt{Audio}). Убедитесь, что он совпадает с фрагментом.
+\item
+  Вычислите \textbf{нормированную} корреляцию: разделите результат на \(\sqrt{E_s \cdot E_x[m]}\), где \(E_x[m]\) -- энергия участка полного сигнала, с которым сравнивается фрагмент при сдвиге \(m\) (см. заметки к занятию). Сравните графики нормированной и ненормированной корреляции.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Загружаем файл и сохраняем под именем audio.wav
+!wget -O full_audio.wav "https://github.com/korzhimanov/dsp-seminars/raw/refs/heads/main/data/full_audio.wav"
+!wget -O fragment.wav "https://github.com/korzhimanov/dsp-seminars/raw/refs/heads/main/data/fragment.wav"
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Почему перед вычислением корреляции сигналы следует нормализовать? Какие ложные максимумы исчезают после нормировки на энергию текущего участка?
+\item
+  Сколько раз в сигнале встречается вырезанное во фрагменте слово? Удаётся ли с помощью корреляционного анализа определить его во всех случаях? Возникают ли ложные максимумы?
+\item
+  Что будет, если фрагмент не содержится в полном сигнале? Как это отразится на корреляции?
+\end{itemize}
+
+\subsection*{Задание 6. Z-преобразование: передаточная функция, полюса и нули}
+\addcontentsline{toc}{subsection}{Задание 6. Z-преобразование: передаточная функция, полюса и нули}
+
+\subsubsection*{Цель}
+\addcontentsline{toc}{subsubsection}{Цель}
+
+Научиться находить передаточную функцию по разностному уравнению, определять устойчивость системы по расположению полюсов и связывать полюса и нули с видом АЧХ.
+
+\subsubsection*{Задание}
+\addcontentsline{toc}{subsubsection}{Задание}
+
+Рассмотрите системы (частота дискретизации \(f_s = 1000\) Гц):
+
+\begin{itemize}
+\tightlist
+\item
+  (а) \(y[n] = x[n] + 0.8\,y[n-1]\);
+\item
+  (б) \(y[n] = x[n] - 1.1\,y[n-1]\);
+\item
+  (в) \(y[n] = x[n] - x[n-2]\);
+\item
+  (г) резонатор \(y[n] = x[n] + 2r\cos\theta\;y[n-1] - r^2\,y[n-2]\) с \(r = 0.95\), \(\theta = \pi/5\).
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Запишите (в ячейке ответа) передаточные функции \(H(z)\) и найдите вручную их полюса и нули.
+\item
+  Задайте коэффициенты \texttt{b}, \texttt{a} и найдите полюса и нули с помощью \texttt{signal.\allowbreak{}tf2zpk(\allowbreak{}b,\allowbreak{}\ a)}. Сравните с ручным расчётом. Изобразите их на комплексной плоскости вместе с единичной окружностью (функция \texttt{zplane} ниже).
+\item
+  Вычислите импульсные характеристики (50 отсчётов, \texttt{signal.\allowbreak{}lfilter}). Какие системы устойчивы? Согласуется ли это с положением полюсов?
+\item
+  Для устойчивых систем постройте АЧХ (\texttt{signal.\allowbreak{}freqz(\allowbreak{}b,\allowbreak{}\ a,\allowbreak{}\ fs=\allowbreak{}1000)}). Объясните положение максимумов и провалов АЧХ через положение полюсов и нулей.
+\item
+  Для резонатора постройте импульсные характеристики и АЧХ при \(r = 0.5,\ 0.9,\ 0.99\). Как ширина резонансного пика и скорость затухания связаны с расстоянием от полюса до единичной окружности?
+\item
+  Проверьте теорему о свёртке для Z-преобразования: возьмите два КИХ-фильтра, например \texttt{b1\ =\allowbreak{}\ {[}1,\allowbreak{}\ 1{]}} и \texttt{b2\ =\allowbreak{}\ {[}1,\allowbreak{}\ -2,\allowbreak{}\ 1{]}}. Убедитесь, что \texttt{np.\allowbreak{}convolve(\allowbreak{}b1,\allowbreak{}\ b2)} совпадает с \texttt{np.\allowbreak{}polymul(\allowbreak{}b1,\allowbreak{}\ b2)}, а АЧХ каскада равна произведению АЧХ отдельных фильтров.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+def zplane(b, a, ax=None, title=''):
+    """Изображает нули (o) и полюса (x) передаточной функции H(z) = B(z)/A(z)."""
+    n = max(len(b), len(a))
+    b = np.concatenate([b, np.zeros(n - len(b))])   # выравнивание длин, чтобы
+    a = np.concatenate([a, np.zeros(n - len(a))])   # не потерять нули и полюса в z = 0
+    z, p, k = signal.tf2zpk(b, a)
+    if ax is None:
+        ax = plt.gca()
+    circle = np.exp(1j*np.linspace(0, 2*np.pi, 400))
+    ax.plot(circle.real, circle.imag, 'k--', lw=0.8)
+    ax.plot(z.real, z.imag, 'o', mfc='none', ms=10, label='нули')
+    ax.plot(p.real, p.imag, 'x', ms=10, mew=2, label='полюса')
+    ax.set_aspect('equal'); ax.grid(alpha=0.3); ax.legend(); ax.set_title(title)
+    return z, p
+
+# (а) y[n] = x[n] + 0.8 y[n-1]
+b_a, a_a = [1], [1, -0.8]
+zplane(b_a, a_a, title='(а)')
+plt.show()
+
+# Ваш код здесь: коэффициенты систем (б), (в), (г); полюса и нули, импульсные характеристики, АЧХ
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Какие из систем (а)--(г) устойчивы? Сформулируйте условие устойчивости через полюса.
+\item
+  Почему система (в) пропускает средние частоты и не пропускает постоянную составляющую и частоту \(f_s/2\)?
+\item
+  Как угол полюса резонатора \(\theta\) связан с частотой максимума АЧХ? Чему равна эта частота при \(f_s = 1000\) Гц?
+\end{itemize}
+
+
+\chapter{Случайные сигналы, шумы и спектральная плотность мощности}
+
+\section*{Краткие сведения}
+\addcontentsline{toc}{section}{Краткие сведения}
+
+\subsection*{1. Генерация белого, розового и красного шума}
+\addcontentsline{toc}{subsection}{1. Генерация белого, розового и красного шума}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Гауссовый белый шум:} \texttt{np.\allowbreak{}random.\allowbreak{}normal(\allowbreak{}0,\allowbreak{}\ scale,\allowbreak{}\ N)}.
+\item
+  \textbf{Розовый шум:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Выполнить БПФ белого шума (\texttt{np.\allowbreak{}fft.\allowbreak{}rfft}).
+  \item
+    Создать массив частот \texttt{freqs\ =\allowbreak{}\ np.\allowbreak{}fft.\allowbreak{}rfftfreq(\allowbreak{}N,\allowbreak{}\ d=\allowbreak{}1/\allowbreak{}fs)}.
+  \item
+    Домножить спектр на \texttt{1\ /\allowbreak{}\ np.\allowbreak{}sqrt(\allowbreak{}freqs)}. \textbf{Важно:} избегать деления на ноль на нулевой частоте (установить множитель = 0 или 1).
+  \item
+    Выполнить обратное БПФ (\texttt{np.\allowbreak{}fft.\allowbreak{}irfft}).
+  \item
+    Нормализовать до единичной дисперсии (\texttt{signal\ /\allowbreak{}\ np.\allowbreak{}std(\allowbreak{}signal)}).
+  \end{itemize}
+\item
+  \textbf{Красный шум:} \texttt{np.\allowbreak{}cumsum(\allowbreak{}white\_\allowbreak{}noise)} и затем нормировка до единичной дисперси.
+\end{enumerate}
+
+\subsection*{2. Генерация шума с разной дисперсией}
+\addcontentsline{toc}{subsection}{2. Генерация шума с разной дисперсией}
+
+\begin{itemize}
+\tightlist
+\item
+  Для белого шума: \texttt{scale=\allowbreak{}np.\allowbreak{}sqrt(\allowbreak{}disp)}.
+\item
+  Для красного и розового шума после генерации умножить на \texttt{np.\allowbreak{}sqrt(\allowbreak{}disp)}.
+\end{itemize}
+
+\subsection*{3. Оценка спектральной плотности мощности (СПМ)}
+\addcontentsline{toc}{subsection}{3. Оценка спектральной плотности мощности (СПМ)}
+
+\begin{itemize}
+\tightlist
+\item
+  Вычисление периодограммы: \texttt{f\_\allowbreak{}per,\allowbreak{}\ Pxx\_\allowbreak{}per\ =\allowbreak{}\ scipy.\allowbreak{}signal.\allowbreak{}periodogram(\allowbreak{}signal,\allowbreak{}\ fs)}
+\item
+  Вычисление СПМ методом Уэлча: \texttt{f\_\allowbreak{}welch,\allowbreak{}\ Pxx\_\allowbreak{}welch\ =\allowbreak{}\ scipy.\allowbreak{}signal.\allowbreak{}welch(\allowbreak{}signal,\allowbreak{}\ fs,\allowbreak{}\ nperseg=\allowbreak{}256,\allowbreak{}\ noverlap=\allowbreak{}128,\allowbreak{}\ window=\allowbreak{}\textquotesingle{}\allowbreak{}hann\textquotesingle{}\allowbreak{})}
+\item
+  Построение графиков в двойном логарифмическом масштабе: \texttt{plt.\allowbreak{}loglog(\allowbreak{}f,\allowbreak{}\ Pxx)}:
+  если \(y=x^p\), то \(\lg y = p\lg x\).
+\end{itemize}
+
+\subsubsection*{4. Отношение сигнал-шум (SNR)}
+\addcontentsline{toc}{subsubsection}{4. Отношение сигнал-шум (SNR)}
+
+\textbf{Расчет амплитуды шума по SNR:}
+
+\begin{itemize}
+\tightlist
+\item
+  Мощность синусоиды: \texttt{P\_\allowbreak{}sig\ =\allowbreak{}\ A²\ /\allowbreak{}\ 2}.
+\item
+  SNR (линейный) = \texttt{10\^{}(\allowbreak{}SNR\_\allowbreak{}dB/\allowbreak{}10)}.
+\item
+  Мощность шума: \texttt{P\_\allowbreak{}noise\ =\allowbreak{}\ P\_\allowbreak{}sig\ /\allowbreak{}\ SNR\_\allowbreak{}lin}.
+\item
+  Дисперсия шума = \texttt{P\_\allowbreak{}noise}.
+\item
+  \texttt{noise\ =\allowbreak{}\ np.\allowbreak{}random.\allowbreak{}normal(\allowbreak{}0,\allowbreak{}\ np.\allowbreak{}sqrt(\allowbreak{}P\_\allowbreak{}noise),\allowbreak{}\ N)}.
+\end{itemize}
+
+\section*{Задания}
+\addcontentsline{toc}{section}{Задания}
+
+\subsection*{Задание 1. Генерация белого, розового и красного шума}
+\addcontentsline{toc}{subsection}{Задание 1. Генерация белого, розового и красного шума}
+
+Сгенерируйте три сигнала длительностью 2 секунды с частотой дискретизации 1000 Гц:
+
+\begin{itemize}
+\tightlist
+\item
+  Белый гауссов шум с нулевым средним и дисперсией 1.
+\item
+  Розовый шум -- возьмите Фурье-преобразование от белого шума, домножьте его на функцию \(1/\sqrt{f}\) и возьмите обратное Фурье-преобразование, результат нормализуйте.
+\item
+  красный шум -- кумулятивная сумма белого шума (нормалиованная).
+\end{itemize}
+
+Постройте временные графики всех трёх сигналов. Вычислите и выведите их средние значения и дисперсии.
+
+\textbf{Вопрос:} Как визуально отличаются разные виды шума? Совпадают ли вычисленные средние и дисперсии сигналов от теоретических? Если отличаются, объясните почему.
+
+\subsection*{Задание 2. Вычисление автокорреляционной функции (АКФ)}
+\addcontentsline{toc}{subsection}{Задание 2. Вычисление автокорреляционной функции (АКФ)}
+
+Для каждого из сгенерированных шумов вычислите автокорреляционную функцию (с помощью \texttt{np.\allowbreak{}correlate(\allowbreak{}x,\allowbreak{}\ x,\allowbreak{}\ mode=\allowbreak{}\textquotesingle{}\allowbreak{}full\textquotesingle{}\allowbreak{})}). Возьмите только положительные сдвиги (или сдвиги от -N+1 до N-1, но визуализируйте симметричную часть). Постройте графики нормированных АКФ (поделите на значение при нулевом сдвиге) для всех трёх шумов на одном рисунке.
+
+\textbf{Вопрос:} Сравнив АКФ и временную развёртку для разных видов шума, сделайте вывод о том, как форма АКФ связана с гладкостью сигнала.
+
+\subsection*{Задание 3. Оценка спектральной плотности мощности (СПМ). Периодограмма и метод Уэлча}
+\addcontentsline{toc}{subsection}{Задание 3. Оценка спектральной плотности мощности (СПМ). Периодограмма и метод Уэлча}
+
+Для каждого типа шума вычислите:
+
+\begin{itemize}
+\tightlist
+\item
+  Периодограмму с помощью \texttt{scipy.\allowbreak{}signal.\allowbreak{}periodogram}.
+\item
+  Оценку СПМ методом Уэлча с помощью \texttt{scipy.\allowbreak{}signal.\allowbreak{}welch} с параметрами \texttt{nperseg=\allowbreak{}256}, \texttt{noverlap=\allowbreak{}128}, окно Ханна.
+\end{itemize}
+
+Постройте на одном графике (для каждого шума отдельно) периодограмму и оценку Уэлча в двойном логарифмическом масштабе по оси Y (используйте \texttt{plt.\allowbreak{}loglog}).
+
+\textbf{Вопрос:} Как выглядят зависимости СПМ от частоты у разных видов шума в двойном логарифмическом масштабе? Как они должны выглядеть теоретически?
+
+\subsection*{Задание 4. Влияние длины сегмента в методе Уэлча}
+\addcontentsline{toc}{subsection}{Задание 4. Влияние длины сегмента в методе Уэлча}
+
+Для белого шума вычислите оценку СПМ методом Уэлча с разной длиной сегмента: \texttt{nperseg\ =\allowbreak{}\ 64,\allowbreak{}\ 128,\allowbreak{}\ 256,\allowbreak{}\ 512}. Используйте окно Ханна, перекрытие 50\%. Постройте все четыре оценки на одном графике (логарифмическая шкала по Y).
+
+\textbf{Вопрос:} Как увеличение длины сегмента влияет на разрешение по частоте (ширину пиков) и гладкость оценки (дисперсию значений)?
+
+\subsection*{Задание 5. Влияние дисперсии шума на его характеристики}
+\addcontentsline{toc}{subsection}{Задание 5. Влияние дисперсии шума на его характеристики}
+
+Для каждого вида шума вычислите и выведите на один график при разных значениях дисперсии (например, 0.1, 1, 10):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Временную реализацию.
+\item
+  АКФ.
+\item
+  СПМ.
+  \textbf{Вопрос:} Что меняется при изменении дисперсии в каждом случае?
+\end{enumerate}
+
+\subsection*{Задание 6. Обнаружение гармонического сигнала на фоне шума. Спектральный анализ зашумлённой синусоиды}
+\addcontentsline{toc}{subsection}{Задание 6. Обнаружение гармонического сигнала на фоне шума. Спектральный анализ зашумлённой синусоиды}
+
+Сгенерируйте сигнал длительностью 2 секунды (fs=1000 Гц), состоящий из:
+
+\begin{itemize}
+\tightlist
+\item
+  синусоиды частотой 110 Гц с амплитудой 1,
+\item
+  белого гауссова шума с дисперсией, обеспечивающей отношение сигнал/шум (SNR) = 10 дБ.
+\end{itemize}
+
+SNR (дБ) = \(10 \log_{10}(P_{signal}/P_{noise})\).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Оцените СПМ с помощью метода Уэлча (выберите \texttt{nperseg} так, чтобы частота 110 Гц была хорошо разрешена). Определите частоту пика и сравните с истинной.
+\item
+  Повторите для других значений SNR (\(0\) дБ, \(-10\) дБ, \(-20\) дБ и т. д.)
+\end{enumerate}
+
+\textbf{Вопрос:} Как меняется видимость пика на спектре при изменении SNR? При каком SNR пик ещё можно уверенно обнаружить визуально?
+
+\subsection*{Задание 7. Разрешение двух близких частот}
+\addcontentsline{toc}{subsection}{Задание 7. Разрешение двух близких частот}
+
+Сгенерируйте сигнал, содержащий две синусоиды с частотами 100 и 110 Гц, равными амплитудами 1, и белый шум с дисперсией 0.1. Длительность сигнала 1 секунда, fs=1000 Гц. Используйте метод Уэлча с разными длинами сегмента: 128, 256, 512. Постройте оценки СПМ для каждого случая.
+
+\textbf{Вопрос:} При какой длине сегмента удаётся разделить две частоты? Сравните с грубой теоретической оценкой частотного разрешения \(\Delta f \approx f_s / N_{seg}\).
+
+
+\chapter{Основные характеристики цифровых фильтров}
+
+\section*{Краткие сведения}
+\addcontentsline{toc}{section}{Краткие сведения}
+
+\subsection*{1. Основные характеристики фильтров}
+\addcontentsline{toc}{subsection}{1. Основные характеристики фильтров}
+
+\subsubsection*{Амплитудно-частотная характеристика (АЧХ)}
+\addcontentsline{toc}{subsubsection}{Амплитудно-частотная характеристика (АЧХ)}
+
+\begin{itemize}
+\tightlist
+\item
+  В Python: \texttt{w,\allowbreak{}\ H\ =\allowbreak{}\ signal.\allowbreak{}freqz(\allowbreak{}b,\allowbreak{}\ a,\allowbreak{}\ fs=\allowbreak{}fs)}
+\item
+  \texttt{H} -- комплексная величина, АЧХ -- её модуль \texttt{np.\allowbreak{}abs(\allowbreak{}H)}
+\end{itemize}
+
+\subsubsection*{Фазо-частотная характеристика (ФЧХ)}
+\addcontentsline{toc}{subsubsection}{Фазо-частотная характеристика (ФЧХ)}
+
+\begin{itemize}
+\tightlist
+\item
+  Вычисляется как \texttt{np.\allowbreak{}angle(\allowbreak{}H)}
+\end{itemize}
+
+\subsubsection*{Групповая задержка}
+\addcontentsline{toc}{subsubsection}{Групповая задержка}
+
+\begin{itemize}
+\tightlist
+\item
+  \(\tau_g(f) = -\frac{d\phi(f)}{d\omega}\)
+\item
+  В Python: \texttt{w\_\allowbreak{}gd,\allowbreak{}\ gd\ =\allowbreak{}\ signal.\allowbreak{}group\_\allowbreak{}delay(\allowbreak{}(\allowbreak{}b,\allowbreak{}\ a),\allowbreak{}\ fs=\allowbreak{}fs)}
+\end{itemize}
+
+\subsubsection*{Импульсная характеристика}
+\addcontentsline{toc}{subsubsection}{Импульсная характеристика}
+
+\begin{itemize}
+\tightlist
+\item
+  Реакция на единичный импульс \(\delta[n]\)
+\item
+  \texttt{impulse\ =\allowbreak{}\ np.\allowbreak{}zeros(\allowbreak{}20);\ impulse{[}0{]}\ =\allowbreak{}\ 1}
+\item
+  Вычисляется как \texttt{h\ =\allowbreak{}\ signal.\allowbreak{}lfilter(\allowbreak{}b,\allowbreak{}\ a,\allowbreak{}\ impulse)}
+\end{itemize}
+
+\subsubsection*{Переходная характеристика}
+\addcontentsline{toc}{subsubsection}{Переходная характеристика}
+
+\begin{itemize}
+\tightlist
+\item
+  Реакция на единичный скачок \(u[n]\)
+\item
+  \texttt{step\ =\allowbreak{}\ np.\allowbreak{}ones(\allowbreak{}50)}
+\item
+  \texttt{h\ =\allowbreak{}\ signal.\allowbreak{}lfilter(\allowbreak{}b,\allowbreak{}\ a,\allowbreak{}\ step)}
+\end{itemize}
+
+\subsection*{2. Примеры задания фильтров по коэффициентам}
+\addcontentsline{toc}{subsection}{2. Примеры задания фильтров по коэффициентам}
+
+\subsubsection*{Скользящее среднее (КИХ)}
+\addcontentsline{toc}{subsubsection}{Скользящее среднее (КИХ)}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+M = 5
+b = np.ones(M) / M   # коэффициенты
+a = [1]              # знаменатель
+
+# Импульсная характеристика
+impulse = np.zeros(20)
+impulse[0] = 1
+h = signal.lfilter(b, a, impulse)
+\end{Verbatim}
+
+\subsubsection*{Экспоненциальное сглаживание (БИХ)}
+\addcontentsline{toc}{subsubsection}{Экспоненциальное сглаживание (БИХ)}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+alpha = 0.2
+b = [alpha]
+a = [1, -(1-alpha)]
+
+y = signal.lfilter(b, a, x)
+\end{Verbatim}
+
+Передаточная функция \(H(z) = \dfrac{\alpha}{1 - (1-\alpha)z^{-1}}\) имеет единственный полюс \(z = 1 - \alpha\). Чем ближе полюс к единичной окружности (малые α), тем медленнее затухает импульсная характеристика \(h[n] = \alpha(1-\alpha)^n\) и тем сильнее сглаживание. Полюса и нули находит \texttt{z,\allowbreak{}\ p,\allowbreak{}\ k\ =\allowbreak{}\ signal.\allowbreak{}tf2zpk(\allowbreak{}b,\allowbreak{}\ a)}.
+
+\subsection*{3. Фильтр Савицкого -- Голея (Savitzky--Golay)}
+\addcontentsline{toc}{subsection}{3. Фильтр Савицкого -- Голея (Savitzky--Golay)}
+
+Это КИХ-фильтр, основанный на локальной полиномиальной регрессии. Он сохраняет форму сигнала (пики, перегибы) лучше, чем скользящее среднее.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+from scipy.signal import savgol_filter
+y = savgol_filter(x, window_length=11, polyorder=2)
+\end{Verbatim}
+
+Имеется два основных параметра:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{window\_\allowbreak{}length} -- длина окна усреднения (порядок фильтра)
+\item
+  \texttt{polyorder} -- степень используемого полинома
+\item
+  Увеличение \texttt{window\_\allowbreak{}length} → сильнее сглаживание, но больше искажений на краях
+\item
+  Увеличение \texttt{polyorder} → лучше сохранение высоких частот, но может усиливать шум
+\end{itemize}
+
+\subsection*{4. Медианный фильтр}
+\addcontentsline{toc}{subsection}{4. Медианный фильтр}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+y = signal.medfilt(x, kernel_size=11)          # kernel_size – нечётное
+y = scipy.ndimage.median_filter(x, size=11, mode='nearest')   # другая обработка краёв
+\end{Verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  Заменяет отсчёт медианой значений в окне длины \(K\).
+\item
+  \textbf{Нелинейный}: не выполняется принцип суперпозиции, поэтому нет импульсной характеристики и АЧХ (импульсная характеристика формально равна нулю).
+\item
+  Полностью удаляет одиночные выбросы и короткие импульсы шириной меньше \((K+1)/2\) отсчётов.
+\item
+  Сохраняет резкие перепады (фронты): медиана на фронте равна значению с той стороны, где больше отсчётов окна.
+\item
+  Родственные \textbf{порядковые фильтры}: максимум, минимум, \(k\)-я порядковая статистика -- \texttt{signal.\allowbreak{}order\_\allowbreak{}filter(\allowbreak{}x,\allowbreak{}\ np.\allowbreak{}ones(\allowbreak{}K),\allowbreak{}\ rank)}.
+\end{itemize}
+
+\subsection*{5. Обратить внимание}
+\addcontentsline{toc}{subsection}{5. Обратить внимание}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.3810}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.6190}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Ошибка
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Исправление
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Знак коэффициентов \texttt{a} для БИХ & \texttt{a\ =\allowbreak{}\ {[}1,\allowbreak{}\ -(\allowbreak{}1-alpha){]}}, а не \texttt{{[}1,\allowbreak{}\ (\allowbreak{}1-alpha){]}} \\
+Нормировка коэффициентов & Сумма \texttt{b} должна быть 1 (для сохранения постоянной составляющей) \\
+Длина \texttt{window\_\allowbreak{}length} в \texttt{savgol\_\allowbreak{}filter} & Должно быть нечётным \\
+Величина \texttt{polyorder} & \texttt{polyorder} \textless{} \texttt{window\_\allowbreak{}length} \\
+Длина окна в \texttt{medfilt} & \texttt{kernel\_\allowbreak{}size} должно быть нечётным \\
+Края в \texttt{medfilt} & Сигнал дополняется нулями, поэтому крайние отсчёты искажаются; используйте \texttt{scipy.\allowbreak{}ndimage.\allowbreak{}median\_\allowbreak{}filter(\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{},\allowbreak{}\ mode=\allowbreak{}\textquotesingle{}\allowbreak{}nearest\textquotesingle{}\allowbreak{})} \\
+\end{longtable}
+
+\subsection*{6. Ссылки на документацию}
+\addcontentsline{toc}{subsection}{6. Ссылки на документацию}
+
+\begin{itemize}
+\tightlist
+\item
+  SciPy signal processing (\url{https://docs.scipy.org/doc/scipy/reference/signal.html})
+\item
+  scipy.signal.freqz (\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.freqz.html})
+\item
+  scipy.signal.group\_delay (\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.group_delay.html})
+\item
+  scipy.signal.savgol\_filter (\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html})
+\item
+  scipy.signal.medfilt (\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.medfilt.html})
+\end{itemize}
+
+\section*{Подготовка рабочей среды}
+\addcontentsline{toc}{section}{Подготовка рабочей среды}
+
+Во всех заданиях занятия используется вспомогательная функция:
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import signal
+from scipy.signal import savgol_filter, savgol_coeffs, group_delay
+import ipywidgets as widgets
+from IPython.display import display
+
+%matplotlib inline
+plt.rcParams['figure.figsize'] = (12, 5)
+
+# Вспомогательная функция для построения частотных характеристик
+def plot_filter_response(b, a, fs=1000, title=''):
+    """Строит АЧХ (линейный и дБ), ФЧХ и групповую задержку фильтра"""
+    w, H = signal.freqz(b, a, fs=fs)
+    mag_dB = 20*np.log10(np.abs(H) + 1e-12)
+    phase = np.unwrap(np.angle(H))
+    w_gd, gd = signal.group_delay((b, a), fs=fs)
+
+    plt.figure(figsize=(12,10))
+    plt.subplot(4,1,1)
+    plt.semilogy(w, np.abs(H))
+    plt.title(f'АЧХ (линейный масштаб) – {title}')
+    plt.grid()
+    plt.subplot(4,1,2)
+    plt.plot(w, mag_dB)
+    plt.title('АЧХ (дБ)')
+    plt.ylabel('|H| (дБ)')
+    plt.grid()
+    plt.subplot(4,1,3)
+    plt.plot(w, phase)
+    plt.title('ФЧХ')
+    plt.ylabel('Фаза (рад)')
+    plt.grid()
+    plt.subplot(4,1,4)
+    plt.plot(w_gd, gd)
+    plt.title('Групповая задержка')
+    plt.xlabel('Частота (Гц)')
+    plt.ylabel('Задержка (отсчёты)')
+    plt.grid()
+    plt.tight_layout()
+    plt.show()
+\end{Verbatim}
+
+\section*{Часть 1. КИХ-фильтр: скользящее среднее}
+\addcontentsline{toc}{section}{Часть 1. КИХ-фильтр: скользящее среднее}
+
+\textbf{Скользящее среднее} -- простейший КИХ-фильтр. Его коэффициенты: \texttt{b\_\allowbreak{}k\ =\allowbreak{}\ 1/\allowbreak{}M} для \texttt{k\ =\allowbreak{}\ 0,\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{},\allowbreak{}M-1}. Фильтр имеет линейную фазу.
+
+\subsection*{Задание 1.1. Импульсная и переходная характеристики}
+\addcontentsline{toc}{subsection}{Задание 1.1. Импульсная и переходная характеристики}
+
+Для длины окна \texttt{M\ =\allowbreak{}\ 5}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Сформируйте массив коэффициентов \texttt{b} (нормированный).
+\item
+  Создайте тестовые сигналы: единичный импульс (длиной 20 отсчётов) и единичный скачок (длиной 50 отсчётов).
+\item
+  Примените фильтр с помощью \texttt{signal.\allowbreak{}lfilter(\allowbreak{}b,\allowbreak{}\ a,\allowbreak{}\ x)}, где \texttt{a\ =\allowbreak{}\ {[}1{]}}.
+\item
+  Постройте импульсную и переходную характеристики.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Ваш код здесь
+M = 5
+# Ваш код здесь: создать массивы b и a
+
+# Импульс
+impulse = np.zeros(20)
+impulse[0] = 1
+# Ваш код здесь: вычислить h = signal.lfilter(...)
+
+# Скачок
+step = np.ones(50)
+# Ваш код здесь: вычислить s = signal.lfilter(...)
+
+# Построение
+plt.figure(figsize=(12,4))
+plt.subplot(1,2,1)
+plt.stem(..., basefmt=" ")   # Ваш код здесь: подставить h
+plt.title(f'Импульсная характеристика (M={M})')
+plt.grid()
+plt.subplot(1,2,2)
+plt.plot(...)                # Ваш код здесь: подставить s
+plt.title('Переходная характеристика')
+plt.grid()
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Почему импульсная характеристика имеет конечную длину, а переходная выходит на постоянный уровень?
+
+\subsection*{Задание 1.2. АЧХ и ФЧХ}
+\addcontentsline{toc}{subsection}{Задание 1.2. АЧХ и ФЧХ}
+
+Используя функцию \texttt{plot\_\allowbreak{}filter\_\allowbreak{}response}, постройте характеристики для скользящего среднего с длинами окон \texttt{M\ =\allowbreak{}\ 5}, \texttt{M\ =\allowbreak{}\ 10}, \texttt{M\ =\allowbreak{}\ 20}.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Для M=5
+b5 = np.ones(5)/5
+plot_filter_response(b5, [1], fs=1000, title='Скользящее среднее M=5')
+
+# Ваш код здесь: повторить для M=10 и M=20
+\end{Verbatim}
+
+\textbf{Вопрос:} Как изменение \texttt{M} влияет на крутизну среза АЧХ и на ФЧХ?
+
+\subsection*{Задание 1.3. Фильтрация суммы синусоид}
+\addcontentsline{toc}{subsection}{Задание 1.3. Фильтрация суммы синусоид}
+
+Сгенерируйте сигнал длительностью 1 с (fs=1000 Гц): \texttt{x\ =\allowbreak{}\ sin(\allowbreak{}2π·10·t)\ +\ 0.\allowbreak{}5·sin(\allowbreak{}2π·100·t)}. Примените скользящее среднее с \texttt{M=\allowbreak{}5} и \texttt{M=\allowbreak{}20}. Постройте временные графики и спектры (амплитудный спектр через БПФ).
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs = 1000
+t = np.linspace(0, 1, fs)
+x = np.sin(2*np.pi*10*t) + 0.5*np.sin(2*np.pi*100*t)
+
+# Ваш код здесь: фильтрация с M=5 и M=20
+
+# Временные графики (первые 100 отсчётов)
+plt.figure(figsize=(12,4))
+plt.plot(t[:100], x[:100], label='Исходный')
+# Ваш код здесь: добавить графики y5, y20
+plt.legend()
+plt.grid()
+plt.show()
+
+# Спектры
+def plot_spectrum(s, label):
+    X = np.fft.fft(s)
+    freq = np.fft.fftfreq(len(s), 1/fs)
+    plt.plot(freq[:len(freq)//2], np.abs(X[:len(freq)//2])/(len(s)//2), label=label)
+
+plt.figure(figsize=(12,4))
+plot_spectrum(x, 'Исходный')
+# Ваш код здесь: добавить спектры y5, y20
+plt.xlim(0, 150)
+plt.legend()
+plt.grid()
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Как значение \texttt{M} влияет на амплитуду 100 Гц сигнала? Объясните, почему так. Какая связь между АЧХ и результатом фильтрации?
+
+\section*{Часть 2. БИХ-фильтр: экспоненциальное сглаживание}
+\addcontentsline{toc}{section}{Часть 2. БИХ-фильтр: экспоненциальное сглаживание}
+
+Фильтр первого порядка: \texttt{y{[}n{]}\ =\allowbreak{}\ α\ x{[}n{]}\ +\ (\allowbreak{}1-α)\ y{[}n-1{]}}. Коэффициенты: \texttt{b\ =\allowbreak{}\ {[}α{]}}, \texttt{a\ =\allowbreak{}\ {[}1,\allowbreak{}\ -(\allowbreak{}1-α){]}}.
+
+\subsection*{Задание 2.1. Реализация и характеристики}
+\addcontentsline{toc}{subsection}{Задание 2.1. Реализация и характеристики}
+
+Для \texttt{α\ =\allowbreak{}\ 0.\allowbreak{}2}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Постройте импульсную характеристику (50 отсчётов) и переходную характеристику.
+\item
+  Используя \texttt{plot\_\allowbreak{}filter\_\allowbreak{}response}, постройте АЧХ, ФЧХ и групповую задержку.
+\item
+  Запишите передаточную функцию \(H(z)\) фильтра и найдите её полюс (вручную и с помощью \texttt{signal.\allowbreak{}tf2zpk(\allowbreak{}b,\allowbreak{}\ a)}).
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+alpha = 0.2
+b = [alpha]
+a = [1, -(1-alpha)]
+
+# Импульсная характеристика (длина 50)
+impulse = np.zeros(50)
+impulse[0] = 1
+h = signal.lfilter(b, a, impulse)
+# Переходная характеристика (длина 100)
+step = np.ones(100)
+s = signal.lfilter(b, a, step)
+
+plt.figure(figsize=(12,4))
+plt.subplot(1,2,1)
+plt.stem(h, basefmt=" ")
+plt.title(f'Импульсная характеристика (α={alpha})')
+plt.grid()
+plt.subplot(1,2,2)
+plt.plot(s)
+plt.title('Переходная характеристика')
+plt.grid()
+plt.show()
+
+# Частотные характеристики
+plot_filter_response(b, a, fs=1000, title=f'Экспоненциальный α={alpha}')
+\end{Verbatim}
+
+\textbf{Вопрос:} Где расположен полюс передаточной функции при \texttt{α\ =\allowbreak{}\ 0.\allowbreak{}2}? Как расстояние от полюса до единичной окружности связано со скоростью затухания импульсной характеристики?
+
+\subsection*{Задание 2.2. Влияние параметра α}
+\addcontentsline{toc}{subsection}{Задание 2.2. Влияние параметра α}
+
+Исследуйте фильтр при \texttt{α\ =\allowbreak{}\ 0.\allowbreak{}05,\allowbreak{}\ 0.\allowbreak{}2,\allowbreak{}\ 0.\allowbreak{}8}. Постройте на одном графике АЧХ (в дБ) и на другом -- групповую задержку. Сделайте выводы.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+alphas = [0.05, 0.2, 0.8]
+# Ваш код здесь: построить АЧХ (в дБ) и групповую задержку для всех α
+\end{Verbatim}
+
+\textbf{Вопрос:} Как α влияет на скорость реакции фильтра на изменение сигнала и на крутизну спада АЧХ?
+
+\subsection*{Задание 2.3. Фильтрация зашумлённого сигнала}
+\addcontentsline{toc}{subsection}{Задание 2.3. Фильтрация зашумлённого сигнала}
+
+Сгенерируйте сигнал: синусоида 20 Гц + белый шум (SNR ≈ 5 дБ), fs=500 Гц. Примените экспоненциальный фильтр с α = 0.1 и α = 0.5. Постройте исходный и отфильтрованные сигналы (первые 0.2 с). Сравните степень сглаживания и задержку.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs = 500
+t = np.linspace(0, 1, fs)
+x_clean = np.sin(2*np.pi*20*t)
+noise = 0.5 * np.random.randn(len(t))
+x_noisy = x_clean + noise
+
+# Ваш код здесь: фильтрация с alpha=0.1 и alpha=0.5
+
+plt.figure(figsize=(12,4))
+plt.plot(t[:100], x_noisy[:100], 'gray', alpha=0.5, label='Зашумлённый')
+# Ваш код здесь: добавить графики отфильтрованных сигналов
+plt.legend()
+plt.grid()
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Как на временных графиках проявляется групповая задержка, вносимая БИХ-фильтром?
+
+\section*{Часть 3. Фильтр Савицкого -- Голея (Savitzky--Golay)}
+\addcontentsline{toc}{section}{Часть 3. Фильтр Савицкого -- Голея (Savitzky--Golay)}
+
+Этот КИХ-фильтр основан на локальной полиномиальной регрессии. Он сохраняет форму сигнала (пики, перегибы) лучше, чем скользящее среднее.
+
+\subsection*{Задание 3.1. Базовое применение и влияние параметров}
+\addcontentsline{toc}{subsection}{Задание 3.1. Базовое применение и влияние параметров}
+
+Сгенерируйте синусоиду 5 Гц (fs=100 Гц, длительность 2 с) и добавьте белый шум (дисперсия 0.2). Примените \texttt{savgol\_\allowbreak{}filter} с параметрами:
+
+\begin{itemize}
+\tightlist
+\item
+  (window=11, polyorder=2)
+\item
+  (window=21, polyorder=2)
+\item
+  (window=11, polyorder=5)
+\end{itemize}
+
+Постройте исходный чистый сигнал, зашумлённый и три сглаженные версии. Объясните влияние параметров.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs = 100
+t = np.linspace(0, 2, 2*fs)
+x_clean = np.sin(2*np.pi*5*t)
+noise = 0.2 * np.random.randn(len(t))
+x_noisy = x_clean + noise
+
+# Ваш код здесь: применить savgol_filter с разными параметрами
+
+plt.figure(figsize=(12,6))
+plt.plot(t, x_noisy, 'gray', alpha=0.4, label='Зашумлённый')
+plt.plot(t, x_clean, 'k--', label='Исходный')
+# Ваш код здесь: добавить графики y1, y2, y3
+plt.legend()
+plt.grid()
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Как увеличение \texttt{window\_\allowbreak{}length} и увеличение \texttt{polyorder} влияют на степень сглаживания и сохранение формы сигнала?
+
+\subsection*{Задание 3.2. Сравнение со скользящим средним}
+\addcontentsline{toc}{subsection}{Задание 3.2. Сравнение со скользящим средним}
+
+Создайте сигнал с острым пиком (гауссов импульс с σ=3) на фоне шума. Примените скользящее среднее (window=11) и Savitzky--Golay (window=11, polyorder=2). Сравните, какой фильтр лучше сохраняет форму пика.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Генерация гауссова импульса
+N = 100
+x_pulse = np.zeros(N)
+x_pulse[N//2] = 1
+sigma = 3
+gaussian = np.exp(-(np.arange(N)-N//2)**2/(2*sigma**2))
+x_clean_pulse = gaussian / np.max(gaussian)
+noise_pulse = 0.1 * np.random.randn(N)
+x_noisy_pulse = x_clean_pulse + noise_pulse
+
+# Ваш код здесь: фильтрация (скользящее среднее и savgol)
+
+plt.figure(figsize=(12,5))
+plt.plot(x_noisy_pulse, 'gray', alpha=0.5, label='Зашумлённый')
+plt.plot(x_clean_pulse, 'k--', label='Исходный импульс')
+# Ваш код здесь: добавить графики отфильтрованных сигналов
+plt.legend()
+plt.grid()
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Какой из фильтров лучше сохраняет пик?
+
+\subsection*{Задание 3.3. Частотные характеристики}
+\addcontentsline{toc}{subsection}{Задание 3.3. Частотные характеристики}
+
+Получите коэффициенты Savitzky--Golay для \texttt{window\_\allowbreak{}length=\allowbreak{}11,\allowbreak{}\ polyorder=\allowbreak{}2} с помощью \texttt{savgol\_\allowbreak{}coeffs}. Нормируйте их так, чтобы сумма была равна 1. Постройте АЧХ этого фильтра и сравните с АЧХ скользящего среднего той же длины.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+window_length = 11
+polyorder = 2
+coeffs = savgol_coeffs(window_length, polyorder)
+coeffs = coeffs / np.sum(coeffs)   # нормировка
+
+# Ваш код здесь: вычислить АЧХ через freqz для coeffs и для скользящего среднего
+
+# Построить на одном графике (логарифмический масштаб)
+\end{Verbatim}
+
+\textbf{Вопрос:} Чем отличается АЧХ Savitzky--Golay от АЧХ скользящего среднего? Как это объясняет сохранение формы сигнала?
+
+\subsection*{Задание 3.4. Фильтрация меандра}
+\addcontentsline{toc}{subsection}{Задание 3.4. Фильтрация меандра}
+
+Сгенерируйте меандр частотой 2 Гц (fs=500 Гц) и добавьте синусоидальную помеху 50 Гц амплитудой 0.5. Примените Savitzky--Golay (window=15, polyorder=3) и скользящее среднее (window=15). Сравните, как подавляется помеха и сохраняются фронты.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs = 500
+t = np.linspace(0, 1, fs)
+meander = signal.square(2*np.pi*2*t)
+interference = 0.5 * np.sin(2*np.pi*50*t)
+x_meander = meander + interference
+
+# Ваш код здесь: фильтрация
+
+plt.figure(figsize=(12,5))
+plt.plot(t[:200], x_meander[:200], label='Исходный (меандр+помеха)')
+# Ваш код здесь: добавить графики отфильтрованных сигналов
+plt.legend()
+plt.grid()
+plt.show()
+\end{Verbatim}
+
+\textbf{Вопрос:} Какой фильтр лучше подходит для обработки сигналов с резкими фронтами? Почему?
+
+\section*{Часть 4. Сравнение КИХ и БИХ фильтров}
+\addcontentsline{toc}{section}{Часть 4. Сравнение КИХ и БИХ фильтров}
+
+\subsection*{Задание 4.1. Сравнение скользящего среднего, экспоненциального фильтра и фильтра Савицкого -- Голея}
+\addcontentsline{toc}{subsection}{Задание 4.1. Сравнение скользящего среднего, экспоненциального фильтра и фильтра Савицкого -- Голея}
+
+Для скользящего среднего (\texttt{M=\allowbreak{}10}), экспоненциального фильтра (\texttt{α=\allowbreak{}0.\allowbreak{}2}) и Savitzky--Golay (\texttt{win=\allowbreak{}11,\allowbreak{}\ polyorder=\allowbreak{}2}):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Постройте на одном графике их АЧХ (в дБ) и групповую задержку.
+\item
+  Подайте на них единичный импульс и единичный скачок, постройте реакции.
+\item
+  Сгенерируйте сигнал из прямоугольных импульсов с шумом (как в примере ниже) и примените все три фильтра. Оцените качество подавления шума и сохранения фронтов.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Сигнал с прямоугольными импульсами
+fs = 1000
+t = np.linspace(0, 1, fs)
+pulse_train = np.zeros_like(t)
+pulse_train[0:100] = 1
+pulse_train[250:350] = 1
+pulse_train[500:600] = 1
+pulse_train[750:850] = 1
+noise = 0.1 * np.random.randn(len(t))
+x_pulse_noisy = pulse_train + noise
+
+# Ваш код здесь: определить коэффициенты фильтров (M=10, alpha=0.2, sg coeffs)
+
+# Ваш код здесь: отфильтровать x_pulse_noisy каждым фильтром
+
+# Ваш код здесь: построить графики (исходный + три отфильтрованных)
+\end{Verbatim}
+
+\textbf{Вопрос:} Какой фильтр обеспечивает наилучшее подавление шума? Какой лучше сохраняет фронты? Какой имеет наименьшие фазовые искажения?
+
+\section*{Часть 5. Нелинейная фильтрация: медианный фильтр}
+\addcontentsline{toc}{section}{Часть 5. Нелинейная фильтрация: медианный фильтр}
+
+\textbf{Медианный фильтр} заменяет каждый отсчёт медианой значений в окне нечётной длины \(K\):
+\[
+y[n] = \operatorname{median}\{x[n-k], \dots, x[n], \dots, x[n+k]\}, \qquad K = 2k+1.
+\]
+В Python: \texttt{signal.\allowbreak{}medfilt(\allowbreak{}x,\allowbreak{}\ kernel\_\allowbreak{}size=\allowbreak{}K)}. Фильтр нелинеен: для него не выполняется принцип суперпозиции, поэтому его нельзя описать импульсной характеристикой и АЧХ.
+
+\subsection*{Задание 5.1. Подавление импульсных помех}
+\addcontentsline{toc}{subsection}{Задание 5.1. Подавление импульсных помех}
+
+Сгенерируйте синусоиду 5 Гц (fs=500 Гц, длительность 1 с) с белым шумом (σ = 0.05). Замените 5 \% случайно выбранных отсчётов значениями ±2 (импульсная помеха типа «соль и перец»). Отфильтруйте сигнал:
+
+\begin{itemize}
+\tightlist
+\item
+  медианным фильтром с \texttt{K\ =\allowbreak{}\ 5} и \texttt{K\ =\allowbreak{}\ 11};
+\item
+  скользящим средним длины 11;
+\item
+  фильтром Савицкого -- Голея (window=11, polyorder=2).
+\end{itemize}
+
+Постройте графики и вычислите среднеквадратичную ошибку каждого результата относительно чистой синусоиды.
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+np.random.seed(0)
+fs = 500
+t = np.arange(fs) / fs
+x_clean = np.sin(2*np.pi*5*t)
+x_noisy = x_clean + 0.05*np.random.randn(fs)
+idx = np.random.choice(fs, int(0.05*fs), replace=False)    # позиции выбросов
+x_noisy[idx] = np.random.choice([-2, 2], size=len(idx))
+
+# Ваш код здесь: медианный фильтр (K=5, 11), скользящее среднее, Савицкий – Голей
+
+rmse = lambda y: np.sqrt(np.mean((y - x_clean)**2))
+# Ваш код здесь: графики и таблица ошибок
+\end{Verbatim}
+
+\textbf{Вопрос:} Какой фильтр лучше справляется с импульсной помехой? Почему линейные фильтры здесь проигрывают, даже фильтр Савицкого -- Голея?
+
+\subsection*{Задание 5.2. Сохранение фронтов}
+\addcontentsline{toc}{subsection}{Задание 5.2. Сохранение фронтов}
+
+Возьмите последовательность прямоугольных импульсов из задания 4.1 и добавьте к ней импульсную помеху: замените 2 \% отсчётов значениями ±1. Сравните медианный фильтр (\texttt{K\ =\allowbreak{}\ 11}) и скользящее среднее (\texttt{M\ =\allowbreak{}\ 11}):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Постройте фрагмент сигнала вокруг одного из фронтов до и после фильтрации.
+\item
+  Оцените длительность фронта после фильтрации -- число отсчётов, за которое сигнал растёт от уровня 0.1 до уровня 0.9.
+  \textbf{Вопрос:} Почему медианный фильтр не размывает фронт, а скользящее среднее размывает?
+\end{enumerate}
+
+\subsection*{Задание 5.3. Нелинейность медианного фильтра}
+\addcontentsline{toc}{subsection}{Задание 5.3. Нелинейность медианного фильтра}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Подайте на медианный фильтр (\texttt{K\ =\allowbreak{}\ 5}) единичный импульс. Чему равна его «импульсная характеристика»?
+\item
+  Возьмите \(x_1\) -- единичный скачок (длина 50, скачок в отсчёте 25) и \(x_2\) -- одиночный выброс амплитуды 3 в отсчёте 10. Сравните \texttt{medfilt(\allowbreak{}x1\ +\ x2)} и \texttt{medfilt(\allowbreak{}x1)\ +\ medfilt(\allowbreak{}x2)}.
+\item
+  Подайте на фильтр с \texttt{K\ =\allowbreak{}\ 5} прямоугольные импульсы шириной 1, 2, 3 и 4 отсчёта. Какие из них сохранятся после фильтрации?
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+K = 5
+impulse = np.zeros(21)
+impulse[10] = 1
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопрос:} Можно ли описать медианный фильтр импульсной характеристикой и АЧХ? Какие детали сигнала он удаляет, а какие сохраняет? Как минимальная ширина сохраняющегося импульса связана с длиной окна \(K\)?
+
+
+\chapter{Синтез цифровых фильтров (КИХ и БИХ)}
+
+\section*{Краткие сведения}
+\addcontentsline{toc}{section}{Краткие сведения}
+
+\subsection*{1. Типы цифровых фильтров}
+\addcontentsline{toc}{subsection}{1. Типы цифровых фильтров}
+
+\textbf{КИХ (FIR)} --- конечная импульсная характеристика (Finite Impulse Response)
+
+\begin{itemize}
+\tightlist
+\item
+  Всегда устойчив, проще реализация
+\item
+  Можно добиться строго линейной фазы
+\item
+  Требует большего порядка для резких срезов
+\item
+  Разностное уравнение:
+  \[
+  y[n] = \sum_{k=0}^{M} b_k x[n-k]
+  \]
+\end{itemize}
+
+\textbf{БИХ (IIR)} --- бесконечная импульсная характеристика (Infinite Impulse Response)
+
+\begin{itemize}
+\tightlist
+\item
+  Может быть неустойчивым
+\item
+  Нелинейная фаза (искажает форму сигнала)
+\item
+  Более эффективен (меньше вычислений)
+\item
+  Разностное уравнение:
+  \[
+  y[n] = \sum_{k=0}^{M} b_k x[n-k] - \sum_{k=1}^{N} a_k y[n-k]
+  \]
+\end{itemize}
+
+\subsection*{2. Основные характеристики фильтров}
+\addcontentsline{toc}{subsection}{2. Основные характеристики фильтров}
+
+\textbf{АЧХ} --- амплитудно-частотная характеристика (показывает ослабление сигнала на разных частотах)
+
+\textbf{ФЧХ} --- фазо-частотная характеристика (показывает сдвиг фазы)
+
+\textbf{Групповая задержка} --- производная ФЧХ по частоте. Константа ⇒ линейная фаза, нет искажений формы сигнала
+
+\textbf{Параметры:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{fc} --- частота среза (граница между полосой пропускания и полосой заграждения)
+\item
+  \textbf{N} --- порядок фильтра или длина КИХ
+\item
+  \textbf{Пульсации} --- неравномерность АЧХ в полосах
+\item
+  \textbf{Переходная полоса} --- область между ПП и ПЗ
+\end{itemize}
+
+\subsection*{3. Оконный метод синтеза КИХ-фильтров}
+\addcontentsline{toc}{subsection}{3. Оконный метод синтеза КИХ-фильтров}
+
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}firwin(\allowbreak{}numtaps,\allowbreak{}\ cutoff,\allowbreak{}\ window=\allowbreak{}\textquotesingle{}\allowbreak{}hamming\textquotesingle{}\allowbreak{},\allowbreak{}\ fs=\allowbreak{}None)}
+
+\textbf{Параметры:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{numtaps} --- длина фильтра (нечётное)
+\item
+  \texttt{cutoff} --- частота среза (по уровню \(-6\) дБ), в тех же единицах, что и \texttt{fs}
+\item
+  \texttt{window} --- тип окна: `boxcar', `hann', `hamming', `blackman' и т. д.
+\item
+  \texttt{fs} --- частота дискретизации
+\item
+  Возвращает массив коэффициентов \texttt{b}
+\end{itemize}
+
+\subsection*{4. Равноволновой метод}
+\addcontentsline{toc}{subsection}{4. Равноволновой метод}
+
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}remez(\allowbreak{}numtaps,\allowbreak{}\ bands,\allowbreak{}\ desired,\allowbreak{}\ weight=\allowbreak{}None,\allowbreak{}\ fs=\allowbreak{}None)}
+
+\textbf{Параметры:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{numtaps} --- длина фильтра
+\item
+  \texttt{bands} --- массив границ ПП/ПЗ в тех же единицах, что и \texttt{fs} (например, \texttt{{[}0,\allowbreak{}\ 150,\allowbreak{}\ 250,\allowbreak{}\ 500{]}})
+\item
+  \texttt{desired} --- желаемое усиление в полосах (\texttt{{[}1,\allowbreak{}\ 0{]}})
+\item
+  \texttt{weight} --- веса полос (влияют на пульсации)
+\item
+  \texttt{fs} --- частота дискретизации
+\item
+  Возвращает массив коэффициентов \texttt{b}
+\end{itemize}
+
+\textbf{Смысл весов:}
+Увеличение веса для полосы заграждения ⇒ глубже подавление, но больше пульсации в ПП (и наоборот).
+
+\subsection*{5. БИХ-фильтры}
+\addcontentsline{toc}{subsection}{5. БИХ-фильтры}
+
+\subsubsection*{Баттерворт}
+\addcontentsline{toc}{subsubsection}{Баттерворт}
+
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}butter(\allowbreak{}N,\allowbreak{}\ Wn,\allowbreak{}\ btype=\allowbreak{}\textquotesingle{}\allowbreak{}low\textquotesingle{}\allowbreak{},\allowbreak{}\ output=\allowbreak{}\textquotesingle{}\allowbreak{}ba\textquotesingle{}\allowbreak{},\allowbreak{}\ fs=\allowbreak{}None)}
+
+\textbf{Параметры:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{N} --- порядок фильтра
+\item
+  \texttt{Wn} --- частота среза (по уровню \(-3 \text{дБ}\)), в тех же единицах, что и \texttt{fs}, или нормированная от 0 до 1, если \texttt{fs=\allowbreak{}None}
+\item
+  \texttt{btype} --- тип фильтра (`low', `high', `band', `stop')
+\item
+  \texttt{output} --- формат вывода (`ba', `zpk', `sos'), рекомендуется `sos'
+\end{itemize}
+
+\subsubsection*{Чебышев тип I}
+\addcontentsline{toc}{subsubsection}{Чебышев тип I}
+
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}cheby1(\allowbreak{}N,\allowbreak{}\ rp,\allowbreak{}\ Wn,\allowbreak{}\ btype=\allowbreak{}\textquotesingle{}\allowbreak{}low\textquotesingle{}\allowbreak{},\allowbreak{}\ output=\allowbreak{}\textquotesingle{}\allowbreak{}ba\textquotesingle{}\allowbreak{},\allowbreak{}\ fs=\allowbreak{}None)}
+
+\textbf{Параметры:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{rp} --- максимально разрешённая амплитуда пульсаций в ПП (дБ, положительное число)
+\item
+  Остальные --- как у \texttt{butter}
+\end{itemize}
+
+\textbf{Особенности:}
+
+\begin{itemize}
+\tightlist
+\item
+  Равновеликие пульсации в ПП, монотонный спад в ПЗ
+\item
+  Более крутой спад, чем у Баттерворта того же порядка
+\item
+  Цена --- пульсации в ПП (задаются \texttt{rp})
+\item
+  Частота Wn --- граница ПП, где пропускание падает ниже \texttt{-rp}
+\end{itemize}
+
+\subsubsection*{Чебышев тип II}
+\addcontentsline{toc}{subsubsection}{Чебышев тип II}
+
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}cheby2(\allowbreak{}N,\allowbreak{}\ rs,\allowbreak{}\ Wn,\allowbreak{}\ btype=\allowbreak{}\textquotesingle{}\allowbreak{}low\textquotesingle{}\allowbreak{},\allowbreak{}\ output=\allowbreak{}\textquotesingle{}\allowbreak{}ba\textquotesingle{}\allowbreak{},\allowbreak{}\ fs=\allowbreak{}None)}
+
+\textbf{Параметры:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{rs} --- минимальное затухание, требуемое в ПЗ (дБ, положительное число)
+\item
+  Остальные --- как у \texttt{butter}
+\end{itemize}
+
+\textbf{Особенности:}
+
+\begin{itemize}
+\tightlist
+\item
+  Монотонная АЧХ в ПП, равновеликие пульсации в ПЗ
+\item
+  Подавление в ПЗ не хуже rs
+\item
+  Частота Wn --- граница ПЗ, где затухание достигает rs
+\end{itemize}
+
+\subsubsection*{Эллиптический фильтр (Кауэра)}
+\addcontentsline{toc}{subsubsection}{Эллиптический фильтр (Кауэра)}
+
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}ellip(\allowbreak{}N,\allowbreak{}\ rp,\allowbreak{}\ rs,\allowbreak{}\ Wn,\allowbreak{}\ btype=\allowbreak{}\textquotesingle{}\allowbreak{}low\textquotesingle{}\allowbreak{},\allowbreak{}\ output=\allowbreak{}\textquotesingle{}\allowbreak{}ba\textquotesingle{}\allowbreak{},\allowbreak{}\ fs=\allowbreak{}None)}
+
+\textbf{Параметры:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{rp} --- пульсации в ПП (дБ)
+\item
+  \texttt{rs} --- затухание в ПЗ (дБ)
+\item
+  Остальные --- как у \texttt{butter}
+\end{itemize}
+
+\textbf{Особенности:}
+
+\begin{itemize}
+\tightlist
+\item
+  Пульсации и в ПП, и в ПЗ
+\item
+  Самый крутой спад при заданном порядке
+\item
+  Максимальная эффективность, но сильные фазовые искажения
+\item
+  Частота Wn --- граница ПП, где пропускание падает ниже \texttt{-rp}
+\end{itemize}
+
+\textbf{Примечание:} при rp→0 становится Чебышевым II, при rs→0 --- Чебышевым I, при rp, rs→0 --- Баттервортом
+
+\subsection*{6. Анализ частотных характеристик}
+\addcontentsline{toc}{subsection}{6. Анализ частотных характеристик}
+
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}freqz(\allowbreak{}b,\allowbreak{}\ a=\allowbreak{}1,\allowbreak{}\ worN=\allowbreak{}512,\allowbreak{}\ fs=\allowbreak{}None)}
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}freqz\_\allowbreak{}sos(\allowbreak{}sos,\allowbreak{}\ worN=\allowbreak{}512,\allowbreak{}\ fs=\allowbreak{}None)}
+
+\textbf{Параметры:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{b}, \texttt{a} --- коэффициенты фильтра
+\item
+  \texttt{sos} --- коэффициенты фильтра в формате `sos' (second-order sections)
+\item
+  \texttt{worN} --- число точек или массив частот
+\item
+  \texttt{fs} --- частота дискретизации
+\end{itemize}
+
+\textbf{Возвращает:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{w} --- массив частот
+\item
+  \texttt{h} --- комплексная частотная характеристика
+\end{itemize}
+
+АЧХ в дБ: \texttt{mag\_\allowbreak{}dB\ =\allowbreak{}\ 20\ *\ np.\allowbreak{}log10(\allowbreak{}np.\allowbreak{}abs(\allowbreak{}h)\ +\ 1e-12)}
+
+\subsection*{7. Групповая задержка}
+\addcontentsline{toc}{subsection}{7. Групповая задержка}
+
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}group\_\allowbreak{}delay(\allowbreak{}system,\allowbreak{}\ w=\allowbreak{}512,\allowbreak{}\ fs=\allowbreak{}None)}
+
+\textbf{Что это?}
+Групповая задержка показывает, на сколько отсчётов задерживаются огибающие спектральных компонент сигнала
+
+\textbf{Параметры:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{system} --- кортеж \texttt{(\allowbreak{}b,\allowbreak{}\ a)} (из формата `sos' можно получить функцией \texttt{scipy.\allowbreak{}signal.\allowbreak{}sos2tf})
+\item
+  \texttt{w} --- число точек/массив частот
+\item
+  \texttt{fs} --- частота дискретизации
+\end{itemize}
+
+\textbf{Важно:} Константная групповая задержка ⇒ линейная фаза, форма сигнала не искажается.
+
+\subsection*{8. Фильтрация сигналов}
+\addcontentsline{toc}{subsection}{8. Фильтрация сигналов}
+
+\subsubsection*{Прямая фильтрация}
+\addcontentsline{toc}{subsubsection}{Прямая фильтрация}
+
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}lfilter(\allowbreak{}b,\allowbreak{}\ a,\allowbreak{}\ x)}
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}sosfilt(\allowbreak{}sos,\allowbreak{}\ x)}
+
+\begin{itemize}
+\tightlist
+\item
+  Обычный цифровой фильтр (есть задержка, нелинейная фаза для БИХ)
+\item
+  Применим для реального времени
+\end{itemize}
+
+\subsubsection*{Двухсторонняя фильтрация}
+\addcontentsline{toc}{subsubsection}{Двухсторонняя фильтрация}
+
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}filtfilt(\allowbreak{}b,\allowbreak{}\ a,\allowbreak{}\ x)}
+\texttt{scipy.\allowbreak{}signal.\allowbreak{}sosfiltfilt(\allowbreak{}sos,\allowbreak{}\ x)}
+
+\begin{itemize}
+\tightlist
+\item
+  Двунаправленная обработка (вперёд+назад)
+\item
+  Нулевая фаза, сигнал не смещается по времени
+\item
+  Только для офлайн-обработки
+\end{itemize}
+
+\subsection*{9. Полюса и нули БИХ-фильтра}
+\addcontentsline{toc}{subsection}{9. Полюса и нули БИХ-фильтра}
+
+\texttt{z,\allowbreak{}\ p,\allowbreak{}\ k\ =\allowbreak{}\ scipy.\allowbreak{}signal.\allowbreak{}tf2zpk(\allowbreak{}b,\allowbreak{}\ a)} или \texttt{z,\allowbreak{}\ p,\allowbreak{}\ k\ =\allowbreak{}\ scipy.\allowbreak{}signal.\allowbreak{}sos2zpk(\allowbreak{}sos)}
+
+\begin{itemize}
+\tightlist
+\item
+  Фильтр устойчив, если все полюса лежат внутри единичной окружности: \texttt{np.\allowbreak{}all(\allowbreak{}np.\allowbreak{}abs(\allowbreak{}p)\ \textless{}\ 1)}.
+\item
+  У фильтра Баттерворта нижних частот все нули находятся в точке \(z = -1\) (частота \(f_s/2\)), а полюса лежат на дуге внутри окружности.
+\item
+  С ростом порядка полюса подходят ближе к единичной окружности вблизи частоты среза: АЧХ становится круче, а групповая задержка на этой частоте растёт.
+\item
+  При высоком порядке коэффициенты \texttt{b}, \texttt{a} вычисляются с большими ошибками округления и фильтр может стать неустойчивым; формат \texttt{\textquotesingle{}\allowbreak{}sos\textquotesingle{}\allowbreak{}} (каскад звеньев второго порядка) этого избегает.
+\end{itemize}
+
+\section*{Часть 1. Синтез КИХ-фильтров методом окон}
+\addcontentsline{toc}{section}{Часть 1. Синтез КИХ-фильтров методом окон}
+
+\subsection*{Задание 1.1. Проектирование ФНЧ с разными окнами}
+\addcontentsline{toc}{subsection}{Задание 1.1. Проектирование ФНЧ с разными окнами}
+
+Спроектируйте КИХ-ФНЧ с частотой среза 200 Гц (частота дискретизации 1000 Гц), длина фильтра 51 отсчёт. Используйте окна:
+
+\begin{itemize}
+\tightlist
+\item
+  прямоугольное,
+\item
+  Ханна,
+\item
+  Хемминга,
+\item
+  Блэкмана.
+\end{itemize}
+
+Постройте на одном графике АЧХ (в дБ) всех четырёх фильтров. Сравните:
+
+\begin{itemize}
+\tightlist
+\item
+  крутизну среза,
+\item
+  уровень пульсаций в полосе пропускания и заграждения,
+\item
+  ширину переходной полосы.
+\end{itemize}
+
+\textbf{Вопросы:} Какое окно обеспечивает наилучшее подавление в полосе заграждения? Какое -- самую крутую переходную полосу? Как это связано с формой окна?
+
+\subsection*{Задание 1.2. Влияние длины фильтра}
+\addcontentsline{toc}{subsection}{Задание 1.2. Влияние длины фильтра}
+
+Для окна Хемминга спроектируйте ФНЧ с fc=200 Гц, fs=1000 Гц, с длинами 21, 51, 101. Постройте АЧХ на одном графике.
+
+\textbf{Вопрос:} Как увеличение длины влияет на крутизну среза и на уровень боковых лепестков?
+
+\subsection*{Задание 1.3. Синтез ФВЧ и полосового фильтра методом окон}
+\addcontentsline{toc}{subsection}{Задание 1.3. Синтез ФВЧ и полосового фильтра методом окон}
+
+Используя тот же оконный метод, спроектируйте:
+
+\begin{itemize}
+\tightlist
+\item
+  ФВЧ с fc=200 Гц (длина 51, окно Хемминга);
+\item
+  полосовой фильтр с полосой пропускания 200--300 Гц (длина 51, окно Хемминга).
+\end{itemize}
+
+Постройте АЧХ обоих фильтров.
+
+Подайте на спроектированные фильтры сигнал: сумма синусоид 100, 250 и 350 Гц (амплитуды 1, 0.8, 0.6). Постройте спектры до и после фильтрации (в логарифмическом масштабе).
+\textbf{Вопрос:} Объясните полученные результаты.
+
+\section*{Часть 2. Равноволновой синтез КИХ-фильтров (Паркса--МакКлеллана)}
+\addcontentsline{toc}{section}{Часть 2. Равноволновой синтез КИХ-фильтров (Паркса--МакКлеллана)}
+
+\subsection*{Задание 2.1. Проектирование оптимального ФНЧ}
+\addcontentsline{toc}{subsection}{Задание 2.1. Проектирование оптимального ФНЧ}
+
+Используя \texttt{signal.\allowbreak{}remez}, спроектируйте ФНЧ с параметрами:
+
+\begin{itemize}
+\tightlist
+\item
+  частота дискретизации 1000 Гц,
+\item
+  полоса пропускания 0--150 Гц,
+\item
+  полоса заграждения 250--500 Гц,
+\item
+  длина фильтра 21.
+\end{itemize}
+
+Постройте АЧХ (в линейном и логарифмическом масштабах) и сравните её с АЧХ КИХ-фильтра, полученного методом окон (окно Хемминга, та же длина, fc=200 Гц).
+
+\textbf{Вопросы:} Какой фильтр имеет более крутой срез? Каковы пульсации в полосе пропускания?
+
+\subsection*{Задание 2.2. Зависимость от ширины переходной полосы}
+\addcontentsline{toc}{subsection}{Задание 2.2. Зависимость от ширины переходной полосы}
+
+Поменяйте верхнюю частоту полосы пропускания и нижнюю частоту полосы заграждения так, чтобы их среднее оставалось равным 200 Гц. Постройте АЧХ получившегося фильтра. Подберите ширину переходной области (разности нижней частоты полосы заграждения и верхней частоты полосы пропускания) так, чтобы уровень подавления в полосе заграждения у равноволнового фильтра совпал с оконным фильтром Хемминга.
+
+\textbf{Вопрос:} При какой ширине переходной области уровень подавления в полосе заграждения у равноволнового фильтра совпал с оконным фильтром Хемминга?
+
+\subsection*{Задание 2.3. Управление весами}
+\addcontentsline{toc}{subsection}{Задание 2.3. Управление весами}
+
+Для фильтра из задачи 2.1 измените весовые коэффициенты: задайте \texttt{weight=\allowbreak{}{[}1,\allowbreak{}\ 10{]}} (увеличить вес для полосы заграждения). Постройте новую АЧХ и сравните с предыдущей.
+
+\textbf{Вопрос:} Как изменилось подавление в полосе заграждения и пульсации в полосе пропускания?
+
+\subsection*{Задание 2.4. Сравнение КИХ-фильтров на реальном сигнале}
+\addcontentsline{toc}{subsection}{Задание 2.4. Сравнение КИХ-фильтров на реальном сигнале}
+
+Сгенерируйте сигнал: смесь синусоид 50 Гц, 120 Гц, 220 Гц (амплитуды 1, 0.7, 0.3) + белый шум (дисперсия 0.1), fs=1000 Гц. Пропустите этот сигнал через:
+
+\begin{itemize}
+\tightlist
+\item
+  КИХ-ФНЧ спроектированный методом окон (окно Хемминга, длина 51, fc=150 Гц);
+\item
+  КИХ-ФНЧ спроектированный методом \texttt{remez} (длина 51, полоса пропускания 0--100 Гц, полоса заграждения 200--500 Гц).
+\end{itemize}
+
+Постройте спектры исходного и отфильтрованных сигналов в линейном и логарифмическом масштабе.
+
+\textbf{Вопросы:} Какой фильтр лучше подавил 220 Гц и шум? Какой лучше сохранил 120 Гц? На сколько отличаются амплитуды 120 Гц сигнала от исходных для каждого из фильтров?
+
+\section*{Часть 3. Синтез БИХ-фильтров}
+\addcontentsline{toc}{section}{Часть 3. Синтез БИХ-фильтров}
+
+\subsection*{Задание 3.1. Баттерворт, Чебышев, эллиптический -- сравнение АЧХ}
+\addcontentsline{toc}{subsection}{Задание 3.1. Баттерворт, Чебышев, эллиптический -- сравнение АЧХ}
+
+Спроектируйте ФНЧ с частотой среза 200 Гц (fs=1000 Гц) следующих типов (порядок 4):
+
+\begin{itemize}
+\tightlist
+\item
+  Баттерворт (\texttt{butter});
+\item
+  Чебышев I с пульсациями 1 дБ (\texttt{cheby1});
+\item
+  Чебышев II с затуханием 40 дБ в полосе заграждения (\texttt{cheby2});
+\item
+  Эллиптический с пульсациями 1 дБ и затуханием 40 дБ (\texttt{ellip}).
+\end{itemize}
+
+Постройте АЧХ всех фильтров на одном графике (в дБ). Сравните:
+
+\begin{itemize}
+\tightlist
+\item
+  крутизну среза,
+\item
+  пульсации в полосе пропускания и заграждения.
+\end{itemize}
+
+Постройте и сравните фазовые характеристики (ФЧХ) и групповые задержки.
+
+\textbf{Вопросы:} Какой фильтр даёт самый крутой спад? Какой имеет наименьшие фазовые искажения в полосе пропускания?
+
+\subsection*{Задание 3.2. Влияние порядка на характеристики БИХ-фильтра}
+\addcontentsline{toc}{subsection}{Задание 3.2. Влияние порядка на характеристики БИХ-фильтра}
+
+Для фильтра Баттерворта с fc=200 Гц, fs=1000 Гц возьмите порядки 2, 4, 6. Постройте АЧХ и групповую задержку.
+
+Постройте также расположение полюсов этих фильтров на z-плоскости (\texttt{signal.\allowbreak{}tf2zpk} или \texttt{signal.\allowbreak{}sos2zpk} для формата `sos') вместе с единичной окружностью.
+\textbf{Вопросы:} Как увеличение порядка влияет на крутизну среза и на групповую задержку в полосе пропускания? Как с ростом порядка меняется расположение полюсов и как это объясняет рост групповой задержки вблизи частоты среза?
+
+\subsection*{Задание 3.3. Преобразование типа БИХ-фильтра (ФНЧ → ФВЧ, полосовой)}
+\addcontentsline{toc}{subsection}{Задание 3.3. Преобразование типа БИХ-фильтра (ФНЧ → ФВЧ, полосовой)}
+
+Спроектируйте Баттерворта 4-го порядка:
+
+\begin{itemize}
+\tightlist
+\item
+  ФНЧ с fc=200 Гц;
+\item
+  ФВЧ с fc=200 Гц (используйте \texttt{btype=\allowbreak{}\textquotesingle{}\allowbreak{}high\textquotesingle{}\allowbreak{}});
+\item
+  полосовой с полосой 200--300 Гц.
+\end{itemize}
+
+Подайте на них сигнал: сумма синусоид 100, 250, 400 Гц. Постройте спектры после фильтрации.
+
+\textbf{Вопрос:} Какие составляющие подавлены, а какие пропущены в каждом случае?
+
+\subsection*{Задание 3.4. Применение БИХ-фильтра к зашумлённому сигналу}
+\addcontentsline{toc}{subsection}{Задание 3.4. Применение БИХ-фильтра к зашумлённому сигналу}
+
+Сгенерируйте сигнал: синусоида 50 Гц + белый шум с дисперсией 0.2, fs=1000 Гц, длительность 1 с. Спроектируйте эллиптический ФНЧ с fc=100 Гц (порядок 6, пульсации 1 дБ, затухание 40 дБ). Примените фильтр с помощью \texttt{lfilter} и \texttt{filtfilt}. Постройте на одном графике исходный и отфильтрованные сигналы (временные области, первые 0.2 с), а также их спектры. Сравните задержку и подавление шума.
+
+\textbf{Вопрос:} Почему \texttt{filtfilt} даёт нулевой фазовый сдвиг?
+
+\section*{Часть 4. Сравнение КИХ и БИХ фильтров одинакового порядка}
+\addcontentsline{toc}{section}{Часть 4. Сравнение КИХ и БИХ фильтров одинакового порядка}
+
+\subsection*{Задание 4.1. Сравнение характеристик}
+\addcontentsline{toc}{subsection}{Задание 4.1. Сравнение характеристик}
+
+Спроектируйте:
+
+\begin{itemize}
+\tightlist
+\item
+  КИХ-ФНЧ методом окон (окно Хемминга, длина 51, fc=200 Гц);
+\item
+  БИХ-ФНЧ Баттерворта 4-го порядка (fc=200 Гц).
+\end{itemize}
+
+Постройте для них на одном графике:
+
+\begin{itemize}
+\tightlist
+\item
+  отдельно АЧХ (в дБ),
+\item
+  отдельно групповую задержку.
+\end{itemize}
+
+\textbf{Вопросы:} Какой фильтр имеет более крутой срез? Какой имеет постоянную групповую задержку? Какой вносит меньшие фазовые искажения? Какой требует меньше вычислений? Попробуйте увеличить порядок фильтра Баттерворта. При каком порядке крутизна среза его АЧХ становится сравнимой с КИХ-фильтром? Растут или уменьшаются при этом фазовые искажения?
+
+\subsection*{Задание 4.2. Применение к реальному сигналу}
+\addcontentsline{toc}{subsection}{Задание 4.2. Применение к реальному сигналу}
+
+Сгенерируйте сигнал: короткий прямоугольный импульс длительностью 10 мс, а также высокочастотная синусоидальная помеха 400 Гц. Частоту дискретизации возьмите fs=10000 Гц.
+
+Примените оба фильтра (КИХ и БИХ из предыдущего пункта). Постройте исходный и отфильтрованные сигналы.
+
+\textbf{Вопросы:} Какой фильтр лучше сохранил форму импульсов? Какой лучше подавил помеху?
+
+
+\chapter{Адаптивная фильтрация и частотно-временной анализ}
+
+\section*{Краткие сведения}
+\addcontentsline{toc}{section}{Краткие сведения}
+
+\subsection*{1. Алгоритм LMS}
+\addcontentsline{toc}{subsection}{1. Алгоритм LMS}
+
+Для КИХ-фильтра длины \(N\) на каждом отсчёте:
+\[
+\begin{aligned}
+\mathbf{x}[n] &= [x[n], x[n-1], \dots, x[n-N+1]]^T, & y[n] &= \mathbf{w}^T\mathbf{x}[n], \\
+e[n] &= d[n] - y[n], & \mathbf{w} &\leftarrow \mathbf{w} + \mu\,e[n]\,\mathbf{x}[n].
+\end{aligned}
+\]
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+for n in range(N - 1, len(x)):
+    x_vec = x[n - N + 1:n + 1][::-1]
+    y = w @ x_vec
+    e[n] = d[n] - y
+    w = w + mu * e[n] * x_vec
+\end{Verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Кривая обучения} -- зависимость квадрата ошибки от номера шага в дБ. Квадрат ошибки сильно флуктуирует, поэтому его сглаживают: \texttt{np.\allowbreak{}convolve(\allowbreak{}e**2,\allowbreak{}\ np.\allowbreak{}ones(\allowbreak{}50)/\allowbreak{}50,\allowbreak{}\ mode=\allowbreak{}\textquotesingle{}\allowbreak{}same\textquotesingle{}\allowbreak{})}.
+\item
+  \textbf{Шаг адаптации:} малый \(\mu\) -- медленная сходимость, но малая установившаяся ошибка; большой -- быстрая сходимость, но большая ошибка и риск расходимости.
+\item
+  \textbf{Устойчивость:} для белого входного сигнала с дисперсией \(\sigma_x^2\) приближённо \(0 < \mu < \dfrac{2}{N\sigma_x^2}\) (точнее, \(\mu < 2/\lambda_{\max}\), где \(\lambda_{\max}\) -- наибольшее собственное число корреляционной матрицы входа).
+\end{itemize}
+
+\subsection*{2. NLMS}
+\addcontentsline{toc}{subsection}{2. NLMS}
+
+\[
+\mathbf{w} \leftarrow \mathbf{w} + \frac{\mu}{\|\mathbf{x}[n]\|^2 + \varepsilon}\,e[n]\,\mathbf{x}[n], \qquad 0 < \mu < 2.
+\]
+Шаг автоматически подстраивается под мощность входного сигнала; \(\varepsilon\) (например, \(10^{-6}\)) защищает от деления на ноль.
+
+\subsection*{3. Конфигурации адаптивного фильтра}
+\addcontentsline{toc}{subsection}{3. Конфигурации адаптивного фильтра}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Задача
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Вход фильтра \(x\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Желаемый сигнал \(d\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Результат
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Идентификация системы & сигнал на входе системы & сигнал на выходе системы & \(\mathbf{w}\) -- модель системы \\
+Подавление шума & опорный шум & полезный сигнал + шум & ошибка \(e\) -- очищенный сигнал \\
+Эхокомпенсация & сигнал дальнего абонента & сигнал микрофона с эхом & ошибка \(e\) -- речь без эха \\
+\end{longtable}
+
+\subsection*{4. Скалярный фильтр Калмана}
+\addcontentsline{toc}{subsection}{4. Скалярный фильтр Калмана}
+
+Модель: \(x_k = x_{k-1} + w_k\) (дисперсия шума процесса \(Q\)), \(z_k = x_k + v_k\) (дисперсия шума измерений \(R\)).
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+x_est, P = 0.0, 1.0
+for zk in z:
+    P = P + Q                    # прогноз
+    K = P / (P + R)              # коэффициент Калмана
+    x_est = x_est + K*(zk - x_est)
+    P = (1 - K) * P              # коррекция
+\end{Verbatim}
+
+В установившемся режиме \(K \to K_\infty = \dfrac{-Q + \sqrt{Q^2 + 4QR}}{2R}\), и фильтр совпадает с экспоненциальным сглаживанием с \(\alpha = K_\infty\).
+
+\subsection*{\texorpdfstring{5. STFT в SciPy: класс \texttt{ShortTimeFFT}}{5. STFT в SciPy: класс ShortTimeFFT}}
+\addcontentsline{toc}{subsection}{5. STFT в SciPy: класс \texttt{ShortTimeFFT}}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+from scipy.signal import ShortTimeFFT
+from scipy.signal.windows import hann
+
+SFT = ShortTimeFFT(hann(Nw, sym=False), hop=Nw//4, fs=fs, mfft=None, scale_to=None)
+X = SFT.stft(x)              # комплексные коэффициенты, форма (частоты, кадры)
+S = SFT.spectrogram(x)       # |X|^2
+f = SFT.f                    # частоты бинов, Гц
+tt = SFT.t(len(x))           # моменты времени кадров, с
+extent = SFT.extent(len(x))  # границы для plt.imshow(..., extent=extent, origin='lower', aspect='auto')
+x_rec = SFT.istft(X, k1=len(x))   # обратное преобразование
+\end{Verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{hop} -- шаг между окнами; перекрытие 50--75 \% (\texttt{hop\ =\allowbreak{}\ Nw/\allowbreak{}/\allowbreak{}2\ .\allowbreak{}.\allowbreak{}.\allowbreak{}\ Nw/\allowbreak{}/\allowbreak{}4}).
+\item
+  \texttt{mfft} -- длина БПФ (дополнение нулями делает спектр глаже, но не улучшает разрешение).
+\item
+  \texttt{scale\_\allowbreak{}to=\allowbreak{}\textquotesingle{}\allowbreak{}magnitude\textquotesingle{}\allowbreak{}} или \texttt{\textquotesingle{}\allowbreak{}psd\textquotesingle{}\allowbreak{}} -- нормировка спектра.
+\item
+  Спектрограмму показывают в дБ: \texttt{10*np.\allowbreak{}log10(\allowbreak{}S\ +\ 1e-12)}; полезно ограничить динамический диапазон (\texttt{vmin\ =\allowbreak{}\ max\ -\ 60}).
+\item
+  Упрощённый вариант: \texttt{plt.\allowbreak{}specgram(\allowbreak{}x,\allowbreak{}\ NFFT=\allowbreak{}Nw,\allowbreak{}\ Fs=\allowbreak{}fs,\allowbreak{}\ noverlap=\allowbreak{}Nw/\allowbreak{}/\allowbreak{}2)}.
+\end{itemize}
+
+\textbf{Разрешение:} по частоте \(\Delta f \approx k\,f_s/N_w\) (\(k \approx 2\) для окна Ханна), по времени \(\Delta t \approx N_w/f_s\).
+
+\subsection*{6. Маскирование в частотно-временной области}
+\addcontentsline{toc}{subsection}{6. Маскирование в частотно-временной области}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+X = SFT.stft(x)
+mask = np.ones(X.shape)
+band = np.abs(SFT.f - f0) < df                      # строки – частоты
+frames = (SFT.t(len(x)) > t1) & (SFT.t(len(x)) < t2) # столбцы – кадры
+mask[np.ix_(band, frames)] = 0
+y = SFT.istft(X * mask, k1=len(x))
+\end{Verbatim}
+
+\subsection*{7. Принцип неопределённости}
+\addcontentsline{toc}{subsection}{7. Принцип неопределённости}
+
+\[
+\Delta t\,\Delta f \ge \frac{1}{4\pi},
+\]
+где \(\Delta t\) и \(\Delta f\) -- среднеквадратичные ширины распределений \(|w(t)|^2\) и \(|W(f)|^2\). Равенство достигается только для гауссова окна. При численном расчёте используйте симметричную частотную ось (\texttt{np.\allowbreak{}fft.\allowbreak{}fftfreq} с \texttt{np.\allowbreak{}fft.\allowbreak{}fftshift}) и большую длину БПФ.
+
+\subsection*{8. Типичные ошибки}
+\addcontentsline{toc}{subsection}{8. Типичные ошибки}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Порядок отсчётов в векторе LMS:} \texttt{x{[}n-N+1:\allowbreak{}n+1{]}{[}:\allowbreak{}:\allowbreak{}-1{]}} -- первым должен идти самый свежий отсчёт \(x[n]\), иначе коэффициенты получатся в обратном порядке.
+\item
+  \textbf{Расходимость LMS:} при слишком большом шаге ошибка растёт экспоненциально и появляются \texttt{inf}/\texttt{nan}; уменьшите \texttt{mu} или используйте NLMS.
+\item
+  \textbf{Перепутаны сигналы в схеме подавления шума:} на вход фильтра подаётся опорный шум, а не сигнал микрофона.
+\item
+  \textbf{Ось частот спектрограммы:} без \texttt{extent} или \texttt{SFT.\allowbreak{}f} по осям будут номера бинов и кадров, а не герцы и секунды.
+\item
+  \textbf{Краевые эффекты STFT:} в начале и конце записи окно выходит за её пределы; яркие полосы у краёв спектрограммы -- не свойство сигнала.
+\item
+  \textbf{Стерео:} аудиофайл имеет форму \texttt{(\allowbreak{}N,\allowbreak{}\ 2)}; перед анализом усредните каналы.
+\end{enumerate}
+
+\section*{Подготовка рабочей среды}
+\addcontentsline{toc}{section}{Подготовка рабочей среды}
+
+Используемые в заданиях аудиофайлы загружаются из репозитория командами:
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+# Загружаем аудиофайлы
+!wget -q -O fragment.wav "https://github.com/korzhimanov/dsp-seminars/raw/refs/heads/main/data/fragment.wav"
+!wget -q -O sample-3s.wav "https://github.com/korzhimanov/dsp-seminars/raw/refs/heads/main/data/sample-3s.wav"
+\end{Verbatim}
+
+\section*{Часть 1. Адаптивные фильтры}
+\addcontentsline{toc}{section}{Часть 1. Адаптивные фильтры}
+
+\subsection*{Задание 1.1. Алгоритм LMS: идентификация неизвестной системы}
+\addcontentsline{toc}{subsection}{Задание 1.1. Алгоритм LMS: идентификация неизвестной системы}
+
+\subsubsection*{Цель}
+\addcontentsline{toc}{subsubsection}{Цель}
+
+Реализовать алгоритм LMS и с его помощью восстановить импульсную характеристику неизвестной системы.
+
+\subsubsection*{Задание}
+\addcontentsline{toc}{subsubsection}{Задание}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  «Неизвестная» система -- КИХ-фильтр \texttt{h\ =\allowbreak{}\ signal.\allowbreak{}firwin(\allowbreak{}16,\allowbreak{}\ 0.\allowbreak{}3)}. Входной сигнал \texttt{x} -- белый шум длиной 3000 отсчётов (\texttt{np.\allowbreak{}random.\allowbreak{}randn}). Желаемый сигнал -- выход системы с небольшим шумом измерений: \texttt{d\ =\allowbreak{}\ signal.\allowbreak{}lfilter(\allowbreak{}h,\allowbreak{}\ 1,\allowbreak{}\ x)\ +\ 0.\allowbreak{}01*np.\allowbreak{}random.\allowbreak{}randn(\allowbreak{}len(\allowbreak{}x))}.
+\item
+  Допишите функцию \texttt{lms(\allowbreak{}x,\allowbreak{}\ d,\allowbreak{}\ N,\allowbreak{}\ mu)}: на каждом шаге вычисляется выход \(y[n] = \mathbf{w}^T\mathbf{x}[n]\), ошибка \(e[n] = d[n] - y[n]\) и обновляются коэффициенты \(\mathbf{w} \leftarrow \mathbf{w} + \mu\,e[n]\,\mathbf{x}[n]\).
+\item
+  Запустите LMS с \texttt{N\ =\allowbreak{}\ 16}, \texttt{mu\ =\allowbreak{}\ 0.\allowbreak{}01}. Постройте \textbf{кривую обучения} -- \(10\lg e^2[n]\), сглаженную скользящим средним по 50 отсчётам.
+\item
+  Сравните найденные коэффициенты \texttt{w} с \texttt{h} на одном графике (\texttt{plt.\allowbreak{}stem}).
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+def lms(x, d, N, mu):
+    """LMS-адаптация КИХ-фильтра длины N. Возвращает коэффициенты w и сигнал ошибки e."""
+    w = np.zeros(N)
+    e = np.zeros(len(x))
+    for n in range(N - 1, len(x)):
+        x_vec = x[n - N + 1:n + 1][::-1]      # [x[n], x[n-1], ..., x[n-N+1]]
+        # Ваш код здесь: выход фильтра, ошибка e[n], обновление w
+        pass
+    return w, e
+
+def learning_curve(e, L=50):
+    """Сглаженная кривая обучения в дБ."""
+    return 10*np.log10(np.convolve(e**2, np.ones(L)/L, mode='same') + 1e-20)
+
+np.random.seed(0)
+h = signal.firwin(16, 0.3)
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Через сколько итераций ошибка выходит на установившийся уровень? Чем определяется этот уровень?
+\item
+  Насколько точно восстановлены коэффициенты неизвестной системы?
+\end{itemize}
+
+\subsection*{Задание 1.2. Выбор шага адаптации}
+\addcontentsline{toc}{subsection}{Задание 1.2. Выбор шага адаптации}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Повторите задание 1.1 для \texttt{mu\ =\allowbreak{}\ 0.\allowbreak{}001,\allowbreak{}\ 0.\allowbreak{}01,\allowbreak{}\ 0.\allowbreak{}05,\allowbreak{}\ 0.\allowbreak{}1,\allowbreak{}\ 0.\allowbreak{}12,\allowbreak{}\ 0.\allowbreak{}15}. Постройте кривые обучения на одном графике.
+\item
+  Найдите экспериментально наибольшее значение \texttt{mu}, при котором алгоритм ещё сходится. Сравните его с оценкой \(\mu_{\max} \approx \dfrac{2}{N\sigma_x^2}\), где \(\sigma_x^2\) -- дисперсия входного сигнала.
+\item
+  Увеличьте дисперсию входного сигнала в 4 раза (умножьте \texttt{x} на 2) и снова найдите порог устойчивости.
+  \textbf{Вопросы:}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Как шаг адаптации влияет на скорость сходимости и на установившуюся ошибку?
+\item
+  Совпал ли найденный порог устойчивости с оценкой? Как он изменился при увеличении мощности входного сигнала?
+\end{itemize}
+
+\subsection*{Задание 1.3. NLMS при меняющейся мощности входного сигнала}
+\addcontentsline{toc}{subsection}{Задание 1.3. NLMS при меняющейся мощности входного сигнала}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Сформируйте вход с медленно меняющейся мощностью: \texttt{x\ =\allowbreak{}\ 3*np.\allowbreak{}random.\allowbreak{}randn(\allowbreak{}3000)*(\allowbreak{}1\ +\ 0.\allowbreak{}9*np.\allowbreak{}sin(\allowbreak{}2*np.\allowbreak{}pi*np.\allowbreak{}arange(\allowbreak{}3000)/\allowbreak{}500))} и желаемый сигнал \texttt{d\ =\allowbreak{}\ signal.\allowbreak{}lfilter(\allowbreak{}h,\allowbreak{}\ 1,\allowbreak{}\ x)}.
+\item
+  Подберите наибольший шаг \texttt{mu}, при котором обычный LMS ещё устойчив.
+\item
+  Реализуйте NLMS: шаг нормируется на энергию вектора входных отсчётов, \(\mathbf{w} \leftarrow \mathbf{w} + \dfrac{\mu}{\|\mathbf{x}[n]\|^2 + \varepsilon}\,e[n]\,\mathbf{x}[n]\), с \texttt{mu\ =\allowbreak{}\ 0.\allowbreak{}5}, \texttt{eps\ =\allowbreak{}\ 1e-6}.
+\item
+  Сравните кривые обучения LMS и NLMS.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+def nlms(x, d, N, mu, eps=1e-6):
+    """Нормированный LMS."""
+    # Ваш код здесь
+    pass
+
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Почему для LMS приходится выбирать шаг по самому громкому участку сигнала?
+\item
+  Почему NLMS сходится быстрее при той же устойчивости? Какой диапазон значений \texttt{mu} допустим для NLMS?
+\end{itemize}
+
+\subsection*{Задание 1.4. Адаптивное подавление шума}
+\addcontentsline{toc}{subsection}{Задание 1.4. Адаптивное подавление шума}
+
+\subsubsection*{Цель}
+\addcontentsline{toc}{subsubsection}{Цель}
+
+Воспроизвести схему активного шумоподавления: из сигнала микрофона вычитается оценка шума, полученная из опорного датчика.
+
+\subsubsection*{Задание}
+\addcontentsline{toc}{subsubsection}{Задание}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Загрузите \texttt{fragment.\allowbreak{}wav}, переведите в моно (среднее каналов) и нормируйте в диапазон \([-1, 1]\). Это полезный сигнал \texttt{s}.
+\item
+  Опорный датчик регистрирует шум \texttt{ref\ =\allowbreak{}\ 0.\allowbreak{}5*np.\allowbreak{}random.\allowbreak{}randn(\allowbreak{}len(\allowbreak{}s))}. До микрофона этот шум доходит через неизвестный акустический тракт \texttt{path\ =\allowbreak{}\ signal.\allowbreak{}firwin(\allowbreak{}32,\allowbreak{}\ 0.\allowbreak{}2)}. Сигнал микрофона: \texttt{d\ =\allowbreak{}\ s\ +\ signal.\allowbreak{}lfilter(\allowbreak{}path,\allowbreak{}\ 1,\allowbreak{}\ ref)}.
+\item
+  Примените LMS (вход -- \texttt{ref}, желаемый сигнал -- \texttt{d}, \texttt{N\ =\allowbreak{}\ 32}, \texttt{mu\ =\allowbreak{}\ 0.\allowbreak{}002}). Оценкой полезного сигнала служит \textbf{сигнал ошибки} \texttt{e}.
+\item
+  Вычислите отношение сигнал/шум до и после обработки по формуле \(\mathrm{SNR} = 10\lg\dfrac{\sum s^2}{\sum (\hat s - s)^2}\) (после обработки -- по второй половине записи, когда фильтр уже сошёлся).
+\item
+  Прослушайте \texttt{d} и \texttt{e}. Повторите эксперимент с NLMS и с длиной фильтра \texttt{N\ =\allowbreak{}\ 8}.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs, s = wavfile.read('fragment.wav')
+s = s.astype(float).mean(axis=1)
+s /= np.max(np.abs(s))
+
+np.random.seed(1)
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Почему сигнал ошибки адаптивного фильтра оказывается очищенной речью?
+\item
+  Что произойдёт, если опорный датчик будет улавливать и полезный сигнал?
+\item
+  Как результат зависит от соотношения длины фильтра и длины импульсной характеристики акустического тракта?
+\end{itemize}
+
+\subsection*{Задание 1.5. Фильтр Калмана и экспоненциальное сглаживание}
+\addcontentsline{toc}{subsection}{Задание 1.5. Фильтр Калмана и экспоненциальное сглаживание}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Смоделируйте случайное блуждание \texttt{true\ =\allowbreak{}\ np.\allowbreak{}cumsum(\allowbreak{}0.\allowbreak{}1*np.\allowbreak{}random.\allowbreak{}randn(\allowbreak{}500))} и его зашумлённые измерения \texttt{z\ =\allowbreak{}\ true\ +\ 0.\allowbreak{}5*np.\allowbreak{}random.\allowbreak{}randn(\allowbreak{}500)}.
+\item
+  Реализуйте скалярный фильтр Калмана с \(F = H = 1\):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    прогноз: \(P^- = P + Q\);
+  \item
+    коррекция: \(K = \dfrac{P^-}{P^- + R}\), \(\;\hat x \leftarrow \hat x + K(z - \hat x)\), \(\;P = (1 - K)P^-\).
+  \end{itemize}
+
+  Используйте \(Q = 0.01\), \(R = 0.25\), начальные \(\hat x = 0\), \(P = 1\). Постройте оценку и коэффициент \(K\) как функцию номера шага.
+\item
+  Найдите установившееся значение \(K_\infty\) и сравните его с аналитическим \(K_\infty = \dfrac{-Q + \sqrt{Q^2 + 4QR}}{2R}\).
+\item
+  Примените к измерениям экспоненциальное сглаживание с \(\alpha = K_\infty\) (лекция 5) и сравните с оценкой Калмана. Вычислите среднеквадратичные ошибки обеих оценок и самих измерений.
+\item
+  Повторите для \(Q = 0.1\) и \(Q = 0.001\) при том же \(R\).
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+np.random.seed(2)
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Почему в установившемся режиме фильтр Калмана совпадает с экспоненциальным сглаживанием? В чём тогда преимущество фильтра Калмана?
+\item
+  Как отношение \(Q/R\) влияет на коэффициент \(K\) и на гладкость оценки?
+\end{itemize}
+
+\section*{Часть 2. Частотно-временной анализ}
+\addcontentsline{toc}{section}{Часть 2. Частотно-временной анализ}
+
+\subsection*{Задание 2.1. Спектрограмма и выбор длины окна}
+\addcontentsline{toc}{subsection}{Задание 2.1. Спектрограмма и выбор длины окна}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Сформируйте сигнал длительностью 2 с при \(f_s = 1000\) Гц:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    сумма двух тонов 100 и 110 Гц на интервале \(0 \le t < 1\) с;
+  \item
+    два коротких щелчка (одиночные отсчёты амплитуды 5) в моменты 1.50 и 1.53 с;
+  \item
+    линейный чирп от 200 до 400 Гц на всей длительности (\texttt{signal.\allowbreak{}chirp}).
+  \end{itemize}
+\item
+  Постройте спектрограммы с окном Ханна длиной \texttt{Nw\ =\allowbreak{}\ 32,\allowbreak{}\ 128,\allowbreak{}\ 512} отсчётов и шагом \texttt{Nw/\allowbreak{}/\allowbreak{}8} (класс \texttt{ShortTimeFFT}, см. заметки).
+\item
+  Для каждой длины окна определите, различимы ли тоны 100 и 110 Гц и различимы ли два щелчка.
+\item
+  Объясните результат с помощью оценок разрешения: по частоте \(\Delta f \approx 2f_s/N_w\) (ширина главного лепестка окна Ханна), по времени \(\Delta t \approx N_w/f_s\).
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs = 1000
+t = np.arange(0, 2, 1/fs)
+# Ваш код здесь: формирование сигнала
+
+def show_spectrogram(x, fs, Nw, ax, fmax=None):
+    SFT = ShortTimeFFT(hann(Nw, sym=False), hop=max(1, Nw//8), fs=fs, mfft=max(Nw, 1024))
+    S = SFT.spectrogram(x)
+    ax.imshow(10*np.log10(S + 1e-12), origin='lower', aspect='auto', cmap='magma',
+              extent=SFT.extent(len(x)), vmin=10*np.log10(S.max()) - 60)
+    ax.set_xlabel('Время, с'); ax.set_ylabel('Частота, Гц')
+    if fmax:
+        ax.set_ylim(0, fmax)
+    ax.set_title(f'Окно {Nw} отсчётов')
+
+# Ваш код здесь: три спектрограммы
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  При какой длине окна разрешаются тоны 100 и 110 Гц? При какой -- два щелчка? Можно ли подобрать окно, при котором разрешается и то, и другое?
+\item
+  Как выглядит чирп на спектрограммах с разной длиной окна и почему?
+\end{itemize}
+
+\subsection*{Задание 2.2. Принцип неопределённости}
+\addcontentsline{toc}{subsection}{Задание 2.2. Принцип неопределённости}
+
+Эффективные длительность и ширина спектра окна \(w[n]\) определяются через вторые моменты распределений \(|w[n]|^2\) и \(|W(f)|^2\):
+\[
+\Delta t^2 = \frac{\sum_n (n - \bar n)^2 |w[n]|^2}{\sum_n |w[n]|^2}, \qquad
+\Delta f^2 = \frac{\int f^2 |W(f)|^2 df}{\int |W(f)|^2 df}.
+\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Допишите функцию \texttt{widths(\allowbreak{}w)}, вычисляющую \(\Delta t\) (в отсчётах) и \(\Delta f\) (в циклах на отсчёт). Спектр вычисляйте через БПФ с большим дополнением нулями (\texttt{nfft\ =\allowbreak{}\ 2**18}).
+\item
+  Вычислите произведение \(\Delta t\,\Delta f\) для гауссовых окон длины 256 с σ = 8, 16, 32, а также для окон Ханна, треугольного и прямоугольного той же длины.
+\item
+  Сравните результаты с нижней границей \(1/(4\pi) \approx 0.0796\).
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+def widths(w, nfft=2**18):
+    """Эффективные длительность (в отсчётах) и ширина спектра (в циклах на отсчёт) окна w."""
+    # Ваш код здесь
+    pass
+
+M = 256
+windows = {
+    'Гаусс σ=8': gaussian(M, 8), 'Гаусс σ=16': gaussian(M, 16), 'Гаусс σ=32': gaussian(M, 32),
+    'Ханн': hann(M), 'Треугольное': triang(M), 'Прямоугольное': boxcar(M),
+}
+# Ваш код здесь: таблица Δt, Δf, Δt·Δf
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Какое окно ближе всего к нижней границе? Почему для гауссова окна с большим σ произведение отклоняется от границы?
+\item
+  Почему у прямоугольного окна произведение получается большим и зависит от длины БПФ?
+\end{itemize}
+
+\subsection*{Задание 2.3. Спектрограмма музыкального фрагмента}
+\addcontentsline{toc}{subsection}{Задание 2.3. Спектрограмма музыкального фрагмента}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Загрузите \texttt{sample-3s.\allowbreak{}wav}, переведите в моно и нормируйте.
+\item
+  Постройте осциллограмму и спектрограммы с окнами длиной 256 и 4096 отсчётов в диапазоне частот 0--4 кГц.
+\item
+  По спектрограмме с длинным окном оцените частоту основного тона ноты, звучащей около \(t = 2.3\) с: найдите частоты нескольких гармоник и расстояние между ними. Уточните результат по амплитудному спектру участка длиной 8192 отсчёта (с окном Ханна).
+\item
+  Определите, какой ноте соответствует найденная частота (ля первой октавы -- 440 Гц, соседние полутона отличаются в \(2^{1/12}\) раз).
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs_a, audio = wavfile.read('sample-3s.wav')
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Что лучше видно на спектрограмме с коротким окном, а что -- с длинным?
+\item
+  Какова частота основного тона и какая это нота?
+\end{itemize}
+
+\subsection*{Задание 2.4. Обработка в частотно-временной области}
+\addcontentsline{toc}{subsection}{Задание 2.4. Обработка в частотно-временной области}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Добавьте к музыкальному фрагменту из задания 2.3 помеху -- тон 3 кГц амплитудой 0.2, звучащий только на интервале от 1 до 2 с.
+\item
+  Вычислите STFT (\texttt{SFT.\allowbreak{}stft}) с окном Ханна длиной 1024 и шагом 256. Убедитесь, что обратное преобразование (\texttt{SFT.\allowbreak{}istft(\allowbreak{}X,\allowbreak{}\ k1=\allowbreak{}len(\allowbreak{}x))}) без изменений восстанавливает сигнал с точностью до ошибок округления.
+\item
+  Обнулите коэффициенты STFT в полосе 3000 ± 50 Гц на интервале 0.9--2.1 с и выполните обратное преобразование.
+\item
+  Сравните спектрограммы и прослушайте сигналы до и после обработки. Вычислите отношение сигнал/помеха до и после.
+\item
+  Попробуйте вместо этого убрать помеху обычным режекторным фильтром (\texttt{signal.\allowbreak{}iirnotch}). Чем отличается результат?
+  \textbf{Вопросы:}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Почему маску удалось ограничить и по частоте, и по времени? Что произойдёт с музыкой, если обнулить ту же полосу на всей длительности?
+\item
+  Чем обработка в частотно-временной области лучше обычного режекторного фильтра для помехи, которая появляется на короткое время?
+\end{itemize}
+
+
+\chapter{Вейвлет-преобразования}
+
+\section*{Краткие сведения}
+\addcontentsline{toc}{section}{Краткие сведения}
+
+\subsection*{1. Библиотека PyWavelets}
+\addcontentsline{toc}{subsection}{1. Библиотека PyWavelets}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+!pip install -q PyWavelets      # в Colab обычно уже установлена
+import pywt
+pywt.wavelist(kind='continuous')  # вейвлеты для CWT
+pywt.wavelist(kind='discrete')    # вейвлеты для DWT
+\end{Verbatim}
+
+\textbf{Имена вейвлетов:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{\textquotesingle{}\allowbreak{}haar\textquotesingle{}\allowbreak{}}, \texttt{\textquotesingle{}\allowbreak{}dbN\textquotesingle{}\allowbreak{}} (Добеши, N нулевых моментов, фильтр длины 2N), \texttt{\textquotesingle{}\allowbreak{}symN\textquotesingle{}\allowbreak{}} (симлеты), \texttt{\textquotesingle{}\allowbreak{}coifN\textquotesingle{}\allowbreak{}} (койфлеты), \texttt{\textquotesingle{}\allowbreak{}biorNr.\allowbreak{}Nd\textquotesingle{}\allowbreak{}} (биортогональные) -- для DWT;
+\item
+  \texttt{\textquotesingle{}\allowbreak{}mexh\textquotesingle{}\allowbreak{}} (мексиканская шляпа), \texttt{\textquotesingle{}\allowbreak{}morl\textquotesingle{}\allowbreak{}} (вещественный Морле), \texttt{\textquotesingle{}\allowbreak{}gausN\textquotesingle{}\allowbreak{}} (производные гауссиана), \texttt{\textquotesingle{}\allowbreak{}cmorB-C\textquotesingle{}\allowbreak{}} (комплексный Морле с шириной B и центральной частотой C) -- для CWT.
+\end{itemize}
+
+\subsection*{2. Непрерывное преобразование (CWT)}
+\addcontentsline{toc}{subsection}{2. Непрерывное преобразование (CWT)}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+fs = 1000
+freqs = np.geomspace(5, 400, 150)                      # нужные частоты, Гц
+scales = pywt.central_frequency('cmor1.5-1.0') * fs / freqs
+W, f = pywt.cwt(x, scales, 'cmor1.5-1.0', sampling_period=1/fs, method='fft')
+plt.pcolormesh(t, f, np.abs(W), shading='auto')
+plt.yscale('log')
+\end{Verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  Связь масштаба и частоты: \(f = \dfrac{f_c}{a\,\Delta t}\), где \(f_c\) -- центральная частота вейвлета (\texttt{pywt.\allowbreak{}central\_\allowbreak{}frequency}), \(\Delta t = 1/f_s\).
+\item
+  \texttt{W} имеет форму \texttt{(\allowbreak{}число\ масштабов,\allowbreak{}\ длина\ сигнала)}; для комплексного вейвлета значения комплексные, для анализа берут \texttt{np.\allowbreak{}abs(\allowbreak{}W)}.
+\item
+  \texttt{method=\allowbreak{}\textquotesingle{}\allowbreak{}fft\textquotesingle{}\allowbreak{}} значительно быстрее для длинных сигналов и большого числа масштабов.
+\item
+  \textbf{Конус влияния} для \texttt{cmorB-C}: на масштабе \(a\) краевые эффекты распространяются на \(a\sqrt{B/2}\) отсчётов от краёв записи.
+\item
+  Ширина \(B\): больше \(B\) -- больше осцилляций в вейвлете, лучше разрешение по частоте и хуже по времени.
+\end{itemize}
+
+\subsection*{3. Дискретное преобразование (DWT)}
+\addcontentsline{toc}{subsection}{3. Дискретное преобразование (DWT)}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+cA, cD = pywt.dwt(x, 'db4', mode='symmetric')       # один уровень
+coeffs = pywt.wavedec(x, 'db4', level=5)             # [cA5, cD5, cD4, cD3, cD2, cD1]
+x_rec = pywt.waverec(coeffs, 'db4')                  # может оказаться на 1 отсчёт длиннее x
+J = pywt.dwt_max_level(len(x), 'db4')                # максимальное число уровней
+\end{Verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Порядок коэффициентов} в \texttt{wavedec}: сначала аппроксимация самого грубого уровня, затем детали от грубых к мелким. Деталь \(d_j\) (первый уровень -- самый мелкий) соответствует полосе \([f_s/2^{j+1},\, f_s/2^j]\).
+\item
+  \textbf{Режим продолжения} \texttt{mode}: \texttt{\textquotesingle{}\allowbreak{}symmetric\textquotesingle{}\allowbreak{}} (по умолчанию), \texttt{\textquotesingle{}\allowbreak{}periodization\textquotesingle{}\allowbreak{}} (длина коэффициентов ровно вдвое меньше на каждом уровне -- удобно для сжатия), \texttt{\textquotesingle{}\allowbreak{}zero\textquotesingle{}\allowbreak{}}, \texttt{\textquotesingle{}\allowbreak{}smooth\textquotesingle{}\allowbreak{}} и др.
+\item
+  \textbf{Фильтры:} \texttt{w\ =\allowbreak{}\ pywt.\allowbreak{}Wavelet(\allowbreak{}\textquotesingle{}\allowbreak{}db4\textquotesingle{}\allowbreak{})}; \texttt{w.\allowbreak{}dec\_\allowbreak{}lo}, \texttt{w.\allowbreak{}dec\_\allowbreak{}hi} -- анализ, \texttt{w.\allowbreak{}rec\_\allowbreak{}lo}, \texttt{w.\allowbreak{}rec\_\allowbreak{}hi} -- синтез; \texttt{w.\allowbreak{}wavefun(\allowbreak{}level=\allowbreak{}8)} -- значения \(\varphi\) и \(\psi\).
+\item
+  Ручная реализация одного уровня (совпадает с \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}zero\textquotesingle{}\allowbreak{}}):
+\end{itemize}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+a = np.convolve(x, w.dec_lo)[1::2]
+d = np.convolve(x, w.dec_hi)[1::2]
+\end{Verbatim}
+
+\subsection*{4. Вклад отдельного уровня}
+\addcontentsline{toc}{subsection}{4. Вклад отдельного уровня}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+def component(coeffs, i, wavelet):
+    c = [np.zeros_like(ci) for ci in coeffs]
+    c[i] = coeffs[i]
+    return pywt.waverec(c, wavelet)
+\end{Verbatim}
+
+\subsection*{5. Пороговая обработка}
+\addcontentsline{toc}{subsection}{5. Пороговая обработка}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+sigma = np.median(np.abs(coeffs[-1])) / 0.6745       # оценка шума по деталям 1-го уровня
+lam = sigma * np.sqrt(2 * np.log(len(x)))            # универсальный порог
+coeffs_t = [coeffs[0]] + [pywt.threshold(d, lam, mode='soft') for d in coeffs[1:]]
+\end{Verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  Жёсткий порог (\texttt{\textquotesingle{}\allowbreak{}hard\textquotesingle{}\allowbreak{}}) обнуляет малые коэффициенты и не меняет большие; мягкий (\texttt{\textquotesingle{}\allowbreak{}soft\textquotesingle{}\allowbreak{}}) дополнительно уменьшает большие на \(\lambda\) -- результат глаже, но амплитуды занижены.
+\item
+  Аппроксимацию обычно не обрабатывают.
+\end{itemize}
+
+\subsection*{6. Сжатие: работа со всеми коэффициентами сразу}
+\addcontentsline{toc}{subsection}{6. Сжатие: работа со всеми коэффициентами сразу}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere]
+arr, slices = pywt.coeffs_to_array(coeffs)           # все коэффициенты в одном массиве
+k = int(p * arr.size)
+thr = np.sort(np.abs(arr).ravel())[-k]
+arr_c = np.where(np.abs(arr) >= thr, arr, 0)
+coeffs_c = pywt.array_to_coeffs(arr_c, slices, output_format='wavedec')   # 'wavedec2' для 2D
+\end{Verbatim}
+
+Для изображений: \texttt{pywt.\allowbreak{}wavedec2(\allowbreak{}img,\allowbreak{}\ \textquotesingle{}\allowbreak{}bior4.\allowbreak{}4\textquotesingle{}\allowbreak{},\allowbreak{}\ level=\allowbreak{}3)}, \texttt{pywt.\allowbreak{}waverec2}. Каждый уровень деталей -- кортеж из трёх субполос (горизонтальные, вертикальные, диагональные детали). Аппроксимацию \texttt{arr{[}slices{[}0{]}{]}} при сжатии лучше сохранять целиком.
+
+\textbf{PSNR} для 8-битного изображения: \texttt{10*np.\allowbreak{}log10(\allowbreak{}255**2\ /\allowbreak{}\ np.\allowbreak{}mean(\allowbreak{}(\allowbreak{}img\_\allowbreak{}rec\ -\ img)**2))}.
+
+\subsection*{7. Нулевые моменты}
+\addcontentsline{toc}{subsection}{7. Нулевые моменты}
+
+Вейвлет с \(p\) нулевыми моментами даёт нулевые детали для многочленов степени меньше \(p\). У Добеши dbN \(p = N\): \texttt{pywt.\allowbreak{}Wavelet(\allowbreak{}\textquotesingle{}\allowbreak{}db3\textquotesingle{}\allowbreak{}).\allowbreak{}vanishing\_\allowbreak{}moments\_\allowbreak{}psi}.
+
+\subsection*{8. Типичные ошибки}
+\addcontentsline{toc}{subsection}{8. Типичные ошибки}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Перепутан порядок уровней:} \texttt{coeffs{[}-1{]}} -- самые мелкие детали \(d_1\), а не самые крупные.
+\item
+  \textbf{Длина после \texttt{waverec}:} при нечётной длине или режиме, отличном от \texttt{\textquotesingle{}\allowbreak{}periodization\textquotesingle{}\allowbreak{}}, восстановленный сигнал может быть длиннее исходного -- обрежьте \texttt{x\_\allowbreak{}rec{[}:\allowbreak{}len(\allowbreak{}x){]}}.
+\item
+  \textbf{Масштабы вместо частот:} \texttt{pywt.\allowbreak{}cwt} принимает масштабы; частоты нужно пересчитать через центральную частоту вейвлета.
+\item
+  \textbf{Линейная ось частот на скалограмме:} при геометрической сетке масштабов используйте логарифмическую ось.
+\item
+  \textbf{Вещественный вейвлет для частотного анализа:} у \texttt{\textquotesingle{}\allowbreak{}morl\textquotesingle{}\allowbreak{}} и \texttt{\textquotesingle{}\allowbreak{}mexh\textquotesingle{}\allowbreak{}} модуль коэффициентов осциллирует во времени; для оценки огибающей используйте \texttt{\textquotesingle{}\allowbreak{}cmor\textquotesingle{}\allowbreak{}}.
+\item
+  \textbf{Число уровней:} уровней больше \texttt{pywt.\allowbreak{}dwt\_\allowbreak{}max\_\allowbreak{}level} вызывают предупреждение и сильные краевые эффекты.
+\end{enumerate}
+
+\section*{Часть 1. Непрерывное вейвлет-преобразование}
+\addcontentsline{toc}{section}{Часть 1. Непрерывное вейвлет-преобразование}
+
+\subsection*{Задание 1.1. Масштаб и частота}
+\addcontentsline{toc}{subsection}{Задание 1.1. Масштаб и частота}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Выведите центральные частоты (\texttt{pywt.\allowbreak{}central\_\allowbreak{}frequency}) вейвлетов \texttt{\textquotesingle{}\allowbreak{}mexh\textquotesingle{}\allowbreak{}}, \texttt{\textquotesingle{}\allowbreak{}morl\textquotesingle{}\allowbreak{}}, \texttt{\textquotesingle{}\allowbreak{}cmor1.\allowbreak{}5-1.\allowbreak{}0\textquotesingle{}\allowbreak{}}, \texttt{\textquotesingle{}\allowbreak{}gaus1\textquotesingle{}\allowbreak{}}.
+\item
+  Сформируйте тон 50 Гц длительностью 1 с при \(f_s = 1000\) Гц. Задайте 100 частот анализа в геометрической прогрессии от 10 до 200 Гц (\texttt{np.\allowbreak{}geomspace}) и пересчитайте их в масштабы по формуле \(a = f_c f_s / f\).
+\item
+  Вычислите CWT с вейвлетом \texttt{\textquotesingle{}\allowbreak{}cmor1.\allowbreak{}5-1.\allowbreak{}0\textquotesingle{}\allowbreak{}} (\texttt{pywt.\allowbreak{}cwt(\allowbreak{}x,\allowbreak{}\ scales,\allowbreak{}\ wavelet,\allowbreak{}\ sampling\_\allowbreak{}period=\allowbreak{}1/\allowbreak{}fs)}). Постройте зависимость \(|W|\), усреднённого по центральной половине записи, от частоты. Совпадает ли максимум с 50 Гц?
+\item
+  Повторите для вейвлетов \texttt{\textquotesingle{}\allowbreak{}mexh\textquotesingle{}\allowbreak{}} и \texttt{\textquotesingle{}\allowbreak{}gaus1\textquotesingle{}\allowbreak{}}. Постройте для них также зависимость \(|W(a, b)|\) от времени \(b\) на масштабе, соответствующем 50 Гц.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs = 1000
+t = np.arange(0, 1, 1/fs)
+x = np.sin(2*np.pi*50*t)
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Насколько точно максимум \(|W|\) указывает частоту тона для каждого вейвлета?
+\item
+  Почему для вещественных вейвлетов \(|W(a,b)|\) осциллирует во времени, а для комплексного вейвлета Морле -- нет?
+\item
+  Почему для некоторых вейвлетов максимум заметно смещён относительно 50 Гц? (Подсказка: центральная частота -- лишь приближённая характеристика широкополосного вейвлета; сравните спектры вейвлетов.)
+\end{itemize}
+
+\subsection*{Задание 1.2. Скалограмма нестационарного сигнала}
+\addcontentsline{toc}{subsection}{Задание 1.2. Скалограмма нестационарного сигнала}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Сформируйте сигнал длительностью 2 с при \(f_s = 1000\) Гц: тон 20 Гц амплитудой 0.6 на всей длительности; чирп от 40 до 250 Гц на интервале 0.4--1.6 с (\texttt{signal.\allowbreak{}chirp}); два щелчка (гауссовы импульсы шириной 2 мс) в моменты 0.25 и 1.8 с.
+\item
+  Постройте скалограмму \(|W(a,b)|\) (вейвлет \texttt{\textquotesingle{}\allowbreak{}cmor1.\allowbreak{}5-1.\allowbreak{}0\textquotesingle{}\allowbreak{}}, 150 частот от 4 до 400 Гц) с логарифмической осью частот (\texttt{plt.\allowbreak{}pcolormesh} и \texttt{plt.\allowbreak{}yscale(\allowbreak{}\textquotesingle{}\allowbreak{}log\textquotesingle{}\allowbreak{})}).
+\item
+  Нанесите на скалограмму \textbf{конус влияния}: для вейвлета \texttt{cmorB-C} на масштабе \(a\) краевые эффекты распространяются на расстояние \(a\sqrt{B/2}\) отсчётов от краёв записи.
+\item
+  Постройте спектрограмму того же сигнала с окном 128 отсчётов и сравните её со скалограммой.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs = 1000
+t = np.arange(0, 2, 1/fs)
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Как выглядят на скалограмме тон, чирп и щелчки? Почему щелчки сужаются к высоким частотам?
+\item
+  Какие детали лучше видны на скалограмме, а какие -- на спектрограмме?
+\end{itemize}
+
+\subsection*{Задание 1.3. Параметр ширины вейвлета Морле}
+\addcontentsline{toc}{subsection}{Задание 1.3. Параметр ширины вейвлета Морле}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Сформируйте сигнал длительностью 2 с при \(f_s = 1000\) Гц: сумма тонов 40 и 50 Гц на интервале 0--1 с и два щелчка (одиночные отсчёты амплитуды 20) в моменты 1.50 и 1.52 с.
+\item
+  Постройте скалограммы с вейвлетами \texttt{\textquotesingle{}\allowbreak{}cmorB-1.\allowbreak{}0\textquotesingle{}\allowbreak{}} при \(B = 0.5,\ 1.5,\ 5,\ 20\) (частоты 20--150 Гц).
+\item
+  Для каждого \(B\) определите, различимы ли тоны 40 и 50 Гц и различимы ли два щелчка на частотах около 100 Гц. Для анализа щелчков постройте увеличенный фрагмент скалограммы на интервале 1.45--1.57 с.
+  \textbf{Вопросы:}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  При каких \(B\) разрешаются тоны? При каких -- щелчки? Существует ли \(B\), при котором разрешается и то, и другое?
+\item
+  Как этот результат связан с принципом неопределённости?
+\end{itemize}
+
+\section*{Часть 2. Дискретное вейвлет-преобразование}
+\addcontentsline{toc}{section}{Часть 2. Дискретное вейвлет-преобразование}
+
+\subsection*{Задание 2.1. Преобразование Хаара вручную}
+\addcontentsline{toc}{subsection}{Задание 2.1. Преобразование Хаара вручную}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Допишите функцию \texttt{haar\_\allowbreak{}step(\allowbreak{}a)}, выполняющую один уровень ортонормированного преобразования Хаара: \(s_k = (a_{2k} + a_{2k+1})/\sqrt2\), \(\;d_k = (a_{2k} - a_{2k+1})/\sqrt2\).
+\item
+  Выполните полное разложение сигнала \(x = [4,\,2,\,5,\,5,\,1,\,3,\,6,\,6]\) (повторяя шаг для аппроксимации, пока не останется один коэффициент). Сравните с \texttt{pywt.\allowbreak{}wavedec(\allowbreak{}x,\allowbreak{}\ \textquotesingle{}\allowbreak{}haar\textquotesingle{}\allowbreak{})}.
+\item
+  Напишите обратное преобразование и убедитесь, что сигнал восстанавливается точно.
+\item
+  Проверьте равенство Парсеваля: энергия сигнала равна энергии коэффициентов.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+def haar_step(a):
+    """Один уровень преобразования Хаара: возвращает (аппроксимация, детали)."""
+    # Ваш код здесь
+    pass
+
+def haar_inverse_step(s, d):
+    """Обратный шаг: восстанавливает сигнал по аппроксимации и деталям."""
+    # Ваш код здесь
+    pass
+
+x = np.array([4, 2, 5, 5, 1, 3, 6, 6], dtype=float)
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопрос:} Почему многие коэффициенты оказались нулевыми? Какие свойства сигнала они отражают?
+
+\subsection*{Задание 2.2. Один уровень алгоритма Малла}
+\addcontentsline{toc}{subsection}{Задание 2.2. Один уровень алгоритма Малла}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Возьмите фильтры вейвлета Добеши db4: \texttt{w\ =\allowbreak{}\ pywt.\allowbreak{}Wavelet(\allowbreak{}\textquotesingle{}\allowbreak{}db4\textquotesingle{}\allowbreak{})}, фильтры анализа \texttt{w.\allowbreak{}dec\_\allowbreak{}lo}, \texttt{w.\allowbreak{}dec\_\allowbreak{}hi}, синтеза -- \texttt{w.\allowbreak{}rec\_\allowbreak{}lo}, \texttt{w.\allowbreak{}rec\_\allowbreak{}hi}.
+\item
+  Реализуйте один уровень разложения: свёртка с фильтром анализа (\texttt{np.\allowbreak{}convolve}) и прореживание -- взять отсчёты с нечётными индексами (\texttt{{[}1:\allowbreak{}:\allowbreak{}2{]}}). Сравните результат с \texttt{pywt.\allowbreak{}dwt(\allowbreak{}x,\allowbreak{}\ \textquotesingle{}\allowbreak{}db4\textquotesingle{}\allowbreak{},\allowbreak{}\ mode=\allowbreak{}\textquotesingle{}\allowbreak{}zero\textquotesingle{}\allowbreak{})} для случайного сигнала длиной 64.
+\item
+  Реализуйте синтез: вставка нулей между коэффициентами, свёртка с фильтрами синтеза, сложение ветвей. Восстановленный сигнал начинается с отсчёта номер \(L - 2\), где \(L\) -- длина фильтра.
+\item
+  Постройте АЧХ фильтров \texttt{dec\_\allowbreak{}lo} и \texttt{dec\_\allowbreak{}hi} и проверьте, что \(|H|^2 + |G|^2 = 2\).
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+w = pywt.Wavelet('db4')
+np.random.seed(0)
+x = np.random.randn(64)
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Почему после прореживания информация не теряется, хотя каждая ветвь содержит вдвое меньше отсчётов?
+\item
+  Почему сложность полного многоуровневого разложения пропорциональна \(N\)?
+\end{itemize}
+
+\subsection*{Задание 2.3. Многоуровневое разложение и частотные полосы}
+\addcontentsline{toc}{subsection}{Задание 2.3. Многоуровневое разложение и частотные полосы}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Сформируйте сигнал \(x(t) = \sin(2\pi\cdot 10t) + \sin(2\pi\cdot 60t) + \sin(2\pi\cdot 200t)\) длительностью 2.048 с при \(f_s = 1000\) Гц.
+\item
+  Выполните разложение \texttt{pywt.\allowbreak{}wavedec(\allowbreak{}x,\allowbreak{}\ \textquotesingle{}\allowbreak{}db8\textquotesingle{}\allowbreak{},\allowbreak{}\ level=\allowbreak{}6)}. Учтите порядок коэффициентов в списке: \([a_6, d_6, d_5, \dots, d_1]\).
+\item
+  Составьте таблицу: уровень, полоса частот (\(d_j\) соответствует \([f_s/2^{j+1},\, f_s/2^j]\), \(a_J\) -- \([0,\, f_s/2^{J+1}]\)), доля энергии сигнала в коэффициентах уровня.
+\item
+  Восстановите вклад каждого уровня в отдельности (обнулив остальные коэффициенты и применив \texttt{pywt.\allowbreak{}waverec}) и постройте графики.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+fs = 1000
+t = np.arange(0, 2.048, 1/fs)
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  В коэффициентах каких уровней оказался каждый из тонов?
+\item
+  Почему энергия тона 60 Гц распределилась между двумя уровнями?
+\end{itemize}
+
+\subsection*{Задание 2.4. Нулевые моменты}
+\addcontentsline{toc}{subsection}{Задание 2.4. Нулевые моменты}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Сформируйте кусочно-полиномиальный сигнал из 512 отсчётов на отрезке \([0, 1)\): прямая \(2t\) при \(t < 0.5\), парабола \(1.5 - 4(t - 0.5)^2\) при \(t \ge 0.5\) и скачок на \(+0.5\) при \(t \ge 0.75\).
+\item
+  Выполните один уровень DWT (\texttt{pywt.\allowbreak{}dwt(\allowbreak{}x,\allowbreak{}\ wavelet,\allowbreak{}\ mode=\allowbreak{}\textquotesingle{}\allowbreak{}periodization\textquotesingle{}\allowbreak{})}) для вейвлетов \texttt{haar}, \texttt{db2}, \texttt{db3}, \texttt{db4}. Постройте детали \(d_1\).
+\item
+  Для каждого вейвлета подсчитайте число деталей с модулем больше \(10^{-6}\). Число нулевых моментов вейвлета можно узнать из \texttt{pywt.\allowbreak{}Wavelet(\allowbreak{}name).\allowbreak{}vanishing\_\allowbreak{}moments\_\allowbreak{}psi}.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+N = 512
+n = np.arange(N) / N
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Как число ненулевых деталей связано с числом нулевых моментов вейвлета?
+\item
+  Почему ненулевые детали появляются у краёв записи?
+\end{itemize}
+
+\section*{Часть 3. Применения}
+\addcontentsline{toc}{section}{Часть 3. Применения}
+
+\subsection*{Задание 3.1. Подавление шума}
+\addcontentsline{toc}{subsection}{Задание 3.1. Подавление шума}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Возьмите тестовые сигналы \texttt{pywt.\allowbreak{}data.\allowbreak{}demo\_\allowbreak{}signal(\allowbreak{}\textquotesingle{}\allowbreak{}Blocks\textquotesingle{}\allowbreak{},\allowbreak{}\ 1024)} и \texttt{pywt.\allowbreak{}data.\allowbreak{}demo\_\allowbreak{}signal(\allowbreak{}\textquotesingle{}\allowbreak{}Doppler\textquotesingle{}\allowbreak{},\allowbreak{}\ 1024)}, нормируйте их на стандартное отклонение и добавьте белый шум с σ = 0.25.
+\item
+  Реализуйте вейвлет-денойзинг: разложение \texttt{wavedec} (5 уровней, \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}periodization\textquotesingle{}\allowbreak{}}), оценка шума \(\hat\sigma = \operatorname{median}(|d_1|)/0.6745\), универсальный порог \(\lambda = \hat\sigma\sqrt{2\ln N}\), пороговая обработка всех деталей (\texttt{pywt.\allowbreak{}threshold}), обратное преобразование.
+\item
+  Сравните мягкий и жёсткий пороги и вейвлеты \texttt{haar}, \texttt{db4}, \texttt{sym8}. Сведите среднеквадратичные ошибки в таблицу.
+\item
+  Сравните лучший результат с фильтром Баттерворта 4-го порядка (\texttt{signal.\allowbreak{}butter} + \texttt{signal.\allowbreak{}filtfilt}), подобрав частоту среза так, чтобы ошибка была минимальной.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+np.random.seed(3)
+N = 1024
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Какой вейвлет и какой порог лучше подходят для каждого сигнала? Почему?
+\item
+  Насколько близка оценка \(\hat\sigma\) к истинному уровню шума?
+\item
+  Почему вейвлет-денойзинг сохраняет фронты лучше линейного фильтра?
+\end{itemize}
+
+\subsection*{Задание 3.2. Сжатие сигнала}
+\addcontentsline{toc}{subsection}{Задание 3.2. Сжатие сигнала}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Возьмите сигнал \texttt{pywt.\allowbreak{}data.\allowbreak{}demo\_\allowbreak{}signal(\allowbreak{}\textquotesingle{}\allowbreak{}Piece-Regular\textquotesingle{}\allowbreak{},\allowbreak{}\ 1024)}.
+\item
+  Выполните полное разложение (\texttt{wavedec}, вейвлет \texttt{db4}, \texttt{mode=\allowbreak{}\textquotesingle{}\allowbreak{}periodization\textquotesingle{}\allowbreak{}}) и сохраните долю \(p\) наибольших по модулю коэффициентов, обнулив остальные (удобно использовать \texttt{pywt.\allowbreak{}coeffs\_\allowbreak{}to\_\allowbreak{}array} и \texttt{pywt.\allowbreak{}array\_\allowbreak{}to\_\allowbreak{}coeffs}). Восстановите сигнал.
+\item
+  Сделайте то же с коэффициентами ДКП (\texttt{dct(\allowbreak{}x,\allowbreak{}\ norm=\allowbreak{}\textquotesingle{}\allowbreak{}ortho\textquotesingle{}\allowbreak{})}, \texttt{idct}).
+\item
+  Постройте зависимость относительной ошибки \(\|\hat x - x\|/\|x\|\) от \(p\) в диапазоне 1--20 \% для обоих преобразований (логарифмическая шкала по оси ошибки).
+\item
+  Повторите для гладкого сигнала \texttt{\textquotesingle{}\allowbreak{}HeaviSine\textquotesingle{}\allowbreak{}}.
+  \textbf{Вопросы:}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Для какого сигнала вейвлет-преобразование выигрывает у ДКП, а для какого -- нет? Почему?
+\end{itemize}
+
+\subsection*{Задание 3.3. Сжатие изображения}
+\addcontentsline{toc}{subsection}{Задание 3.3. Сжатие изображения}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Загрузите изображение \texttt{pywt.\allowbreak{}data.\allowbreak{}camera(\allowbreak{})} (512×512, оттенки серого).
+\item
+  Выполните двумерное разложение \texttt{pywt.\allowbreak{}wavedec2(\allowbreak{}img,\allowbreak{}\ wavelet,\allowbreak{}\ level=\allowbreak{}3,\allowbreak{}\ mode=\allowbreak{}\textquotesingle{}\allowbreak{}periodization\textquotesingle{}\allowbreak{})}. Изобразите коэффициенты (\texttt{pywt.\allowbreak{}coeffs\_\allowbreak{}to\_\allowbreak{}array}), нормировав каждую субполосу.
+\item
+  Сохраните аппроксимацию целиком, а из деталей -- наибольшие по модулю коэффициенты так, чтобы всего осталось 1, 2, 5 и 10 \% коэффициентов. Восстановите изображение и вычислите PSNR: \(10\lg\dfrac{255^2}{\overline{(\hat I - I)^2}}\).
+\item
+  Сравните вейвлеты \texttt{haar}, \texttt{db4} и \texttt{bior4.\allowbreak{}4} (последний близок к CDF 9/7 из JPEG2000).
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+img = pywt.data.camera().astype(float)
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Какие артефакты появляются при сильном сжатии у разных вейвлетов?
+\item
+  Какой вейвлет даёт наибольший PSNR? Почему в JPEG2000 используют биортогональные вейвлеты?
+\end{itemize}
+
+\subsection*{Задание 3.4. Обработка ЭКГ}
+\addcontentsline{toc}{subsection}{Задание 3.4. Обработка ЭКГ}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Загрузите запись ЭКГ \texttt{pywt.\allowbreak{}data.\allowbreak{}ecg(\allowbreak{})} (частота дискретизации 360 Гц), вычтите среднее и нормируйте на максимум модуля.
+\item
+  Добавьте типичные помехи: дрейф изолинии \(0.8\sin(2\pi\cdot 0.3t + 1)\), сетевую наводку \(0.15\sin(2\pi\cdot 50t)\) и белый шум с σ = 0.05.
+\item
+  Попробуйте найти R-зубцы в зашумлённом сигнале напрямую (\texttt{signal.\allowbreak{}find\_\allowbreak{}peaks} с порогом по высоте и минимальным расстоянием 0.25 с).
+\item
+  Выполните разложение \texttt{wavedec(\allowbreak{}y,\allowbreak{}\ \textquotesingle{}\allowbreak{}db4\textquotesingle{}\allowbreak{},\allowbreak{}\ level=\allowbreak{}7)}. Составьте таблицу частотных полос уровней.
+\item
+  \textbf{Удаление дрейфа:} обнулите аппроксимацию и восстановите сигнал. Сравните с исходной ЭКГ.
+\item
+  \textbf{Поиск R-зубцов:} восстановите сигнал только по деталям уровней, в полосы которых попадает энергия QRS-комплекса (примерно 5--45 Гц), и найдите пики квадрата этого сигнала. Вычислите частоту сердечных сокращений.
+\end{enumerate}
+
+\begin{Verbatim}[fontsize=\small, breaklines, breakanywhere, frame=single, framesep=2mm]
+ecg = pywt.data.ecg().astype(float)
+fs = 360
+t = np.arange(len(ecg)) / fs
+np.random.seed(4)
+# Ваш код здесь
+\end{Verbatim}
+
+\textbf{Вопросы:}
+
+\begin{itemize}
+\tightlist
+\item
+  Почему прямой поиск пиков в зашумлённом сигнале не работает?
+\item
+  Какие уровни разложения вы использовали для поиска R-зубцов и почему? Какова частота сердечных сокращений?
+\end{itemize}
+
+
+\chapter*{Список литературы}
+\addcontentsline{toc}{chapter}{\protect\numberline{}Список литературы}
+
+\section*{Общие вопросы цифровой обработки сигналов}
+[1.1] Оппенгейм А., Шафер Р. Цифровая обработка сигналов. --- М.: Техносфера, 2006.
+
+[1.2] Лайонс Р. Цифровая обработка сигналов. 2-е изд. --- М.: Бином-Пресс, 2006.
+
+[1.3] Сергиенко А.Б. Цифровая обработка сигналов. 3-е изд. --- СПб.: БХВ-Петербург, 2011.
+
+[1.4] Smith S. W. The Scientist and Engineer's Guide to Digital Signal Processing. --- San Diego: California Technical Publishing, 1997.
+
+\section*{Спектральный анализ и синтез фильтров}
+[2.1] Welch P. D. The use of fast Fourier transform for the estimation of power spectra: A method based on time averaging over short, modified periodograms // IEEE Transactions on Audio and Electroacoustics. --- 1967. --- V. 15. --- P. 70–73.
+
+[2.2] Savitzky A., Golay M. J. E. Smoothing and Differentiation of Data by Simplified Least Squares Procedures // Analytical Chemistry. --- 1964. --- V. 36. --- P. 1627–1639.
+
+[2.3] Parks T. W., McClellan J. H. Chebyshev Approximation for Nonrecursive Digital Filters with Linear Phase // IEEE Transactions on Circuit Theory. --- 1972. --- V. 19. --- P. 189–194.
+
+\section*{Адаптивная фильтрация}
+[3.1] Haykin S. Adaptive Filter Theory. 5th ed. --- Upper Saddle River: Pearson, 2014.
+
+[3.2] Kalman R. E. A New Approach to Linear Filtering and Prediction Problems // Journal of Basic Engineering. --- 1960. --- V. 82. --- P. 35–45.
+
+\section*{Вейвлет-преобразования}
+[4.1] Добеши И. Десять лекций по вейвлетам. --- Ижевск: НИЦ <<Регулярная и хаотическая динамика>>, 2001.
+
+[4.2] Mallat S. A Wavelet Tour of Signal Processing: The Sparse Way. 3rd ed. --- Burlington: Academic Press, 2009.
+
+[4.3] Donoho D. L., Johnstone I. M. Ideal spatial adaptation by wavelet shrinkage // Biometrika. --- 1994. --- V. 81. --- P. 425–455.
+
+\section*{Программные средства}
+[5.1] Virtanen P. et al. SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python // Nature Methods. --- 2020. --- V. 17. --- P. 261–272.
+
+[5.2] Lee G. R., Gommers R., Waselewski F., Wohlfahrt K., O'Leary A. PyWavelets: A Python package for wavelet analysis // Journal of Open Source Software. --- 2019. --- V. 4. --- Art. no. 1237.
+
+\newpage
+\thispagestyle{empty}
+
+\begin{center}
+    \vspace*{100mm}
+
+    Артем Владимирович \textbf{Коржиманов}
+
+    \vspace{28pt}
+
+    \textbf{ЦИФРОВАЯ ОБРАБОТКА СИГНАЛОВ\\ ПРАКТИКУМ}
+
+    \vspace{14pt}
+
+    \textit{Учебно-методическое пособие}
+
+    \vspace{28pt}
+
+    Компьютерная верстка – А.В. Коржиманов
+
+    \vspace{14pt}
+
+    Федеральное государственное автономное образовательное\\ учреждение высшего образования\\
+    «Национальный исследовательский Нижегородский государственный университет им. Н.И. Лобачевского».\\
+    603950, Нижний Новгород, пр. Гагарина, 23.
+\end{center}
+
+\end{document}
